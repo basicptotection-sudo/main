@@ -1,3 +1,4 @@
+
 import { MapPin } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -12,11 +13,12 @@ type CoverageSectionProps = {
   description: string;
   zones: Zone[];
   children?: React.ReactNode;
+  className?: string;
 };
 
-export function CoverageSection({ title, description, zones, children }: CoverageSectionProps) {
+export function CoverageSection({ title, description, zones, children, className }: CoverageSectionProps) {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className={cn("py-16 md:py-24", className)}>
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">

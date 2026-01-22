@@ -1,6 +1,8 @@
+
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { Star } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type Testimonial = {
   quote: string;
@@ -10,11 +12,12 @@ type Testimonial = {
 
 type TestimonialsProps = {
   testimonials: Testimonial[];
+  className?: string;
 };
 
-export function Testimonials({ testimonials }: TestimonialsProps) {
+export function Testimonials({ testimonials, className }: TestimonialsProps) {
   return (
-    <section className="py-16 md:py-24 bg-background">
+    <section className={cn("py-16 md:py-24", className)}>
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">

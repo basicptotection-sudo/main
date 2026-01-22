@@ -1,3 +1,4 @@
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -31,7 +32,7 @@ export function HeroSection({
   breadcrumbs,
 }: HeroSectionProps) {
   return (
-    <section className="relative w-full h-[70vh] flex items-center justify-center text-center text-white">
+    <section className="relative w-full h-[80vh] md:h-[70vh] flex items-center justify-center text-center text-white">
       {imageUrl && (
         <Image
           src={imageUrl}
@@ -42,7 +43,7 @@ export function HeroSection({
           data-ai-hint={imageHint}
         />
       )}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/40 to-transparent" />
       <div className="relative z-10 max-w-4xl mx-auto px-4">
         {breadcrumbs && (
           <div className="text-white/80 [&_a:hover]:text-white [&_li:last-child>a]:text-white">
@@ -52,7 +53,7 @@ export function HeroSection({
         <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tight">
           {title}
         </h1>
-        <p className="mt-4 text-lg md:text-xl max-w-2xl mx-auto text-gray-200">
+        <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-gray-200">
           {description}
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-4">

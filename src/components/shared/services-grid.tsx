@@ -2,6 +2,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 import * as LucideIcons from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type Service = {
   icon: React.ReactNode | string;
@@ -15,11 +16,12 @@ type ServicesGridProps = {
   title: string;
   description: string;
   services: Service[];
+  className?: string;
 };
 
-export function ServicesGrid({ id, title, description, services }: ServicesGridProps) {
+export function ServicesGrid({ id, title, description, services, className }: ServicesGridProps) {
   return (
-    <section id={id} className="py-16 md:py-24 bg-background">
+    <section id={id} className={cn("py-16 md:py-24", className)}>
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
