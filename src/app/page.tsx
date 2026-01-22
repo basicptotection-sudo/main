@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { siteConfig } from '@/lib/config';
-import { HeroSection, TrustElements, ServicesGrid, ProcessSteps, SectorsGrid, CoverageSection, Testimonials, FAQAccordion, CTASection, StickyMobileCallButton } from '@/components/shared';
+import { HeroSection, TrustElements, ServicesGrid, ProcessSteps, SectorsGrid, CoverageSection, Testimonials, FAQAccordion, CTASection, StickyMobileCallButton, AnimateOnScroll } from '@/components/shared';
 import { servicesData } from '@/lib/services-data';
 import { locationsData } from '@/lib/locations-data';
 
@@ -138,36 +138,52 @@ export default function Home() {
         imageAlt={heroImage?.description}
         imageHint={heroImage?.imageHint}
       />
-      <TrustElements elements={trustElements} id="about" />
-      <ServicesGrid
-        id="services"
-        title="Nos Prestations de Haute Sécurité"
-        description="Des solutions sur-mesure, exécutées avec une rigueur et une discrétion absolues."
-        services={services}
-      />
-      <ProcessSteps 
-        title="Notre Protocole d'Excellence en 4 Étapes"
-        description="Une méthodologie rigoureuse pour garantir une mise en place irréprochable et une efficacité maximale."
-        steps={processSteps}
-      />
-      <SectorsGrid sectors={sectors} />
-      <CoverageSection
-        id="contact"
-        title="Intervention sur Paris et Zones Stratégiques"
-        description="Notre maillage territorial assure une réactivité et une connaissance parfaite des zones d'intervention clés."
-        zones={coverageZones}
-      />
-      <Testimonials testimonials={testimonials} />
-      <FAQAccordion
-        title="Vos Questions, Nos Réponses Claires"
-        description="Tout ce que vous devez savoir sur nos services de haute sécurité."
-        items={faqItems}
-      />
-      <CTASection
-        title="Passez au Niveau Supérieur de Protection"
-        description="Discutons de vos besoins en toute confidentialité. Contactez nos experts pour une étude personnalisée et une proposition sur-mesure."
-        cta={{ label: "Demander un Devis Confidentiel", href: "/devis" }}
-      />
+      <AnimateOnScroll>
+        <TrustElements elements={trustElements} id="about" />
+      </AnimateOnScroll>
+      <AnimateOnScroll>
+        <ServicesGrid
+          id="services"
+          title="Nos Prestations de Haute Sécurité"
+          description="Des solutions sur-mesure, exécutées avec une rigueur et une discrétion absolues."
+          services={services}
+        />
+      </AnimateOnScroll>
+      <AnimateOnScroll>
+        <ProcessSteps 
+          title="Notre Protocole d'Excellence en 4 Étapes"
+          description="Une méthodologie rigoureuse pour garantir une mise en place irréprochable et une efficacité maximale."
+          steps={processSteps}
+        />
+      </AnimateOnScroll>
+      <AnimateOnScroll>
+        <SectorsGrid sectors={sectors} />
+      </AnimateOnScroll>
+      <AnimateOnScroll>
+        <CoverageSection
+          id="contact"
+          title="Intervention sur Paris et Zones Stratégiques"
+          description="Notre maillage territorial assure une réactivité et une connaissance parfaite des zones d'intervention clés."
+          zones={coverageZones}
+        />
+      </AnimateOnScroll>
+      <AnimateOnScroll>
+        <Testimonials testimonials={testimonials} />
+      </AnimateOnScroll>
+      <AnimateOnScroll>
+        <FAQAccordion
+          title="Vos Questions, Nos Réponses Claires"
+          description="Tout ce que vous devez savoir sur nos services de haute sécurité."
+          items={faqItems}
+        />
+      </AnimateOnScroll>
+      <AnimateOnScroll>
+        <CTASection
+          title="Passez au Niveau Supérieur de Protection"
+          description="Discutons de vos besoins en toute confidentialité. Contactez nos experts pour une étude personnalisée et une proposition sur-mesure."
+          cta={{ label: "Demander un Devis Confidentiel", href: "/devis" }}
+        />
+      </AnimateOnScroll>
       <StickyMobileCallButton phoneNumber={siteConfig.contact.phone} />
     </div>
   );

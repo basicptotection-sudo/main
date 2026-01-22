@@ -1,5 +1,5 @@
 import { servicesData } from "@/lib/services-data";
-import { ServicesGrid, HeroSection } from "@/components/shared";
+import { ServicesGrid, HeroSection, AnimateOnScroll } from "@/components/shared";
 import { siteConfig } from "@/lib/config";
 import type { Metadata } from "next";
 import { Briefcase } from "lucide-react";
@@ -34,12 +34,14 @@ export default function ServicesHubPage() {
         imageAlt={heroImage?.description}
         imageHint={heroImage?.imageHint}
       />
-      <ServicesGrid
-        id="services-list"
-        title="Explorez nos Domaines d'Expertise"
-        description="Chaque service est une promesse de rigueur, de discrétion et d'efficacité, adaptée aux enjeux uniques de votre secteur."
-        services={servicesForGrid}
-      />
+      <AnimateOnScroll>
+        <ServicesGrid
+          id="services-list"
+          title="Explorez nos Domaines d'Expertise"
+          description="Chaque service est une promesse de rigueur, de discrétion et d'efficacité, adaptée aux enjeux uniques de votre secteur."
+          services={servicesForGrid}
+        />
+      </AnimateOnScroll>
     </>
   );
 }

@@ -11,3 +11,4 @@ export * from './testimonials';
 export * from './trust-bar';
 export * from './trust-elements';
 export * from './benefits-section';
+export * from './animate-on-scroll';

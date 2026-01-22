@@ -11,7 +11,7 @@ const ArticleJsonLd = ({ post, slug }: ArticleJsonLdProps) => {
   const { title, description, date, author, image } = post;
   const url = `${siteConfig.url}/blog/${slug}`;
   const postImage = PlaceHolderImages.find(p => p.id === image);
-  const imageUrl = postImage ? postImage.imageUrl : `${siteConfig.url}/og-image.png`;
+  const imageUrl = postImage ? postImage.imageUrl : `${siteConfig.url}/brand/og.png`;
 
   const schema = {
     '@context': 'https://schema.org',
@@ -33,7 +33,7 @@ const ArticleJsonLd = ({ post, slug }: ArticleJsonLdProps) => {
       name: siteConfig.name,
       logo: {
         '@type': 'ImageObject',
-        url: `${siteConfig.url}/logo.png`,
+        url: `${siteConfig.url}/brand/logo.png`,
       },
     },
     datePublished: date,

@@ -12,7 +12,8 @@ import {
     FAQAccordion, 
     CTASection, 
     Breadcrumbs,
-    BenefitsSection
+    BenefitsSection,
+    AnimateOnScroll
 } from '@/components/shared';
 import ServiceJsonLd from '@/components/seo/service-json-ld';
 
@@ -75,32 +76,42 @@ export default function ServicePage({ params }: ServicePageProps) {
       
       <Breadcrumbs items={breadcrumbItems} />
 
-      <BenefitsSection 
-        title="Vos Avantages Clés"
-        description={`Découvrez les bénéfices concrets de notre service de ${service.title.toLowerCase()}.`}
-        benefits={service.benefits}
-      />
+      <AnimateOnScroll>
+        <BenefitsSection 
+          title="Vos Avantages Clés"
+          description={`Découvrez les bénéfices concrets de notre service de ${service.title.toLowerCase()}.`}
+          benefits={service.benefits}
+        />
+      </AnimateOnScroll>
 
-      <ProcessSteps
-        title={service.method.title}
-        description={service.method.description}
-        steps={service.method.steps}
-      />
+      <AnimateOnScroll>
+        <ProcessSteps
+          title={service.method.title}
+          description={service.method.description}
+          steps={service.method.steps}
+        />
+      </AnimateOnScroll>
 
-      <SectorsGrid sectors={service.sectors} />
+      <AnimateOnScroll>
+        <SectorsGrid sectors={service.sectors} />
+      </AnimateOnScroll>
       
-      <FAQAccordion
-        title="Questions Fréquentes"
-        description={`Les réponses à vos interrogations sur notre service de ${service.title.toLowerCase()}.`}
-        items={service.faq}
-      />
+      <AnimateOnScroll>
+        <FAQAccordion
+          title="Questions Fréquentes"
+          description={`Les réponses à vos interrogations sur notre service de ${service.title.toLowerCase()}.`}
+          items={service.faq}
+        />
+      </AnimateOnScroll>
       
-      <CTASection
-        id="contact"
-        title="Prêt à Sécuriser Votre Avenir ?"
-        description="Contactez nos experts pour une analyse confidentielle de vos besoins et recevez une proposition stratégique sur-mesure."
-        cta={{ label: "Demander Votre Devis", href: `mailto:${siteConfig.contact.email}?subject=Demande de devis pour ${service.title}` }}
-      />
+      <AnimateOnScroll>
+        <CTASection
+          id="contact"
+          title="Prêt à Sécuriser Votre Avenir ?"
+          description="Contactez nos experts pour une analyse confidentielle de vos besoins et recevez une proposition stratégique sur-mesure."
+          cta={{ label: "Demander Votre Devis", href: `mailto:${siteConfig.contact.email}?subject=Demande de devis pour ${service.title}` }}
+        />
+      </AnimateOnScroll>
     </>
   );
 }

@@ -13,7 +13,7 @@ const JsonLd = () => {
     '@type': 'Organization',
     name: siteConfig.business.name,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/logo.png`,
+    logo: `${siteConfig.url}/brand/logo.png`,
     contactPoint: {
       '@type': 'ContactPoint',
       telephone: siteConfig.business.telephone,

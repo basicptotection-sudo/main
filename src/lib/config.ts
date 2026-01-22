@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Basic Protection Privée",
   description: "Solutions professionnelles de sécurité privée, surveillance et gardiennage pour entreprises et particuliers. Protégez vos biens et vos proches avec nos agents qualifiés.",
   url: "https://www.basic-protection.com",
-  ogImage: "https://www.basic-protection.com/og-image.png",
+  ogImage: "/brand/og.png",
   contact: {
     email: "contact@basic-protection.com",
     phone: "01 23 45 67 89",

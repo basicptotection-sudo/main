@@ -12,6 +12,7 @@ import {
     FAQAccordion, 
     CTASection, 
     Breadcrumbs,
+    AnimateOnScroll,
 } from '@/components/shared';
 import LocationJsonLd from '@/components/seo/location-json-ld';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -91,27 +92,35 @@ export default function LocationPage({ params }: LocationPageProps) {
       
       <Breadcrumbs items={breadcrumbItems} />
 
-      <IntroSection title={location.intro.title} content={location.intro.content} />
+      <AnimateOnScroll>
+        <IntroSection title={location.intro.title} content={location.intro.content} />
+      </AnimateOnScroll>
       
-      <ServicesGrid
-        id="services-list"
-        title={`Nos Prestations de Sécurité à ${location.name}`}
-        description="Une gamme complète de solutions pour répondre à tous vos besoins de sûreté dans le secteur."
-        services={location.services}
-      />
+      <AnimateOnScroll>
+        <ServicesGrid
+          id="services-list"
+          title={`Nos Prestations de Sécurité à ${location.name}`}
+          description="Une gamme complète de solutions pour répondre à tous vos besoins de sûreté dans le secteur."
+          services={location.services}
+        />
+      </AnimateOnScroll>
       
-      <FAQAccordion
-        title="Questions Fréquentes"
-        description={`Tout savoir sur nos interventions à ${location.name}.`}
-        items={location.faq}
-      />
+      <AnimateOnScroll>
+        <FAQAccordion
+          title="Questions Fréquentes"
+          description={`Tout savoir sur nos interventions à ${location.name}.`}
+          items={location.faq}
+        />
+      </AnimateOnScroll>
       
-      <CTASection
-        id="contact"
-        title={`Obtenez votre Proposition de Sécurité pour ${location.name}`}
-        description="Contactez nos experts pour une analyse confidentielle et recevez un devis détaillé adapté à votre situation locale."
-        cta={{ label: "Devis pour " + location.name, href: `mailto:${siteConfig.contact.email}?subject=Demande de devis pour ${location.name}` }}
-      />
+      <AnimateOnScroll>
+        <CTASection
+          id="contact"
+          title={`Obtenez votre Proposition de Sécurité pour ${location.name}`}
+          description="Contactez nos experts pour une analyse confidentielle et recevez un devis détaillé adapté à votre situation locale."
+          cta={{ label: "Devis pour " + location.name, href: `mailto:${siteConfig.contact.email}?subject=Demande de devis pour ${location.name}` }}
+        />
+      </AnimateOnScroll>
     </>
   );
 }

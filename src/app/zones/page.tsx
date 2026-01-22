@@ -1,6 +1,6 @@
 
 import { locationsData } from "@/lib/locations-data";
-import { HeroSection, CoverageSection } from "@/components/shared";
+import { HeroSection, CoverageSection, AnimateOnScroll } from "@/components/shared";
 import { siteConfig } from "@/lib/config";
 import type { Metadata } from "next";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -33,17 +33,21 @@ export default function ZonesHubPage() {
         imageAlt={heroImage?.description}
         imageHint={heroImage?.imageHint}
       />
-      <CoverageSection
-        title="Explorez nos Secteurs d'Intervention"
-        description="Chaque département a ses spécificités. Nous adaptons nos dispositifs de sécurité aux enjeux locaux pour une protection maximale."
-        zones={zonesForGrid}
-      />
-      <CTASection
-        id="contact"
-        title="Votre Sécurité, Notre Priorité, Où que vous soyez."
-        description="Discutons de vos besoins en toute confidentialité. Contactez nos experts pour une étude personnalisée et une proposition sur-mesure."
-        cta={{ label: "Demander un Devis Confidentiel", href: `mailto:${siteConfig.contact.email}?subject=Demande de devis confidentiel` }}
-      />
+      <AnimateOnScroll>
+        <CoverageSection
+          title="Explorez nos Secteurs d'Intervention"
+          description="Chaque département a ses spécificités. Nous adaptons nos dispositifs de sécurité aux enjeux locaux pour une protection maximale."
+          zones={zonesForGrid}
+        />
+      </AnimateOnScroll>
+      <AnimateOnScroll>
+        <CTASection
+          id="contact"
+          title="Votre Sécurité, Notre Priorité, Où que vous soyez."
+          description="Discutons de vos besoins en toute confidentialité. Contactez nos experts pour une étude personnalisée et une proposition sur-mesure."
+          cta={{ label: "Demander un Devis Confidentiel", href: `mailto:${siteConfig.contact.email}?subject=Demande de devis confidentiel` }}
+        />
+      </AnimateOnScroll>
     </>
   );
 }
