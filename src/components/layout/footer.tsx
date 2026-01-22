@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import { Shield, Linkedin, Twitter, Facebook } from "lucide-react";
 import { siteConfig } from "@/lib/config";
@@ -10,7 +11,8 @@ export function Footer() {
   ];
 
   const footerLinks = [
-    { href: "/services", label: "Services" },
+    { href: "/services", label: "Nos Services" },
+    { href: "/zones", label: "Nos Zones" },
     { href: "/#about", label: "À Propos" },
     { href: "/#contact", label: "Contact" },
     { href: "/merci", label: "Remerciements" },

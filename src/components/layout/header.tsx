@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -10,6 +11,7 @@ import { siteConfig } from "@/lib/config";
 
 const navLinks = [
   { href: "/services", label: "Nos Services" },
+  { href: "/zones", label: "Nos Zones" },
   { href: "/#about", label: "À Propos" },
   { href: "/#contact", label: "Contact" },
 ];
