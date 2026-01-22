@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import * as LucideIcons from "lucide-react";
 
 type Sector = {
-  icon: React.ReactNode;
+  icon: React.ReactNode | string;
   name: string;
 };
 
@@ -22,16 +23,25 @@ export function SectorsGrid({ sectors }: SectorsGridProps) {
           </p>
         </div>
         <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
-          {sectors.map((sector) => (
-            <Card key={sector.name} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <CardHeader className="items-center pb-2">
-                {sector.icon}
-              </CardHeader>
-              <CardContent>
-                <h3 className="font-semibold text-base">{sector.name}</h3>
-              </CardContent>
-            </Card>
-          ))}
+          {sectors.map((sector) => {
+             let IconComponent: React.ReactNode;
+             if (typeof sector.icon === 'string') {
+               const Icon = (LucideIcons as any)[sector.icon];
+               IconComponent = Icon ? <Icon className="w-10 h-10" /> : null;
+             } else {
+               IconComponent = sector.icon;
+             }
+            return (
+              <Card key={sector.name} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <CardHeader className="items-center pb-2">
+                  {IconComponent}
+                </CardHeader>
+                <CardContent>
+                  <h3 className="font-semibold text-base">{sector.name}</h3>
+                </CardContent>
+              </Card>
+            )
+          })}
         </div>
       </div>
     </section>

@@ -10,9 +10,9 @@ export function Footer() {
   ];
 
   const footerLinks = [
-    { href: "#services", label: "Services" },
-    { href: "#about", label: "À Propos" },
-    { href: "#contact", label: "Contact" },
+    { href: "/services", label: "Services" },
+    { href: "/#about", label: "À Propos" },
+    { href: "/#contact", label: "Contact" },
     { href: "/merci", label: "Remerciements" },
   ];
 

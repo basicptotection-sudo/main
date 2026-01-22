@@ -1,13 +1,19 @@
 import { MetadataRoute } from 'next';
 import { siteConfig } from '@/lib/config';
+import { servicesData } from '@/lib/services-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ['', '/merci'];
+  const staticRoutes = ['', '/merci', '/services'];
 
-  const sitemapEntries = routes.map((route) => ({
+  const staticEntries = staticRoutes.map((route) => ({
     url: `${siteConfig.url}${route}`,
     lastModified: new Date().toISOString(),
   }));
 
-  return sitemapEntries;
+  const dynamicEntries = servicesData.map(service => ({
+    url: `${siteConfig.url}/services/${service.slug}`,
+    lastModified: new Date().toISOString(),
+  }));
+
+  return [...staticEntries, ...dynamicEntries];
 }

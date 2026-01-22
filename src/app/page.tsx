@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { siteConfig } from '@/lib/config';
 import { HeroSection, TrustElements, ServicesGrid, ProcessSteps, SectorsGrid, CoverageSection, Testimonials, FAQAccordion, CTASection, StickyMobileCallButton } from '@/components/shared';
-import { Award, Factory, Gem, Hospital, Lock, School, ShieldCheck, ShoppingCart, Users, Zap, Building, FileText, MessageCircle, ThumbsUp } from 'lucide-react';
+import { Award, Factory, Gem, Hospital, Lock, School, ShieldCheck, ShoppingCart, Users, Zap, Building, FileText, MessageCircle, ThumbsUp, Briefcase } from 'lucide-react';
+import { servicesData } from '@/lib/services-data';
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(p => p.id === 'hero');
@@ -32,32 +33,12 @@ export default function Home() {
       },
   ];
 
-  const services = [
-    {
-      icon: <Users className="w-12 h-12 text-primary" />,
-      title: 'Protection Rapprochée',
-      description: 'Dispositifs discrets et efficaces pour la sécurité des dirigeants et personnalités (garde du corps).',
-      href: "#contact",
-    },
-    {
-      icon: <Building className="w-12 h-12 text-primary" />,
-      title: 'Sécurité de Sites Prestigieux',
-      description: 'Surveillance et contrôle d’accès pour sièges sociaux, boutiques de luxe, et ambassades.',
-      href: "#contact",
-    },
-    {
-      icon: <ShieldCheck className="w-12 h-12 text-primary" />,
-      title: 'Audit & Ingénierie Sûreté',
-      description: 'Analyse de risques complexes et conception de plans de sécurité intégrés et performants.',
-      href: "#contact",
-    },
-    {
-      icon: <Gem className="w-12 h-12 text-primary" />,
-      title: 'Événementiel d\'Exception',
-      description: 'Sécurisation de lancements, galas, défilés de mode et événements privés de haut standing.',
-      href: "#contact",
-    },
-  ];
+  const services = servicesData.map(service => ({
+    icon: <Briefcase className="w-12 h-12 text-primary" />,
+    title: service.title,
+    description: service.shortDescription,
+    href: `/services/${service.slug}`
+  }));
 
   const processSteps = [
     {

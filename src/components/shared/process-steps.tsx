@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import * as LucideIcons from "lucide-react";
 
 type Step = {
-    icon: React.ReactNode;
+    icon: React.ReactNode | string;
     title: string;
     description: string;
 }
@@ -25,19 +26,28 @@ export function ProcessSteps({ title, description, steps }: ProcessStepsProps) {
           </p>
         </div>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {steps.map((step) => (
-            <Card key={step.title} className="text-center border-none bg-transparent shadow-none">
-              <CardHeader className="items-center">
-                <div className="bg-primary/10 rounded-full p-4 mb-4">
-                    {step.icon}
-                </div>
-                <CardTitle className="font-headline text-xl">{step.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{step.description}</p>
-              </CardContent>
-            </Card>
-          ))}
+          {steps.map((step) => {
+            let IconComponent: React.ReactNode;
+            if (typeof step.icon === 'string') {
+              const Icon = (LucideIcons as any)[step.icon];
+              IconComponent = Icon ? <Icon className="w-10 h-10 text-primary" /> : null;
+            } else {
+              IconComponent = step.icon;
+            }
+            return (
+              <Card key={step.title} className="text-center border-none bg-transparent shadow-none">
+                <CardHeader className="items-center">
+                  <div className="bg-primary/10 rounded-full p-4 mb-4">
+                      {IconComponent}
+                  </div>
+                  <CardTitle className="font-headline text-xl">{step.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{step.description}</p>
+                </CardContent>
+              </Card>
+            )
+          })}
         </div>
       </div>
     </section>

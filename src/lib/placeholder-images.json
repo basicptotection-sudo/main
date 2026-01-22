@@ -11,6 +11,30 @@
       "description": "A modern office building, representing a corporate client.",
       "imageUrl": "https://images.unsplash.com/photo-1703355685639-d558d1b0f63e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxvZmZpY2UlMjBidWlsZGluZyUyMG1vZGVybnxlbnwwfHx8fDE3NjkwOTE1MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "office building modern"
+    },
+    {
+      "id": "service-protection-rapprochee",
+      "description": "Bodyguard discreetly accompanying a VIP.",
+      "imageUrl": "https://images.unsplash.com/photo-1582146099748-5d3a6979152f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxib2R5Z3VhcmQlMjB2aXB8ZW58MHx8fHwxNzY5MDkyNzY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "bodyguard vip"
+    },
+    {
+      "id": "service-evenementiel",
+      "description": "Security team managing access to a high-end event.",
+      "imageUrl": "https://images.unsplash.com/photo-1762474293029-6a7f3698312c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxldmVudCUyMHNlY3VyaXR5fGVufDB8fHx8MTc2OTA5Mjc3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "event security"
+    },
+    {
+      "id": "service-audit-conseil",
+      "description": "Security expert analyzing blueprints in a modern office.",
+      "imageUrl": "https://images.unsplash.com/photo-1768839721719-c5ed97c1fd58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzZWN1cml0eSUyMGF1ZGl0fGVufDB8fHx8MTc2OTA5Mjc3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "security audit"
+    },
+    {
+      "id": "services-hub",
+      "description": "Team of security professionals ready for mission.",
+      "imageUrl": "https://images.unsplash.com/photo-1713021947821-ac3dde7b191f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzZWN1cml0eSUyMHRlYW18ZW58MHx8fHwxNzY5MDkyNzY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "security team"
     }
   ]
 }
