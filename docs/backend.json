@@ -1,0 +1,86 @@
+{
+  "entities": {
+    "LeadRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LeadRequest",
+      "type": "object",
+      "description": "Represents a lead request submitted via the /devis (quote) page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the lead request. (Primary Key)"
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Full name of the person submitting the request."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person submitting the request.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the person submitting the request."
+        },
+        "company": {
+          "type": "string",
+          "description": "Company name of the person submitting the request (if applicable)."
+        },
+        "serviceOfInterest": {
+          "type": "string",
+          "description": "The specific service the lead is interested in."
+        },
+        "message": {
+          "type": "string",
+          "description": "Additional message or details provided by the lead."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "Date and time when the lead request was submitted.",
+          "format": "date-time"
+        },
+        "ipAddress": {
+          "type": "string",
+          "description": "IP address of the user submitting the form (for spam prevention)."
+        }
+      },
+      "required": [
+        "id",
+        "fullName",
+        "email",
+        "phone",
+        "serviceOfInterest",
+        "message",
+        "submissionDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "lead_requests/{leadRequestId}",
+        "definition": {
+          "entityName": "LeadRequest",
+          "schema": {
+            "$ref": "#/backend/entities/LeadRequest"
+          },
+          "description": "Stores lead requests submitted via the /devis page.  Each document represents a single lead request.",
+          "params": [
+            {
+              "name": "leadRequestId",
+              "description": "Unique identifier for the lead request document."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to store lead requests submitted via the /devis page. A single collection, `lead_requests`, is used to store all lead request documents. Each document within the collection represents a single lead request and contains all the relevant information. This structure promotes simplicity and ease of querying, as all lead requests are stored in a single, flat collection.\n\nAuthorization Independence: Since all lead requests are stored in a single collection without hierarchical relationships, there's no need for authorization checks based on parent documents. This eliminates the need for `get()` calls in security rules, enabling atomic operations and simplifying debugging.\n\nQAPs (Rules are not Filters): Storing all lead requests in a single collection facilitates secure `list` operations. Security rules can be implemented to restrict access based on specific criteria, ensuring that only authorized users or processes can access the lead request data."
+  }
+}
