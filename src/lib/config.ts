@@ -25,6 +25,7 @@ export const siteConfig = {
     telephone: "+33123456789",
     email: "contact@basic-protection.com",
     vatID: "FR00123456789",
+    openingHours: "Lundi - Vendredi : 9h00 - 18h00",
   }
 };
 

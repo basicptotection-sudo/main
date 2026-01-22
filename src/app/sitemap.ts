@@ -5,7 +5,7 @@ import { servicesData } from '@/lib/services-data';
 import { locationsData } from '@/lib/locations-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ['', '/devis', '/merci', '/services', '/zones'];
+  const staticRoutes = ['', '/devis', '/merci', '/services', '/zones', '/contact'];
 
   const staticEntries = staticRoutes.map((route) => ({
     url: `${siteConfig.url}${route}`,

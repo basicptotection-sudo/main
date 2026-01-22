@@ -15,7 +15,7 @@ export function Footer() {
     { href: "/zones", label: "Nos Zones" },
     { href: "/devis", label: "Demander un devis" },
     { href: "/#about", label: "À Propos" },
-    { href: "/#contact", label: "Contact" },
+    { href: "/contact", label: "Contact" },
   ];
 
   return (

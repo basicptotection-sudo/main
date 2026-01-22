@@ -54,6 +54,48 @@
         "message",
         "submissionDate"
       ]
+    },
+    "ContactRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ContactRequest",
+      "type": "object",
+      "description": "Represents a contact request submitted via the /contact page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the contact request."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Full name of the person submitting the request."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person.",
+          "format": "email"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Subject of the message."
+        },
+        "message": {
+          "type": "string",
+          "description": "The message content."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "Date and time of submission.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "fullName",
+        "email",
+        "subject",
+        "message",
+        "submissionDate"
+      ]
     }
   },
   "auth": {
@@ -79,8 +121,24 @@
             }
           ]
         }
+      },
+      {
+        "path": "contact_requests/{contactRequestId}",
+        "definition": {
+          "entityName": "ContactRequest",
+          "schema": {
+            "$ref": "#/backend/entities/ContactRequest"
+          },
+          "description": "Stores contact requests submitted via the /contact page.",
+          "params": [
+            {
+              "name": "contactRequestId",
+              "description": "Unique identifier for the contact request document."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "The Firestore data structure is designed to store lead requests submitted via the /devis page. A single collection, `lead_requests`, is used to store all lead request documents. Each document within the collection represents a single lead request and contains all the relevant information. This structure promotes simplicity and ease of querying, as all lead requests are stored in a single, flat collection.\n\nAuthorization Independence: Since all lead requests are stored in a single collection without hierarchical relationships, there's no need for authorization checks based on parent documents. This eliminates the need for `get()` calls in security rules, enabling atomic operations and simplifying debugging.\n\nQAPs (Rules are not Filters): Storing all lead requests in a single collection facilitates secure `list` operations. Security rules can be implemented to restrict access based on specific criteria, ensuring that only authorized users or processes can access the lead request data."
+    "reasoning": "The Firestore data structure is designed to store lead and contact requests. The `lead_requests` collection stores submissions from the /devis page, and the `contact_requests` collection stores submissions from the /contact page. Each document represents a single submission. This flat structure promotes simplicity and ease of querying. Since all requests are stored in their respective collections without hierarchical relationships, there's no need for authorization checks based on parent documents. This enables atomic operations and simplifies debugging. Storing all requests in separate, flat collections facilitates secure `list` operations via more complex security rules if needed in the future."
   }
 }

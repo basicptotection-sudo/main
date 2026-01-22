@@ -53,6 +53,12 @@
       "description": "Modern skyline of La Défense business district.",
       "imageUrl": "https://images.unsplash.com/photo-1560963952-458f6d72d6ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxMYSUyMEQlQzMlQTlmZW5zZSUyMFBhcmlzfGVufDB8fHx8MTcxNjQ5MDAwMnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "business district"
+    },
+    {
+      "id": "contact-map",
+      "description": "A stylish map of Paris showing a business location.",
+      "imageUrl": "https://images.unsplash.com/photo-1612921376312-7c9028e1bba2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYXJpcyUyMG1hcHxlbnwwfHx8fDE3NjkwOTM4NTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "paris map"
     }
   ]
 }

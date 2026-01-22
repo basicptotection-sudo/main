@@ -3,23 +3,18 @@
  *
  * ## Core Philosophy
  * This ruleset implements a secure "write-only" or "append-only" log for public form submissions.
- * The primary goal is to allow anyone to submit a lead request through a public-facing form while ensuring that this sensitive information is immediately locked down and made inaccessible from the client-side. All reads and modifications must be handled by a trusted backend service (e.g., Cloud Functions) with admin privileges.
+ * The primary goal is to allow anyone to submit a lead or contact request through a public-facing form while ensuring that this sensitive information is immediately locked down and made inaccessible from the client-side. All reads and modifications must be handled by a trusted backend service (e.g., Cloud Functions) with admin privileges.
  *
  * ## Data Structure
- * The data is organized into a single, flat top-level collection:
+ * The data is organized into two flat top-level collections:
  * - /lead_requests/{leadRequestId}: Stores individual lead submissions.
+ * - /contact_requests/{contactRequestId}: Stores individual contact submissions.
  *
  * ## Key Security Decisions
- * - Public Creation: Anyone can create a new document in the `lead_requests` collection. This is necessary for the public quote/contact form to function.
- * - No Client-Side Reads: All `get` and `list` operations on `lead_requests` are explicitly denied to prevent any user from accessing or discovering potentially sensitive PII from other submissions.
- * - Immutable Submissions: Once a lead request is created, it cannot be updated or deleted from the client. This protects the integrity of the submitted data.
- * - Minimal Validation: In line with the prototyping philosophy, we perform only a minimal sanity check on creation (ensuring a `submissionDate` field is present) rather than enforcing a strict schema. This provides a basic guard against completely empty writes without hindering frontend development.
- *
- * ## Denormalization for Authorization
- * Not applicable in this ruleset, as the data model is simple and non-relational. There are no ownership or membership checks that would require denormalized data.
- *
- * ## Structural Segregation
- * Not applicable. The application only handles one type of data (lead requests) with a single, uniform security requirement.
+ * - Public Creation: Anyone can create a new document in the `lead_requests` and `contact_requests` collections. This is necessary for the public forms to function.
+ * - No Client-Side Reads: All `get` and `list` operations are explicitly denied to prevent any user from accessing or discovering PII from other submissions.
+ * - Immutable Submissions: Once a request is created, it cannot be updated or deleted from the client. This protects the integrity of the submitted data.
+ * - Minimal Validation: We perform a minimal sanity check on creation (ensuring a `submissionDate` field is present) rather than enforcing a strict schema. This provides a basic guard against completely empty writes.
  */
 rules_version = '2';
 service cloud.firestore {
@@ -28,9 +23,8 @@ service cloud.firestore {
     // Helper functions
     
     /**
-     * Performs a minimal validation check for a new lead submission.
-     * In prototyping mode, we avoid strict schema validation. This check simply ensures
-     * the request is not completely empty by requiring a 'submissionDate' field,
+     * Performs a minimal validation check for a new submission.
+     * This check simply ensures the request is not completely empty by requiring a 'submissionDate' field,
      * which is a reasonable expectation for any form submission.
      */
     function isPublicSubmission() {
@@ -42,22 +36,26 @@ service cloud.firestore {
      *   Allows any user to submit a new lead request but prevents anyone from reading,
      *   updating, or deleting existing requests. This creates a secure write-only
      *   collection for public form submissions.
-     * @path
-     *   /lead_requests/{leadRequestId}
-     * @allow
-     *   (create) An anonymous user successfully submits the quote form, creating a new document.
-     * @deny
-     *   (get) A user attempts to read a lead request document, even one they just submitted.
-     * @deny
-     *   (list) A malicious actor attempts to list all submitted leads.
-     * @deny
-     *   (update) A user tries to change the details of a submission after the fact.
-     * @principle
-     *   Implements a secure 'write-only' log for public form submissions. Data is writeable
-     *   by the public but readable and mutable only by trusted backend services.
      */
     match /lead_requests/{leadRequestId} {
       // READ RULES: Deny all client-side reads to protect sensitive lead information.
+      allow get: if false;
+      allow list: if false;
+
+      // WRITE RULES: Allow public creation but deny modifications.
+      allow create: if isPublicSubmission();
+      allow update: if false;
+      allow delete: if false;
+    }
+
+    /**
+     * @description
+     *   Allows any user to submit a new contact request but prevents anyone from reading,
+     *   updating, or deleting existing requests. This creates a secure write-only
+     *   collection for the public contact form.
+     */
+    match /contact_requests/{contactRequestId} {
+      // READ RULES: Deny all client-side reads.
       allow get: if false;
       allow list: if false;
 
