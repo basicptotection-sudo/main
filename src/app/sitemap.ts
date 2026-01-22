@@ -3,9 +3,10 @@ import { MetadataRoute } from 'next';
 import { siteConfig } from '@/lib/config';
 import { servicesData } from '@/lib/services-data';
 import { locationsData } from '@/lib/locations-data';
+import { getAllPosts } from '@/lib/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ['', '/devis', '/merci', '/services', '/zones', '/contact'];
+  const staticRoutes = ['', '/devis', '/merci', '/services', '/zones', '/contact', '/blog'];
 
   const staticEntries = staticRoutes.map((route) => ({
     url: `${siteConfig.url}${route}`,
@@ -22,5 +23,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date().toISOString(),
   }));
 
-  return [...staticEntries, ...servicesEntries, ...locationsEntries];
+  const blogEntries = getAllPosts().map(post => ({
+      url: `${siteConfig.url}/blog/${post.slug}`,
+      lastModified: new Date(post.frontmatter.date).toISOString(),
+  }));
+
+  return [...staticEntries, ...servicesEntries, ...locationsEntries, ...blogEntries];
 }

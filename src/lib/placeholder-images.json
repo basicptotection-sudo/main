@@ -59,6 +59,24 @@
       "description": "A stylish map of Paris showing a business location.",
       "imageUrl": "https://images.unsplash.com/photo-1612921376312-7c9028e1bba2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYXJpcyUyMG1hcHxlbnwwfHx8fDE3NjkwOTM4NTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "paris map"
+    },
+    {
+      "id": "blog-choisir-agence",
+      "description": "Two professionals shaking hands in a modern office, sealing a deal.",
+      "imageUrl": "https://images.unsplash.com/photo-1622675363511-9694c9511305?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHw%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "professional handshake"
+    },
+    {
+      "id": "blog-reglementation",
+      "description": "A judge's gavel and a law book on a wooden desk, symbolizing rules and regulations.",
+      "imageUrl": "https://images.unsplash.com/photo-1589994235586-98a1f9c05829?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDEyfHx8ZW58MHx8fHw%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "gavel law"
+    },
+    {
+      "id": "blog-checklist-evenement",
+      "description": "A security guard with an earpiece watches over a large-scale event at night.",
+      "imageUrl": "https://images.unsplash.com/photo-1517524201939-90d1a3556708?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fA%3D%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "event security"
     }
   ]
 }
