@@ -13,7 +13,7 @@ const navLinks = [
   { href: "/services", label: "Nos Services" },
   { href: "/zones", label: "Nos Zones" },
   { href: "/#about", label: "À Propos" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/devis", label: "Devis" },
 ];
 
 export function Header() {
@@ -41,7 +41,7 @@ export function Header() {
 
         <div className="flex items-center gap-4">
           <Button asChild className="hidden md:flex">
-            <a href={`mailto:${siteConfig.contact.email}?subject=Demande de devis`}>Obtenir un Devis</a>
+            <Link href="/devis">Obtenir un Devis</Link>
           </Button>
 
           <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
@@ -51,7 +51,7 @@ export function Header() {
                 <span className="sr-only">Ouvrir le menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-full sm:max-w-xs">
+            <SheetContent side="right" className="w-full sm:max-w-xs p-0">
               <div className="flex flex-col h-full">
                 <div className="flex items-center justify-between p-4 border-b">
                    <Link href="/" className="flex items-center gap-2 font-bold text-lg" onClick={() => setIsMobileMenuOpen(false)}>
@@ -77,7 +77,7 @@ export function Header() {
                 </nav>
                 <div className="mt-auto p-4 border-t">
                   <Button asChild className="w-full">
-                     <a href={`mailto:${siteConfig.contact.email}?subject=Demande de devis`}>Obtenir un Devis</a>
+                     <Link href="/devis">Obtenir un Devis</Link>
                   </Button>
                 </div>
               </div>

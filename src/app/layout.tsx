@@ -5,6 +5,7 @@ import { siteConfig } from '@/lib/config';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import JsonLd from '@/components/seo/json-ld';
+import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -74,10 +75,12 @@ export default function RootLayout({
         <JsonLd />
       </head>
       <body className="font-body antialiased min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow">{children}</main>
-        <Footer />
-        <Toaster />
+        <FirebaseClientProvider>
+          <Header />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+          <Toaster />
+        </FirebaseClientProvider>
       </body>
     </html>
   );

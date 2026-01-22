@@ -117,12 +117,12 @@ export default function Home() {
   }));
 
   const otherZones = [
-      { name: "Yvelines (78)", href: "/#contact" },
-      { name: "Val-de-Marne (94)", href: "/#contact" },
-      { name: "Seine-Saint-Denis (93)", href: "/#contact" },
-      { name: "Essonne (91)", href: "/#contact" },
-      { name: "Val-d'Oise (95)", href: "/#contact" },
-      { name: "Seine-et-Marne (77)", href: "/#contact" },
+      { name: "Yvelines (78)", href: "/devis" },
+      { name: "Val-de-Marne (94)", href: "/devis" },
+      { name: "Seine-Saint-Denis (93)", href: "/devis" },
+      { name: "Essonne (91)", href: "/devis" },
+      { name: "Val-d'Oise (95)", href: "/devis" },
+      { name: "Seine-et-Marne (77)", href: "/devis" },
   ].filter(zone => !coverageZonesFromData.some(cz => cz.name.includes(zone.name.split(' ')[0])));
   
   const coverageZones = [...coverageZonesFromData, ...otherZones];
@@ -132,7 +132,7 @@ export default function Home() {
       <HeroSection
         title="Haute Sécurité Privée : L'Excellence pour votre Tranquillité"
         description="Nous concevons des dispositifs de sécurité d'élite pour protéger les entreprises, les sites sensibles et les personnalités exigeantes. Votre sérénité est notre mission."
-        cta1={{ label: "Demander un devis", href: "#contact" }}
+        cta1={{ label: "Demander un devis", href: "/devis" }}
         cta2={{ label: "Appeler maintenant", href: `tel:${siteConfig.contact.phone.replace(/\s/g, '')}`, variant: "secondary" }}
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description}
@@ -152,6 +152,7 @@ export default function Home() {
       />
       <SectorsGrid sectors={sectors} />
       <CoverageSection
+        id="contact"
         title="Intervention sur Paris et Zones Stratégiques"
         description="Notre maillage territorial assure une réactivité et une connaissance parfaite des zones d'intervention clés."
         zones={coverageZones}
@@ -163,10 +164,9 @@ export default function Home() {
         items={faqItems}
       />
       <CTASection
-        id="contact"
         title="Passez au Niveau Supérieur de Protection"
         description="Discutons de vos besoins en toute confidentialité. Contactez nos experts pour une étude personnalisée et une proposition sur-mesure."
-        cta={{ label: "Demander un Devis Confidentiel", href: `mailto:${siteConfig.contact.email}?subject=Demande de devis confidentiel` }}
+        cta={{ label: "Demander un Devis Confidentiel", href: "/devis" }}
       />
       <StickyMobileCallButton phoneNumber={siteConfig.contact.phone} />
     </div>

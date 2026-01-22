@@ -13,9 +13,9 @@ export function Footer() {
   const footerLinks = [
     { href: "/services", label: "Nos Services" },
     { href: "/zones", label: "Nos Zones" },
+    { href: "/devis", label: "Demander un devis" },
     { href: "/#about", label: "À Propos" },
     { href: "/#contact", label: "Contact" },
-    { href: "/merci", label: "Remerciements" },
   ];
 
   return (
