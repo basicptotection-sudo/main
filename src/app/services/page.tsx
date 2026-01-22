@@ -38,7 +38,7 @@ export default function ServicesHubPage() {
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description}
         imageHint={heroImage?.imageHint}
-        breadcrumbs={<Breadcrumbs items={breadcrumbItems} centered className="py-0 mb-4" />}
+        breadcrumbs={<Breadcrumbs items={breadcrumbItems} className="py-0 mb-4" />}
       />
       <AnimateOnScroll>
         <ServicesGrid
