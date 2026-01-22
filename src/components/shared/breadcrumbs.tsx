@@ -3,7 +3,7 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-type BreadcrumbItem = {
+export type BreadcrumbItem = {
   label: string;
   href: string;
 };
@@ -11,12 +11,18 @@ type BreadcrumbItem = {
 type BreadcrumbsProps = {
   items: BreadcrumbItem[];
   className?: string;
+  centered?: boolean;
 };
 
-export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
+export function Breadcrumbs({ items, className, centered }: BreadcrumbsProps) {
   return (
-    <nav aria-label="Breadcrumb" className={cn("container mx-auto px-4 py-3", className)}>
-      <ol className="flex items-center space-x-2 text-sm text-muted-foreground">
+    <nav aria-label="Breadcrumb" className={cn("py-3", className)}>
+      <ol
+        className={cn(
+          "flex items-center space-x-2 text-sm text-muted-foreground",
+          centered && "justify-center"
+        )}
+      >
         {items.map((item, index) => (
           <li key={item.href} className="flex items-center space-x-2">
             {index > 0 && <ChevronRight className="h-4 w-4" />}

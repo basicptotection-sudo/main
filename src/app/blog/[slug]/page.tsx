@@ -54,11 +54,11 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       <>
         <ArticleJsonLd post={data} slug={slug} />
         <div className="container mx-auto px-4 py-8">
-            <Breadcrumbs items={breadcrumbItems} />
             <div className="grid lg:grid-cols-4 gap-12 mt-6">
                 <div className="lg:col-span-3">
                     <article className="prose prose-lg dark:prose-invert max-w-none">
                         <header>
+                            <Breadcrumbs items={breadcrumbItems} className="not-prose p-0 mb-4" />
                             <div className="flex flex-wrap gap-2 mb-2">
                                 {data.tags.map(tag => <Tag key={tag} tag={tag} />)}
                             </div>

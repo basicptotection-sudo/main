@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import type { Metadata } from 'next';
+import { Breadcrumbs } from '@/components/shared';
 
 export const metadata: Metadata = {
   title: 'Blog - Basic Protection Privée',
@@ -17,11 +18,16 @@ export const metadata: Metadata = {
 export default function BlogIndexPage() {
   const posts = getAllPosts();
   const allTags = [...new Set(posts.flatMap(p => p.frontmatter.tags))];
+  const breadcrumbItems = [
+    { label: 'Accueil', href: '/' },
+    { label: 'Blog', href: '/blog' },
+  ];
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
       <div className="text-center max-w-3xl mx-auto">
-        <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary">Notre Blog</h1>
+        <Breadcrumbs items={breadcrumbItems} centered />
+        <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary mt-2">Notre Blog</h1>
         <p className="mt-4 text-lg text-muted-foreground">
           Découvrez nos analyses, conseils et actualités pour tout savoir sur le monde de la sécurité privée.
         </p>

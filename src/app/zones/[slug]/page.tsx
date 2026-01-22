@@ -88,9 +88,8 @@ export default function LocationPage({ params }: LocationPageProps) {
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description}
         imageHint={heroImage?.imageHint}
+        breadcrumbs={<Breadcrumbs items={breadcrumbItems} centered className="py-0 mb-4" />}
       />
-      
-      <Breadcrumbs items={breadcrumbItems} />
 
       <AnimateOnScroll>
         <IntroSection title={location.intro.title} content={location.intro.content} />

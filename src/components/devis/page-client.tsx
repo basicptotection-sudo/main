@@ -31,6 +31,7 @@ import { collection } from 'firebase/firestore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ShieldCheck, Mail, Phone } from 'lucide-react';
 import { siteConfig } from '@/lib/config';
+import { Breadcrumbs } from '@/components/shared';
 
 const serviceTitles = servicesData.map(s => s.title) as [string, ...string[]];
 
@@ -63,6 +64,11 @@ export default function DevisPageClient() {
       message: '',
     },
   });
+
+  const breadcrumbItems = [
+    { label: 'Accueil', href: '/' },
+    { label: 'Devis', href: '/devis' },
+  ];
 
   async function onSubmit(data: QuoteRequestForm) {
     if (data.honeypot) {
@@ -102,6 +108,7 @@ export default function DevisPageClient() {
     <div className="bg-background">
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center max-w-3xl mx-auto">
+            <Breadcrumbs items={breadcrumbItems} centered className="mb-4" />
             <ShieldCheck className="mx-auto h-16 w-16 text-primary" />
             <h1 className="mt-4 text-4xl md:text-5xl font-headline font-bold text-primary">
                 Demandez votre devis confidentiel

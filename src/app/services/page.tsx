@@ -1,5 +1,5 @@
 import { servicesData } from "@/lib/services-data";
-import { ServicesGrid, HeroSection, AnimateOnScroll } from "@/components/shared";
+import { ServicesGrid, HeroSection, AnimateOnScroll, Breadcrumbs } from "@/components/shared";
 import { siteConfig } from "@/lib/config";
 import type { Metadata } from "next";
 import { Briefcase } from "lucide-react";
@@ -15,6 +15,11 @@ export const metadata: Metadata = {
 
 export default function ServicesHubPage() {
   const heroImage = PlaceHolderImages.find(p => p.id === 'services-hub');
+  
+  const breadcrumbItems = [
+    { label: 'Accueil', href: '/' },
+    { label: 'Services', href: '/services' },
+  ];
 
   const servicesForGrid = servicesData.map(service => ({
     icon: <Briefcase className="w-12 h-12 text-primary" />,
@@ -33,6 +38,7 @@ export default function ServicesHubPage() {
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description}
         imageHint={heroImage?.imageHint}
+        breadcrumbs={<Breadcrumbs items={breadcrumbItems} centered className="py-0 mb-4" />}
       />
       <AnimateOnScroll>
         <ServicesGrid

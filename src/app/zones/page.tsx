@@ -1,6 +1,6 @@
 
 import { locationsData } from "@/lib/locations-data";
-import { HeroSection, CoverageSection, AnimateOnScroll } from "@/components/shared";
+import { HeroSection, CoverageSection, AnimateOnScroll, Breadcrumbs } from "@/components/shared";
 import { siteConfig } from "@/lib/config";
 import type { Metadata } from "next";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -22,6 +22,11 @@ export default function ZonesHubPage() {
     href: `/zones/${location.slug}`
   }));
 
+  const breadcrumbItems = [
+    { label: 'Accueil', href: '/' },
+    { label: 'Zones d\'intervention', href: '/zones' },
+  ];
+
   return (
     <>
       <HeroSection
@@ -32,6 +37,7 @@ export default function ZonesHubPage() {
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description}
         imageHint={heroImage?.imageHint}
+        breadcrumbs={<Breadcrumbs items={breadcrumbItems} centered className="py-0 mb-4" />}
       />
       <AnimateOnScroll>
         <CoverageSection

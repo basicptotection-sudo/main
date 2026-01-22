@@ -1,189 +1,227 @@
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { siteConfig } from "@/lib/config";
+import {
+  HeroSection,
+  TrustElements,
+  ServicesGrid,
+  ProcessSteps,
+  SectorsGrid,
+  CoverageSection,
+  Testimonials,
+  FAQAccordion,
+  CTASection,
+  StickyMobileCallButton,
+  AnimateOnScroll,
+} from "@/components/shared";
+import { servicesData } from "@/lib/services-data";
+import { locationsData } from "@/lib/locations-data";
 
-import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { siteConfig } from '@/lib/config';
-import { HeroSection, TrustElements, ServicesGrid, ProcessSteps, SectorsGrid, CoverageSection, Testimonials, FAQAccordion, CTASection, StickyMobileCallButton, AnimateOnScroll } from '@/components/shared';
-import { servicesData } from '@/lib/services-data';
-import { locationsData } from '@/lib/locations-data';
+type LinkItem = { name: string; href: string; key: string };
 
 export default function Home() {
-  const heroImage = PlaceHolderImages.find(p => p.id === 'hero');
+  const heroImage = PlaceHolderImages.find((p) => p.id === "hero");
 
   const trustElements = [
-      {
-          icon: "Award",
-          title: "Conformité & Agrément",
-          description: "Agents certifiés CNAPS, gage de notre professionnalisme et du respect de la réglementation.",
-      },
-      {
-          icon: "Zap",
-          title: "Réactivité 24/7",
-          description: "Une ligne directe et des équipes prêtes à intervenir à tout moment, de jour comme de nuit.",
-      },
-      {
-          icon: "Lock",
-          title: "Confidentialité Absolue",
-          description: "Discrétion totale assurée par des clauses de confidentialité et des protocoles stricts.",
-      },
-      {
-          icon: "ShieldCheck",
-          title: "Assurance & Responsabilité",
-          description: "Une couverture complète par AXA pour une tranquillité d’esprit totale en cas d'incident.",
-      },
+    {
+      icon: "ShieldCheck",
+      title: "Agents habilités & encadrement",
+      description:
+        "Des agents qualifiés, encadrés et sélectionnés selon la mission, avec une organisation claire et un suivi opérationnel.",
+    },
+    {
+      icon: "FileText",
+      title: "Devis clair & dispositif sur-mesure",
+      description:
+        "Évaluation de vos besoins, proposition structurée, et mise en place d’un dispositif adapté à votre site et vos contraintes.",
+    },
+    {
+      icon: "Lock",
+      title: "Discrétion & confidentialité",
+      description:
+        "Protocoles de confidentialité et règles internes strictes pour protéger vos informations et vos activités.",
+    },
+    {
+      icon: "Zap",
+      title: "Mise en place rapide (selon mission)",
+      description:
+        "Pour les demandes urgentes, nous organisons une solution temporaire rapide, puis un dispositif pérenne si nécessaire.",
+    },
   ];
 
-  const services = servicesData.map(service => ({
-    icon: "Briefcase",
+  const services = servicesData.map((service) => ({
+    icon: (service as any).icon ?? "ShieldCheck", // optionnel si tu ajoutes icon dans tes data
     title: service.title,
     description: service.shortDescription,
-    href: `/services/${service.slug}`
+    href: `/services/${service.slug}`,
   }));
 
   const processSteps = [
     {
       icon: "MessageCircle",
-      title: "1. Évaluation Stratégique",
-      description: "Analyse confidentielle de vos enjeux et définition précise de vos objectifs de sécurité.",
+      title: "1. Écoute & cadrage",
+      description:
+        "Compréhension de vos risques, contraintes, horaires, flux et objectifs (prévention, dissuasion, contrôle d’accès…).",
     },
     {
       icon: "FileText",
-      title: "2. Conception Sur-Mesure",
-      description: "Élaboration d'un plan de sûreté détaillé et d'une proposition chiffrée transparente.",
+      title: "2. Proposition structurée",
+      description:
+        "Plan d’action, moyens humains, consignes, reporting, et devis transparent (options incluses clairement).",
     },
     {
       icon: "ShieldCheck",
-      title: "3. Déploiement d'Élite",
-      description: "Mise en place du dispositif par nos agents spécifiquement sélectionnés et formés.",
+      title: "3. Déploiement & coordination",
+      description:
+        "Démarrage opérationnel, consignes de site, coordination avec vos équipes et points de contrôle qualité.",
     },
     {
       icon: "ThumbsUp",
-      title: "4. Pilotage & Amélioration",
-      description: "Reporting en temps réel, audits réguliers et ajustement proactif pour une performance optimale.",
+      title: "4. Suivi & amélioration continue",
+      description:
+        "Remontées terrain, ajustements, rapports et amélioration progressive pour garantir un service stable.",
     },
   ];
 
   const sectors = [
-    { icon: "Gem", name: "Luxe & Joaillerie" },
-    { icon: "Building", name: "Sièges Sociaux & Tertiaire" },
-    { icon: "Users", name: "Personnalités & Familles" },
-    { icon: "ShoppingCart", name: "Événementiel de Prestige" },
-    { icon: "Factory", name: "Industrie Stratégique" },
-    { icon: "School", name: "Sites sensibles & Ambassades" },
-    { icon: "Hospital", name: "Santé & Recherche" },
+    { icon: "Building2", name: "Entreprises & bureaux" },
+    { icon: "Store", name: "Commerces & centres" },
+    { icon: "HardHat", name: "Chantiers & sites techniques" },
+    { icon: "CalendarDays", name: "Événements & accueil" },
+    { icon: "Factory", name: "Entrepôts & logistique" },
+    { icon: "Building", name: "Copropriétés & syndics" },
+    { icon: "Home", name: "Particuliers (selon besoin)" },
   ];
-  
+
   const testimonials = [
     {
-      quote: "Dans le secteur du luxe, l'erreur n'est pas une option. Basic Protection Privée a su intégrer cette exigence dans un dispositif de sécurité à la fois invisible et infaillible. Leur professionnalisme est remarquable.",
-      name: "Directeur de la Sécurité",
-      title: "Maison de Haute Joaillerie, Paris"
+      quote:
+        "Mise en place rapide et consignes claires. Les agents sont sérieux, ponctuels, et la communication est fluide.",
+      name: "Responsable de site",
+      title: "Entreprise tertiaire – Yvelines",
     },
     {
-      quote: "La protection de nos dirigeants est un enjeu critique. Les équipes de BPP font preuve d'une discrétion et d'une efficacité qui dépassent nos attentes. De vrais partenaires de confiance.",
-      name: "Responsable Sûreté",
-      title: "Groupe du CAC40, La Défense"
+      quote:
+        "Bonne gestion des flux à l’entrée, présence rassurante, et un suivi régulier avec des points d’amélioration utiles.",
+      name: "Chef de projet",
+      title: "Événement – Île-de-France",
     },
     {
-        quote: "Nous avons mandaté BPP pour un audit de sûreté de notre siège. Leur rapport était d'une clarté et d'une pertinence rares, avec des recommandations pragmatiques que nous avons immédiatement mises en œuvre.",
-        name: "Services Généraux",
-        title: "Cabinet d'avocats international, Paris 8e"
-    }
+      quote:
+        "Nous cherchions un partenaire fiable pour des rondes et de la surveillance. Prestation stable et réactive.",
+      name: "Syndic / Gestion",
+      title: "Résidence – 78",
+    },
   ];
 
   const faqItems = [
     {
-      question: "Comment sélectionnez-vous vos agents de sécurité ?",
-      answer: "Notre processus de recrutement est extrêmement rigoureux. Chaque agent doit posséder une carte professionnelle CQP APS à jour, un casier judiciaire vierge, et passe une série d'entretiens pour évaluer ses compétences techniques et son savoir-être. Nous privilégions des profils expérimentés, spécialisés (luxe, événementiel, protection rapprochée) et formés en continu."
+      question: "Intervenez-vous à Plaisir et dans tout le 78 ?",
+      answer:
+        "Oui. Nous sommes basés à Plaisir (78370) et intervenons sur les Yvelines (78) et, selon les missions, en Île-de-France. Contactez-nous pour confirmer la faisabilité et les délais.",
     },
     {
-      question: "Quelle est la différence entre votre offre et une agence standard ?",
-      answer: "Nous nous positionnons sur un segment premium. Cela se traduit par des agents d'élite mieux formés et mieux rémunérés, une approche entièrement sur-mesure, l'intégration de technologies de pointe, une culture de la discrétion et un management de proximité qui garantit un contrôle qualité permanent."
+      question: "Quels types de missions prenez-vous en charge ?",
+      answer:
+        "Surveillance de sites, contrôle d’accès, prévention, rondes, sécurisation ponctuelle, et accompagnement opérationnel selon votre besoin. Nous adaptons le dispositif (horaires, postes, consignes).",
     },
     {
-        question: "Garantissez-vous la confidentialité de vos missions ?",
-        answer: "Absolument. La confidentialité est au cœur de notre métier. Tous nos agents signent une clause de non-divulgation stricte. Les informations relatives à nos clients et à nos missions sont compartimentées et protégées par des protocoles de sécurité rigoureux."
+      question: "Comment garantissez-vous la qualité des prestations ?",
+      answer:
+        "Nous cadrons la mission en amont (consignes, objectifs, points de contrôle), puis nous assurons un suivi : remontées terrain, reporting et ajustements si nécessaire.",
     },
     {
-      question: "Quels sont vos délais pour mettre en place une protection ?",
-      answer: "Pour les demandes urgentes, notre cellule de crise peut déployer un dispositif simple en quelques heures en Île-de-France. Pour des missions complexes, une phase d'audit et de planification de 24 à 72 heures est généralement nécessaire pour garantir une solution parfaitement adaptée et efficace."
-    }
+      question: "En combien de temps peut-on démarrer ?",
+      answer:
+        "Selon la nature de la mission, un démarrage peut être organisé rapidement. Pour un dispositif complet, une courte phase de cadrage permet d’assurer un service durable et conforme.",
+    },
   ];
 
-  const coverageZonesFromData = locationsData.map(loc => ({
+  // Zones (déduplication propre)
+  const zonesFromData: LinkItem[] = locationsData.map((loc) => ({
     name: loc.name,
-    href: `/zones/${loc.slug}`
+    href: `/zones/${loc.slug}`,
+    key: `zone-${loc.slug}`,
   }));
 
-  const otherZones = [
-      { name: "Yvelines (78)", href: "/devis" },
-      { name: "Val-de-Marne (94)", href: "/devis" },
-      { name: "Seine-Saint-Denis (93)", href: "/devis" },
-      { name: "Essonne (91)", href: "/devis" },
-      { name: "Val-d'Oise (95)", href: "/devis" },
-      { name: "Seine-et-Marne (77)", href: "/devis" },
-  ].filter(zone => !coverageZonesFromData.some(cz => cz.name.includes(zone.name.split(' ')[0])));
-  
-  const coverageZones = [...coverageZonesFromData, ...otherZones];
+  const coreZones: LinkItem[] = [
+    { name: "Plaisir (78370)", href: "/zones/plaisir-78370", key: "zone-plaisir-78370" },
+    { name: "Yvelines (78)", href: "/zones/yvelines-78", key: "zone-yvelines-78" },
+    { name: "Île-de-France", href: "/zones/ile-de-france", key: "zone-ile-de-france" },
+  ];
+
+  const zoneMap = new Map<string, LinkItem>();
+  [...coreZones, ...zonesFromData].forEach((z) => zoneMap.set(z.key, z));
+  const coverageZones = Array.from(zoneMap.values()).map(({ name, href }) => ({ name, href }));
+
+  const phoneHref = `tel:${siteConfig.contact.phoneE164 ?? siteConfig.contact.phone.replace(/\s/g, "")}`;
 
   return (
     <div className="flex flex-col min-h-screen">
       <HeroSection
-        title="Haute Sécurité Privée : L'Excellence pour votre Tranquillité"
-        description="Nous concevons des dispositifs de sécurité d'élite pour protéger les entreprises, les sites sensibles et les personnalités exigeantes. Votre sérénité est notre mission."
+        title="Sécurité privée & gardiennage à Plaisir (78) et en Île-de-France"
+        description="Basic Protection Privée met en place des dispositifs de surveillance, contrôle d’accès et prévention adaptés à vos sites, événements et activités. Un service clair, discret et rigoureux."
         cta1={{ label: "Demander un devis", href: "/devis" }}
-        cta2={{ label: "Appeler maintenant", href: `tel:${siteConfig.contact.phone.replace(/\s/g, '')}`, variant: "secondary" }}
+        cta2={{ label: "Appeler", href: phoneHref, variant: "secondary" }}
         imageUrl={heroImage?.imageUrl}
-        imageAlt={heroImage?.description}
+        imageAlt={heroImage?.description ?? "Agent de sécurité – Basic Protection Privée"}
         imageHint={heroImage?.imageHint}
       />
+
       <AnimateOnScroll>
         <TrustElements elements={trustElements} id="about" />
       </AnimateOnScroll>
+
       <AnimateOnScroll>
         <ServicesGrid
           id="services"
-          title="Nos Prestations de Haute Sécurité"
-          description="Des solutions sur-mesure, exécutées avec une rigueur et une discrétion absolues."
+          title="Nos services de sécurité"
+          description="Des prestations cadrées et adaptables : prévention, surveillance, contrôle d’accès et présence dissuasive."
           services={services}
         />
       </AnimateOnScroll>
+
       <AnimateOnScroll>
-        <ProcessSteps 
-          title="Notre Protocole d'Excellence en 4 Étapes"
-          description="Une méthodologie rigoureuse pour garantir une mise en place irréprochable et une efficacité maximale."
+        <ProcessSteps
+          title="Une méthode simple, efficace, maîtrisée"
+          description="Cadrage clair, dispositif adapté, déploiement organisé, suivi régulier."
           steps={processSteps}
         />
       </AnimateOnScroll>
+
       <AnimateOnScroll>
         <SectorsGrid sectors={sectors} />
       </AnimateOnScroll>
+
       <AnimateOnScroll>
-        <CoverageSection
-          id="contact"
-          title="Intervention sur Paris et Zones Stratégiques"
-          description="Notre maillage territorial assure une réactivité et une connaissance parfaite des zones d'intervention clés."
-          zones={coverageZones}
-        />
+      <section id="zones">
+  <CoverageSection
+    title="Basés à Plaisir — intervention 78 & Île-de-France"
+    description="Une présence locale et une organisation flexible pour intervenir sur vos sites et événements."
+    zones={coverageZones}
+  />
+</section>
       </AnimateOnScroll>
+
       <AnimateOnScroll>
         <Testimonials testimonials={testimonials} />
       </AnimateOnScroll>
+
       <AnimateOnScroll>
         <FAQAccordion
-          title="Vos Questions, Nos Réponses Claires"
-          description="Tout ce que vous devez savoir sur nos services de haute sécurité."
+          title="Questions fréquentes"
+          description="Réponses claires avant de demander un devis."
           items={faqItems}
         />
       </AnimateOnScroll>
+
       <AnimateOnScroll>
         <CTASection
-          title="Passez au Niveau Supérieur de Protection"
-          description="Discutons de vos besoins en toute confidentialité. Contactez nos experts pour une étude personnalisée et une proposition sur-mesure."
-          cta={{ label: "Demander un Devis Confidentiel", href: "/devis" }}
+          title="Parlons de votre besoin en toute confidentialité"
+          description="Expliquez votre site, vos horaires et vos contraintes : nous vous répondons avec une proposition adaptée."
+          cta={{ label: "Demander un devis", href: "/devis" }}
         />
       </AnimateOnScroll>
+
       <StickyMobileCallButton phoneNumber={siteConfig.contact.phone} />
     </div>
   );

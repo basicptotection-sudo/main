@@ -7,6 +7,7 @@ import { fr } from 'date-fns/locale';
 import { Tag } from '@/components/blog/tag';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
+import { Breadcrumbs } from '@/components/shared';
 
 export async function generateStaticParams() {
   const posts = getAllPosts();
@@ -39,10 +40,17 @@ export default function TagPage({ params }: { params: { tag: string } }) {
   const allTags = [...new Set(getAllPosts().flatMap(p => p.frontmatter.tags))];
   const capitalizedTag = currentTag.charAt(0).toUpperCase() + currentTag.slice(1);
 
+  const breadcrumbItems = [
+    { label: 'Accueil', href: '/' },
+    { label: 'Blog', href: '/blog' },
+    { label: capitalizedTag, href: `/blog/tags/${currentTag}` },
+  ];
+
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
       <div className="text-center max-w-3xl mx-auto">
-        <p className="text-primary font-semibold">Catégorie</p>
+        <Breadcrumbs items={breadcrumbItems} centered />
+        <p className="text-primary font-semibold mt-2">Catégorie</p>
         <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary">{capitalizedTag}</h1>
       </div>
 

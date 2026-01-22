@@ -24,7 +24,7 @@ import { Mail, Phone, Building, Clock, MapPin } from 'lucide-react';
 import { siteConfig } from '@/lib/config';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { CoverageSection } from '@/components/shared';
+import { Breadcrumbs, CoverageSection } from '@/components/shared';
 import { locationsData } from '@/lib/locations-data';
 import Link from 'next/link';
 
@@ -68,6 +68,11 @@ export default function ContactPageClient() {
     },
   });
 
+  const breadcrumbItems = [
+    { label: 'Accueil', href: '/' },
+    { label: 'Contact', href: '/contact' },
+  ];
+
   async function onSubmit(data: ContactForm) {
     if (data.honeypot) {
       console.log("Honeypot triggered!");
@@ -99,6 +104,7 @@ export default function ContactPageClient() {
     <div className="bg-background">
       <div className="container mx-auto px-4 py-16 md:py-24">
         <div className="text-center max-w-3xl mx-auto">
+            <Breadcrumbs items={breadcrumbItems} centered className="mb-4" />
             <Mail className="mx-auto h-16 w-16 text-primary" />
             <h1 className="mt-4 text-4xl md:text-5xl font-headline font-bold text-primary">
                 Contactez-Nous

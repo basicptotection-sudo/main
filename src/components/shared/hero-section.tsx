@@ -17,6 +17,7 @@ type HeroSectionProps = {
   imageUrl?: string;
   imageAlt?: string;
   imageHint?: string;
+  breadcrumbs?: React.ReactNode;
 };
 
 export function HeroSection({
@@ -26,7 +27,8 @@ export function HeroSection({
   cta2,
   imageUrl,
   imageAlt = "Hero image",
-  imageHint
+  imageHint,
+  breadcrumbs,
 }: HeroSectionProps) {
   return (
     <section className="relative w-full h-[70vh] flex items-center justify-center text-center text-white">
@@ -42,6 +44,11 @@ export function HeroSection({
       )}
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 max-w-4xl mx-auto px-4">
+        {breadcrumbs && (
+          <div className="text-white/80 [&_a:hover]:text-white [&_li:last-child>a]:text-white">
+            {breadcrumbs}
+          </div>
+        )}
         <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tight">
           {title}
         </h1>
