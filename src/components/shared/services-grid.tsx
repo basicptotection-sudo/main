@@ -1,0 +1,44 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+type Service = {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+};
+
+type ServicesGridProps = {
+  id?: string;
+  title: string;
+  description: string;
+  services: Service[];
+};
+
+export function ServicesGrid({ id, title, description, services }: ServicesGridProps) {
+  return (
+    <section id={id} className="py-16 md:py-24 bg-background">
+      <div className="container mx-auto px-4">
+        <div className="text-center max-w-3xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
+            {title}
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            {description}
+          </p>
+        </div>
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {services.map((service, index) => (
+            <Card key={index} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <CardHeader className="items-center">
+                {service.icon}
+                <CardTitle className="mt-4 font-headline text-xl">{service.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">{service.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
