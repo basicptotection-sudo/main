@@ -77,6 +77,30 @@
       "description": "A security guard with an earpiece watches over a large-scale event at night.",
       "imageUrl": "https://images.unsplash.com/photo-1517524201939-90d1a3556708?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fA%3D%3D&ixlib=rb-4.0.3&q=80&w=1080",
       "imageHint": "event security"
+    },
+    {
+      "id": "service-agent-qualifie",
+      "description": "Professional security guard in uniform standing watch inside a modern building lobby.",
+      "imageUrl": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cml0eSUyMGd1YXJkfGVufDB8fHx8MTc2OTEwMDAwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "security guard"
+    },
+    {
+      "id": "service-agent-cyno",
+      "description": "Security guard with a German Shepherd dog patrolling an industrial area at dusk.",
+      "imageUrl": "https://images.unsplash.com/photo-1629853412159-22237c157a09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cml0eSUyMGRvZ3xlbnwwfHx8fDE3NjkwOTk5OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "security dog"
+    },
+    {
+      "id": "service-agent-ssiap",
+      "description": "Fire safety officer inspecting a fire extinguisher in a commercial building hallway.",
+      "imageUrl": "https://images.unsplash.com/photo-1543347103-6a98da819038?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmcmUlMjBzYWZldHl8ZW58MHx8fHwxNzY5MTAwMDAxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fire safety"
+    },
+    {
+      "id": "service-agent-rondier",
+      "description": "Security guard with a flashlight making rounds in a dark parking garage at night.",
+      "imageUrl": "https://images.unsplash.com/photo-1618214362883-a7493b8a3e75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cml0eSUyMHBhdHJvbCUyMG5pZ2h0fGVufDB8fHx8MTc2OTEwMDAwMnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "security patrol night"
     }
   ]
 }

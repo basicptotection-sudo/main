@@ -24,115 +24,144 @@ export default function Home() {
   const trustElements = [
     {
       icon: "ShieldCheck",
-      title: "Agents habilités & encadrement",
+      title: "Conformité & encadrement",
       description:
-        "Des agents qualifiés, encadrés et sélectionnés selon la mission, avec une organisation claire et un suivi opérationnel.",
+        "Agents habilités, consignes de site claires et supervision opérationnelle. Une prestation cadrée, pilotée et contrôlée.",
     },
     {
       icon: "FileText",
-      title: "Devis clair & dispositif sur-mesure",
+      title: "Dispositifs sur-mesure",
       description:
-        "Évaluation de vos besoins, proposition structurée, et mise en place d’un dispositif adapté à votre site et vos contraintes.",
+        "Un plan adapté à vos contraintes (accès, flux, horaires, risques) : sécurité de site, événementiel, VIP ou audit sûreté.",
     },
     {
       icon: "Lock",
       title: "Discrétion & confidentialité",
       description:
-        "Protocoles de confidentialité et règles internes strictes pour protéger vos informations et vos activités.",
+        "Protocoles internes stricts, gestion rigoureuse de l’information et posture professionnelle, y compris pour les missions sensibles.",
     },
     {
       icon: "Zap",
-      title: "Mise en place rapide (selon mission)",
+      title: "Réactivité maîtrisée",
       description:
-        "Pour les demandes urgentes, nous organisons une solution temporaire rapide, puis un dispositif pérenne si nécessaire.",
+        "Mise en place rapide selon la mission : solution immédiate si besoin, puis stabilisation avec consignes, planning et reporting.",
     },
   ];
 
-  const services = servicesData.map((service) => ({
-    icon: (service as any).icon ?? "ShieldCheck", // optionnel si tu ajoutes icon dans tes data
-    title: service.title,
-    description: service.shortDescription,
-    href: `/services/${service.slug}`,
-  }));
+  const terrainServices = servicesData
+    .filter((s) =>
+      [
+        "agent-securite-qualifie",
+        "agent-cynophile",
+        "agent-incendie-ssiap",
+        "agent-rondier",
+      ].includes(s.slug)
+    )
+    .map((service) => ({
+      icon: service.icon,
+      title: service.title,
+      description: service.shortDescription,
+      href: `/services/${service.slug}`,
+    }));
+
+  const premiumServices = servicesData
+    .filter((s) =>
+      [
+        "protection-rapprochee",
+        "securite-evenementielle",
+        "audit-conseil-surete",
+      ].includes(s.slug)
+    )
+    .map((service) => ({
+      icon: service.icon,
+      title: service.title,
+      description: service.shortDescription,
+      href: `/services/${service.slug}`,
+    }));
 
   const processSteps = [
     {
       icon: "MessageCircle",
-      title: "1. Écoute & cadrage",
+      title: "1. Diagnostic & cadrage",
       description:
-        "Compréhension de vos risques, contraintes, horaires, flux et objectifs (prévention, dissuasion, contrôle d’accès…).",
+        "Analyse des risques et des contraintes : accès, flux, zones sensibles, objectifs (prévention, filtrage, protection, dissuasion).",
     },
     {
       icon: "FileText",
-      title: "2. Proposition structurée",
+      title: "2. Plan & consignes",
       description:
-        "Plan d’action, moyens humains, consignes, reporting, et devis transparent (options incluses clairement).",
+        "Plan d’action structuré : postes, consignes, procédures, coordination, options de reporting et moyens adaptés au terrain.",
     },
     {
       icon: "ShieldCheck",
-      title: "3. Déploiement & coordination",
+      title: "3. Déploiement opérationnel",
       description:
-        "Démarrage opérationnel, consignes de site, coordination avec vos équipes et points de contrôle qualité.",
+        "Démarrage organisé, briefing, coordination avec vos équipes et ajustements terrain pour une efficacité immédiate.",
     },
     {
       icon: "ThumbsUp",
-      title: "4. Suivi & amélioration continue",
+      title: "4. Suivi & amélioration",
       description:
-        "Remontées terrain, ajustements, rapports et amélioration progressive pour garantir un service stable.",
+        "Remontées terrain, rapports, audits réguliers et ajustements proactifs : la qualité se construit dans la durée.",
     },
   ];
 
   const sectors = [
-    { icon: "Building2", name: "Entreprises & bureaux" },
-    { icon: "Store", name: "Commerces & centres" },
+    { icon: "Building2", name: "Entreprises & sièges sociaux" },
+    { icon: "Store", name: "Commerces, retail & bijouteries" },
     { icon: "HardHat", name: "Chantiers & sites techniques" },
-    { icon: "CalendarDays", name: "Événements & accueil" },
     { icon: "Factory", name: "Entrepôts & logistique" },
-    { icon: "Building", name: "Copropriétés & syndics" },
-    { icon: "Home", name: "Particuliers (selon besoin)" },
+    { icon: "CalendarDays", name: "Événements & soirées privées" },
+    { icon: "Users", name: "Dirigeants & personnalités" },
+    { icon: "Building", name: "Copropriétés & sites résidentiels" },
   ];
 
   const testimonials = [
     {
       quote:
-        "Mise en place rapide et consignes claires. Les agents sont sérieux, ponctuels, et la communication est fluide.",
+        "Consignes claires, posture impeccable et suivi régulier. Une prestation sérieuse, stable et bien encadrée.",
       name: "Responsable de site",
-      title: "Entreprise tertiaire – Yvelines",
+      title: "Entreprise – Yvelines",
     },
     {
       quote:
-        "Bonne gestion des flux à l’entrée, présence rassurante, et un suivi régulier avec des points d’amélioration utiles.",
+        "Très bonne gestion des accès et des flux. Dispositif discret, efficace et coordination fluide avec nos équipes.",
       name: "Chef de projet",
       title: "Événement – Île-de-France",
     },
     {
       quote:
-        "Nous cherchions un partenaire fiable pour des rondes et de la surveillance. Prestation stable et réactive.",
-      name: "Syndic / Gestion",
+        "Rondes et surveillance fiables. Les remontées terrain sont structurées, ce qui facilite le pilotage.",
+      name: "Gestion / syndic",
       title: "Résidence – 78",
     },
   ];
 
   const faqItems = [
     {
+      question: "Quels services proposez-vous exactement ?",
+      answer:
+        "Nous assurons la sécurité de site (agent qualifié, rondier, cynophile, incendie SSIAP) ainsi que des prestations premium : protection rapprochée (garde du corps), sécurité événementielle de prestige et audit & conseil en sûreté. Chaque dispositif est adapté à votre contexte.",
+    },
+    {
       question: "Intervenez-vous à Plaisir et dans tout le 78 ?",
       answer:
-        "Oui. Nous sommes basés à Plaisir (78370) et intervenons sur les Yvelines (78) et, selon les missions, en Île-de-France. Contactez-nous pour confirmer la faisabilité et les délais.",
+        "Oui. Nous sommes basés à Plaisir (78370) et intervenons sur les Yvelines (78) et, selon les missions, en Île-de-France. Contactez-nous avec votre adresse, vos horaires et le type de prestation : nous confirmons rapidement la faisabilité.",
     },
     {
-      question: "Quels types de missions prenez-vous en charge ?",
+      question: "Comment se déroule la mise en place d’un dispositif ?",
       answer:
-        "Surveillance de sites, contrôle d’accès, prévention, rondes, sécurisation ponctuelle, et accompagnement opérationnel selon votre besoin. Nous adaptons le dispositif (horaires, postes, consignes).",
+        "Nous cadrons d’abord la mission (objectifs, consignes, accès, flux, points sensibles). Ensuite nous déployons l’équipe adaptée, puis nous assurons un suivi avec remontées terrain et ajustements pour stabiliser la prestation.",
     },
     {
-      question: "Comment garantissez-vous la qualité des prestations ?",
+      question: "Proposez-vous la protection rapprochée et l’événementiel ?",
       answer:
-        "Nous cadrons la mission en amont (consignes, objectifs, points de contrôle), puis nous assurons un suivi : remontées terrain, reporting et ajustements si nécessaire.",
+        "Oui. Pour les missions sensibles (dirigeants, personnalités, événements haut de gamme), nous privilégions la discrétion, la coordination et un dispositif proportionné. Un cadrage en amont est réalisé afin d’adapter le niveau de sécurité au contexte.",
     },
     {
-      question: "En combien de temps peut-on démarrer ?",
+      question: "Comment est calculé le prix ?",
       answer:
-        "Selon la nature de la mission, un démarrage peut être organisé rapidement. Pour un dispositif complet, une courte phase de cadrage permet d’assurer un service durable et conforme.",
+        "Le tarif dépend du volume horaire, du type de site, des contraintes (accès, public, horaires), et du niveau de suivi demandé. Nous fournissons un devis clair et structuré, avec options si nécessaire.",
     },
   ];
 
@@ -158,12 +187,12 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
       <HeroSection
-        title="Sécurité privée & gardiennage à Plaisir (78) et en Île-de-France"
-        description="Basic Protection Privée met en place des dispositifs de surveillance, contrôle d’accès et prévention adaptés à vos sites, événements et activités. Un service clair, discret et rigoureux."
+        title="Sécurité privée, protection rapprochée & sûreté — Plaisir (78) / Île-de-France"
+        description="Agent qualifié, cynophile, SSIAP, rondes, protection rapprochée, sécurité événementielle et audit sûreté : des dispositifs discrets, structurés et pilotés, adaptés à vos enjeux."
         cta1={{ label: "Demander un devis", href: "/devis" }}
         cta2={{ label: "Appeler", href: phoneHref, variant: "secondary" }}
         imageUrl={heroImage?.imageUrl}
-        imageAlt={heroImage?.description ?? "Agent de sécurité – Basic Protection Privée"}
+        imageAlt={heroImage?.description ?? "Sécurité privée – Basic Protection Privée"}
         imageHint={heroImage?.imageHint}
       />
 
@@ -171,19 +200,27 @@ export default function Home() {
         <TrustElements elements={trustElements} id="about" />
       </AnimateOnScroll>
 
-      <AnimateOnScroll>
-        <ServicesGrid
-          id="services"
-          title="Nos services de sécurité"
-          description="Des prestations cadrées et adaptables : prévention, surveillance, contrôle d’accès et présence dissuasive."
-          services={services}
-        />
-      </AnimateOnScroll>
+      <div id="services">
+        <AnimateOnScroll>
+          <ServicesGrid
+            title="Nos Services de Sécurité Terrain"
+            description="Des solutions opérationnelles et fiables pour la protection quotidienne de vos sites."
+            services={terrainServices}
+          />
+        </AnimateOnScroll>
+        <AnimateOnScroll>
+          <ServicesGrid
+            title="Nos Prestations Premium"
+            description="Une expertise de haut niveau pour les enjeux de sécurité les plus complexes et sensibles."
+            services={premiumServices}
+          />
+        </AnimateOnScroll>
+      </div>
 
       <AnimateOnScroll>
         <ProcessSteps
-          title="Une méthode simple, efficace, maîtrisée"
-          description="Cadrage clair, dispositif adapté, déploiement organisé, suivi régulier."
+          title="Notre protocole d’intervention"
+          description="Diagnostic, plan, déploiement, suivi : une méthode claire pour garantir efficacité et stabilité."
           steps={processSteps}
         />
       </AnimateOnScroll>
@@ -193,13 +230,13 @@ export default function Home() {
       </AnimateOnScroll>
 
       <AnimateOnScroll>
-      <section id="zones">
-  <CoverageSection
-    title="Basés à Plaisir — intervention 78 & Île-de-France"
-    description="Une présence locale et une organisation flexible pour intervenir sur vos sites et événements."
-    zones={coverageZones}
-  />
-</section>
+        <section id="zones">
+          <CoverageSection
+            title="Basés à Plaisir — intervention 78 & Île-de-France"
+            description="Une présence locale, une organisation flexible et des équipes adaptées à chaque mission."
+            zones={coverageZones}
+          />
+        </section>
       </AnimateOnScroll>
 
       <AnimateOnScroll>
@@ -209,15 +246,15 @@ export default function Home() {
       <AnimateOnScroll>
         <FAQAccordion
           title="Questions fréquentes"
-          description="Réponses claires avant de demander un devis."
+          description="Conformité, prestations, délais, zone d’intervention : réponses claires avant la demande de devis."
           items={faqItems}
         />
       </AnimateOnScroll>
 
       <AnimateOnScroll>
         <CTASection
-          title="Parlons de votre besoin en toute confidentialité"
-          description="Expliquez votre site, vos horaires et vos contraintes : nous vous répondons avec une proposition adaptée."
+          title="Décrivez votre besoin — nous construisons un dispositif adapté"
+          description="Type de site, horaires, public, risques : échangez avec nous en toute confidentialité. Devis structuré et proposition sur-mesure."
           cta={{ label: "Demander un devis", href: "/devis" }}
         />
       </AnimateOnScroll>
