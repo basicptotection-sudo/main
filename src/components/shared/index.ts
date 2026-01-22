@@ -9,3 +9,4 @@ export * from './services-grid';
 export * from './sticky-mobile-call-button';
 export * from './testimonials';
 export * from './trust-bar';
+export * from './trust-elements';

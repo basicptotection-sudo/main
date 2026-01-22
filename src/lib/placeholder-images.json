@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero",
-      "description": "A professional security guard standing confidently.",
-      "imageUrl": "https://images.unsplash.com/photo-1631002165123-3f45a6275bb5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8c2VjdXJpdHklMjBndWFyZCUyMHByb2Zlc3Npb25hbHxlbnwwfHx8fDE3NjkwOTE1MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "security guard professional"
+      "description": "A focused security professional in a dark suit, communicating via earpiece in a high-end corporate setting.",
+      "imageUrl": "https://images.unsplash.com/photo-1574792618285-a7c8c6a5a9b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwcmVtaXVtJTIwc2VjdXJpdHl8ZW58MHx8fHwxNzE2NDg5ODc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "premium security"
     },
     {
       "id": "about",

@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 type Service = {
   icon: React.ReactNode;
   title: string;
   description: string;
+  href?: string;
 };
 
 type ServicesGridProps = {
@@ -26,17 +28,27 @@ export function ServicesGrid({ id, title, description, services }: ServicesGridP
           </p>
         </div>
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.map((service, index) => (
-            <Card key={index} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-              <CardHeader className="items-center">
-                {service.icon}
-                <CardTitle className="mt-4 font-headline text-xl">{service.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{service.description}</p>
-              </CardContent>
-            </Card>
-          ))}
+          {services.map((service, index) => {
+            const cardContent = (
+               <Card className="text-center h-full shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+                <CardHeader className="items-center">
+                  {service.icon}
+                  <CardTitle className="mt-4 font-headline text-xl">{service.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <p className="text-muted-foreground">{service.description}</p>
+                </CardContent>
+              </Card>
+            )
+            if (service.href) {
+                return (
+                    <Link href={service.href} key={index} className="flex">
+                        {cardContent}
+                    </Link>
+                )
+            }
+            return cardContent;
+          })}
         </div>
       </div>
     </section>

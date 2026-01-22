@@ -3,154 +3,183 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { siteConfig } from '@/lib/config';
-import { HeroSection, TrustBar, ServicesGrid, ProcessSteps, SectorsGrid, CoverageSection, Testimonials, FAQAccordion, CTASection, StickyMobileCallButton } from '@/components/shared';
-import { Building, Factory, Gem, Hospital, School, ShieldCheck, ShoppingCart, Users, Warehouse } from 'lucide-react';
+import { HeroSection, TrustElements, ServicesGrid, ProcessSteps, SectorsGrid, CoverageSection, Testimonials, FAQAccordion, CTASection, StickyMobileCallButton } from '@/components/shared';
+import { Award, Factory, Gem, Hospital, Lock, School, ShieldCheck, ShoppingCart, Users, Zap, Building, FileText, MessageCircle, ThumbsUp } from 'lucide-react';
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(p => p.id === 'hero');
-  const aboutImage = PlaceHolderImages.find(p => p.id === 'about');
+
+  const trustElements = [
+      {
+          icon: <Award className="w-10 h-10 text-primary" />,
+          title: "Conformité & Agrément",
+          description: "Agents certifiés CNAPS, gage de notre professionnalisme et du respect de la réglementation.",
+      },
+      {
+          icon: <Zap className="w-10 h-10 text-primary" />,
+          title: "Réactivité 24/7",
+          description: "Une ligne directe et des équipes prêtes à intervenir à tout moment, de jour comme de nuit.",
+      },
+      {
+          icon: <Lock className="w-10 h-10 text-primary" />,
+          title: "Confidentialité Absolue",
+          description: "Discrétion totale assurée par des clauses de confidentialité et des protocoles stricts.",
+      },
+      {
+          icon: <ShieldCheck className="w-10 h-10 text-primary" />,
+          title: "Assurance & Responsabilité",
+          description: "Une couverture complète par AXA pour une tranquillité d’esprit totale en cas d'incident.",
+      },
+  ];
 
   const services = [
     {
-      icon: <ShieldCheck className="w-12 h-12 text-primary" />,
-      title: 'Surveillance & Gardiennage',
-      description: 'Protection 24/7 de vos sites par des agents qualifiés et dissuasifs.',
-    },
-    {
       icon: <Users className="w-12 h-12 text-primary" />,
-      title: 'Sécurité Événementielle',
-      description: 'Gestion des foules, contrôle d’accès et sécurisation de vos événements.',
+      title: 'Protection Rapprochée',
+      description: 'Dispositifs discrets et efficaces pour la sécurité des dirigeants et personnalités (garde du corps).',
+      href: "#contact",
+    },
+    {
+      icon: <Building className="w-12 h-12 text-primary" />,
+      title: 'Sécurité de Sites Prestigieux',
+      description: 'Surveillance et contrôle d’accès pour sièges sociaux, boutiques de luxe, et ambassades.',
+      href: "#contact",
     },
     {
       icon: <ShieldCheck className="w-12 h-12 text-primary" />,
-      title: 'Intervention sur Alarme',
-      description: 'Réponse rapide et efficace suite à un déclenchement d\'alarme.',
+      title: 'Audit & Ingénierie Sûreté',
+      description: 'Analyse de risques complexes et conception de plans de sécurité intégrés et performants.',
+      href: "#contact",
     },
     {
-      icon: <ShieldCheck className="w-12 h-12 text-primary" />,
-      title: 'Audit & Conseil en Sûreté',
-      description: 'Analyse de vos risques et recommandations pour optimiser votre sécurité.',
+      icon: <Gem className="w-12 h-12 text-primary" />,
+      title: 'Événementiel d\'Exception',
+      description: 'Sécurisation de lancements, galas, défilés de mode et événements privés de haut standing.',
+      href: "#contact",
+    },
+  ];
+
+  const processSteps = [
+    {
+      icon: <MessageCircle className="w-10 h-10 text-primary" />,
+      title: "1. Évaluation Stratégique",
+      description: "Analyse confidentielle de vos enjeux et définition précise de vos objectifs de sécurité.",
+    },
+    {
+      icon: <FileText className="w-10 h-10 text-primary" />,
+      title: "2. Conception Sur-Mesure",
+      description: "Élaboration d'un plan de sûreté détaillé et d'une proposition chiffrée transparente.",
+    },
+    {
+      icon: <ShieldCheck className="w-10 h-10 text-primary" />,
+      title: "3. Déploiement d'Élite",
+      description: "Mise en place du dispositif par nos agents spécifiquement sélectionnés et formés.",
+    },
+    {
+      icon: <ThumbsUp className="w-10 h-10 text-primary" />,
+      title: "4. Pilotage & Amélioration",
+      description: "Reporting en temps réel, audits réguliers et ajustement proactif pour une performance optimale.",
     },
   ];
 
   const sectors = [
-    { icon: <Building className="w-10 h-10" />, name: "Tertiaire & Bureaux" },
-    { icon: <ShoppingCart className="w-10 h-10" />, name: "Distribution & Retail" },
-    { icon: <Factory className="w-10 h-10" />, name: "Industrie & Production" },
-    { icon: <Warehouse className="w-10 h-10" />, name: "Logistique & Entrepôts" },
-    { icon: <Hospital className="w-10 h-10" />, name: "Santé & Hôpitaux" },
-    { icon: <School className="w-10 h-10" />, name: "Sites sensibles" },
-    { icon: <Gem className="w-10 h-10" />, name: "Luxe" },
+    { icon: <Gem className="w-10 h-10" />, name: "Luxe & Joaillerie" },
+    { icon: <Building className="w-10 h-10" />, name: "Sièges Sociaux & Tertiaire" },
+    { icon: <Users className="w-10 h-10" />, name: "Personnalités & Familles" },
+    { icon: <ShoppingCart className="w-10 h-10" />, name: "Événementiel de Prestige" },
+    { icon: <Factory className="w-10 h-10" />, name: "Industrie Stratégique" },
+    { icon: <School className="w-10 h-10" />, name: "Sites sensibles & Ambassades" },
+    { icon: <Hospital className="w-10 h-10" />, name: "Santé & Recherche" },
   ];
   
   const testimonials = [
     {
-      quote: "Service très professionnel et réactif. Les agents sont compétents et discrets. Je recommande vivement Basic Protection Privée pour la sécurité de nos entrepôts.",
-      name: "Jean Dupont",
-      title: "Responsable Logistique, TechCorp"
+      quote: "Dans le secteur du luxe, l'erreur n'est pas une option. Basic Protection Privée a su intégrer cette exigence dans un dispositif de sécurité à la fois invisible et infaillible. Leur professionnalisme est remarquable.",
+      name: "Directeur de la Sécurité",
+      title: "Maison de Haute Joaillerie, Paris"
     },
     {
-      quote: "La sécurité de notre événement a été parfaitement gérée. Une équipe à l'écoute et très bien organisée. Nous ferons de nouveau appel à eux sans hésiter.",
-      name: "Marie Dubois",
-      title: "Organisatrice d'événements, EventPlus"
+      quote: "La protection de nos dirigeants est un enjeu critique. Les équipes de BPP font preuve d'une discrétion et d'une efficacité qui dépassent nos attentes. De vrais partenaires de confiance.",
+      name: "Responsable Sûreté",
+      title: "Groupe du CAC40, La Défense"
     },
     {
-        quote: "Nous avons fait appel à Basic Protection pour un audit de sécurité de nos bureaux. Leurs conseils ont été précieux et nous ont permis d'identifier des failles critiques.",
-        name: "Paul Martin",
-        title: "Directeur Général, Innovatech"
+        quote: "Nous avons mandaté BPP pour un audit de sûreté de notre siège. Leur rapport était d'une clarté et d'une pertinence rares, avec des recommandations pragmatiques que nous avons immédiatement mises en œuvre.",
+        name: "Services Généraux",
+        title: "Cabinet d'avocats international, Paris 8e"
     }
   ];
 
   const faqItems = [
     {
-      question: "Quels types de services de sécurité proposez-vous ?",
-      answer: "Nous offrons une gamme complète de services incluant le gardiennage, la surveillance de sites, la sécurité événementielle, l'intervention sur alarme, et les audits de sûreté."
+      question: "Comment sélectionnez-vous vos agents de sécurité ?",
+      answer: "Notre processus de recrutement est extrêmement rigoureux. Chaque agent doit posséder une carte professionnelle CQP APS à jour, un casier judiciaire vierge, et passe une série d'entretiens pour évaluer ses compétences techniques et son savoir-être. Nous privilégions des profils expérimentés, spécialisés (luxe, événementiel, protection rapprochée) et formés en continu."
     },
     {
-      question: "Vos agents sont-ils certifiés ?",
-      answer: "Oui, tous nos agents de sécurité possèdent la carte professionnelle (CQP APS) et sont formés en continu aux dernières techniques de prévention et d'intervention."
+      question: "Quelle est la différence entre votre offre et une agence standard ?",
+      answer: "Nous nous positionnons sur un segment premium. Cela se traduit par des agents d'élite mieux formés et mieux rémunérés, une approche entièrement sur-mesure, l'intégration de technologies de pointe, une culture de la discrétion et un management de proximité qui garantit un contrôle qualité permanent."
     },
     {
-        question: "Dans quelles régions intervenez-vous ?",
-        answer: "Nous intervenons principalement à Paris et dans toute la région Île-de-France, mais nous pouvons étudier des demandes spécifiques sur d'autres secteurs géographiques."
+        question: "Garantissez-vous la confidentialité de vos missions ?",
+        answer: "Absolument. La confidentialité est au cœur de notre métier. Tous nos agents signent une clause de non-divulgation stricte. Les informations relatives à nos clients et à nos missions sont compartimentées et protégées par des protocoles de sécurité rigoureux."
+    },
+    {
+      question: "Quels sont vos délais pour mettre en place une protection ?",
+      answer: "Pour les demandes urgentes, notre cellule de crise peut déployer un dispositif simple en quelques heures en Île-de-France. Pour des missions complexes, une phase d'audit et de planification de 24 à 72 heures est généralement nécessaire pour garantir une solution parfaitement adaptée et efficace."
     }
   ];
 
-  const trustLogos = [
-    { src: "https://picsum.photos/seed/logo1/120/50", alt: "Logo Partenaire 1" },
-    { src: "https://picsum.photos/seed/logo2/120/50", alt: "Logo Partenaire 2" },
-    { src: "https://picsum.photos/seed/logo3/120/50", alt: "Logo Partenaire 3" },
-    { src: "https://picsum.photos/seed/logo4/120/50", alt: "Logo Partenaire 4" },
-    { src: "https://picsum.photos/seed/logo5/120/50", alt: "Logo Partenaire 5" },
+  const coverageZones = [
+      { name: "Paris (75)", href: "#contact" },
+      { name: "Hauts-de-Seine (92)", href: "#contact" },
+      { name: "Yvelines (78)", href: "#contact" },
+      { name: "Val-de-Marne (94)", href: "#contact" },
+      { name: "Seine-Saint-Denis (93)", href: "#contact" },
+      { name: "Essonne (91)", href: "#contact" },
+      { name: "Val-d'Oise (95)", href: "#contact" },
+      { name: "Seine-et-Marne (77)", href: "#contact" },
   ];
 
   return (
     <div className="flex flex-col min-h-screen">
       <HeroSection
-        title="Votre Partenaire Confiance pour une Sécurité Inégalée"
-        description="Basic Protection Privée offre des solutions de sécurité sur-mesure pour les entreprises et les particuliers exigeants."
-        cta1={{ label: "Découvrir nos services", href: "#services" }}
-        cta2={{ label: "Obtenir un Devis", href: "#contact", variant: "secondary" }}
+        title="Haute Sécurité Privée : L'Excellence pour votre Tranquillité"
+        description="Nous concevons des dispositifs de sécurité d'élite pour protéger les entreprises, les sites sensibles et les personnalités exigeantes. Votre sérénité est notre mission."
+        cta1={{ label: "Demander un devis", href: "#contact" }}
+        cta2={{ label: "Appeler maintenant", href: `tel:${siteConfig.contact.phone.replace(/\s/g, '')}`, variant: "secondary" }}
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description}
         imageHint={heroImage?.imageHint}
       />
-      <TrustBar logos={trustLogos} />
+      <TrustElements elements={trustElements} />
       <ServicesGrid
         id="services"
-        title="Des Solutions de Sécurité Complètes"
-        description="Nous adaptons nos services à vos besoins spécifiques pour une tranquillité d'esprit totale."
+        title="Nos Prestations de Haute Sécurité"
+        description="Des solutions sur-mesure, exécutées avec une rigueur et une discrétion absolues."
         services={services}
       />
-      <ProcessSteps />
-      <section id="about" className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative w-full h-80 rounded-lg overflow-hidden shadow-2xl">
-              {aboutImage && (
-                <Image
-                  src={aboutImage.imageUrl}
-                  alt={aboutImage.description}
-                  fill
-                  className="object-cover"
-                  data-ai-hint={aboutImage.imageHint}
-                />
-              )}
-            </div>
-            <div>
-              <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
-                Qui sommes-nous ?
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground">
-                Fondée sur des valeurs de rigueur, de professionnalisme et d'intégrité, Basic Protection Privée est votre allié pour la protection de vos biens et de vos personnes.
-              </p>
-              <p className="mt-4 text-muted-foreground">
-                Notre équipe est composée d'agents certifiés, formés aux techniques les plus récentes et équipés pour faire face à toutes les situations. Nous nous engageons à fournir un service d'excellence et une réactivité sans faille.
-              </p>
-              <Button asChild className="mt-6 font-bold" size="lg">
-                <Link href="#contact">En savoir plus</Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <ProcessSteps 
+        title="Notre Protocole d'Excellence en 4 Étapes"
+        description="Une méthodologie rigoureuse pour garantir une mise en place irréprochable et une efficacité maximale."
+        steps={processSteps}
+      />
       <SectorsGrid sectors={sectors} />
       <CoverageSection
-        title="Une Présence Stratégique en Île-de-France"
-        description="Nous couvrons Paris et sa couronne pour une réactivité optimale."
-        zones={["Paris (75)", "Seine-et-Marne (77)", "Yvelines (78)", "Essonne (91)", "Hauts-de-Seine (92)", "Seine-Saint-Denis (93)", "Val-de-Marne (94)", "Val-d'Oise (95)"]}
+        title="Intervention sur Paris et Zones Stratégiques"
+        description="Notre maillage territorial assure une réactivité et une connaissance parfaite des zones d'intervention clés."
+        zones={coverageZones}
       />
       <Testimonials testimonials={testimonials} />
       <FAQAccordion
-        title="Questions Fréquemment Posées"
-        description="Trouvez les réponses à vos interrogations sur nos services de sécurité."
+        title="Vos Questions, Nos Réponses Claires"
+        description="Tout ce que vous devez savoir sur nos services de haute sécurité."
         items={faqItems}
       />
       <CTASection
         id="contact"
-        title="Prêt à sécuriser votre activité ?"
-        description="Contactez-nous dès aujourd'hui pour une analyse gratuite de vos besoins et un devis personnalisé."
-        cta={{ label: "Demander un Devis", href: `mailto:${siteConfig.contact.email}?subject=Demande de devis` }}
+        title="Passez au Niveau Supérieur de Protection"
+        description="Discutons de vos besoins en toute confidentialité. Contactez nos experts pour une étude personnalisée et une proposition sur-mesure."
+        cta={{ label: "Demander un Devis Confidentiel", href: `mailto:${siteConfig.contact.email}?subject=Demande de devis confidentiel` }}
       />
       <StickyMobileCallButton phoneNumber={siteConfig.contact.phone} />
     </div>

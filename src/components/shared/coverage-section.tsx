@@ -1,9 +1,16 @@
 import { MapPin } from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+
+type Zone = {
+    name: string;
+    href?: string;
+}
 
 type CoverageSectionProps = {
   title: string;
   description: string;
-  zones: string[];
+  zones: Zone[];
 };
 
 export function CoverageSection({ title, description, zones }: CoverageSectionProps) {
@@ -19,12 +26,22 @@ export function CoverageSection({ title, description, zones }: CoverageSectionPr
           </p>
         </div>
         <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 max-w-4xl mx-auto">
-          {zones.map((zone) => (
-            <div key={zone} className="flex items-center gap-3">
-              <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
-              <span className="font-medium">{zone}</span>
-            </div>
-          ))}
+          {zones.map((zone) => {
+            const content = (
+              <div key={zone.name} className="flex items-center gap-3 group">
+                <MapPin className="w-5 h-5 text-primary flex-shrink-0" />
+                <span className={cn(
+                  "font-medium",
+                  zone.href && "group-hover:text-primary group-hover:underline"
+                )}>{zone.name}</span>
+              </div>
+            );
+
+            if (zone.href) {
+                return <Link href={zone.href} key={zone.name}>{content}</Link>;
+            }
+            return content;
+          })}
         </div>
       </div>
     </section>
