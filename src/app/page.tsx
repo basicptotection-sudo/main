@@ -80,7 +80,19 @@ export default function Home() {
       />
 
       <AnimateOnScroll>
-        <TrustElements elements={trustElements} id="about" />
+        <section id="about" className="py-16 md:py-24 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="text-center max-w-3xl mx-auto mb-12">
+              <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
+                L'Exigence au Service de Votre Sécurité
+              </h2>
+              <p className="mt-4 text-lg text-muted-foreground">
+                Plus qu'un prestataire, un partenaire de confiance qui s'engage sur quatre piliers fondamentaux pour garantir votre tranquillité d'esprit.
+              </p>
+            </div>
+            <TrustElements elements={trustElements} />
+          </div>
+        </section>
       </AnimateOnScroll>
 
       <div id="services">
