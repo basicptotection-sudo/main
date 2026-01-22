@@ -119,42 +119,51 @@ export function Header() {
                 <ChevronDown className="h-4 w-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-80" align="start">
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-2 py-1.5">Services de Terrain</DropdownMenuLabel>
-                {terrainServices.map((service) => {
-                  const Icon = (LucideIcons as any)[service.icon];
-                  return (
-                    <DropdownMenuItem key={service.slug} asChild className="p-0">
-                       <Link href={`/services/${service.slug}`} className="flex w-full items-start gap-3 p-2">
-                        {Icon && <Icon className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />}
-                        <div className="flex-1">
-                          <p className="font-semibold text-foreground">{service.title}</p>
-                          <p className="text-xs text-muted-foreground">{service.shortDescription}</p>
-                        </div>
-                      </Link>
-                    </DropdownMenuItem>
-                  );
-                })}
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="text-xs font-semibold uppercase tracking-wider text-muted-foreground px-2 py-1.5">Services Premium</DropdownMenuLabel>
-                {premiumServices.map((service) => {
-                  const Icon = (LucideIcons as any)[service.icon];
-                  return (
-                     <DropdownMenuItem key={service.slug} asChild className="p-0">
-                       <Link href={`/services/${service.slug}`} className="flex w-full items-start gap-3 p-2">
-                        {Icon && <Icon className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />}
-                        <div className="flex-1">
-                          <p className="font-semibold text-foreground">{service.title}</p>
-                          <p className="text-xs text-muted-foreground">{service.shortDescription}</p>
-                        </div>
-                      </Link>
-                    </DropdownMenuItem>
-                  );
-                })}
-              </DropdownMenuGroup>
+            <DropdownMenuContent className="w-[40rem]" align="start">
+              <div className="grid grid-cols-2 gap-x-6 p-4">
+                <div>
+                  <DropdownMenuLabel className="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Services de Terrain
+                  </DropdownMenuLabel>
+                  <DropdownMenuGroup className="flex flex-col gap-1">
+                    {terrainServices.map((service) => {
+                      const Icon = (LucideIcons as any)[service.icon];
+                      return (
+                        <DropdownMenuItem key={service.slug} asChild>
+                          <Link href={`/services/${service.slug}`} className="items-start gap-3">
+                            {Icon && <Icon className="mt-1 text-primary" />}
+                            <div>
+                              <p className="font-semibold">{service.title}</p>
+                              <p className="text-xs text-muted-foreground whitespace-normal">{service.shortDescription}</p>
+                            </div>
+                          </Link>
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </DropdownMenuGroup>
+                </div>
+                <div>
+                  <DropdownMenuLabel className="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Services Premium
+                  </DropdownMenuLabel>
+                  <DropdownMenuGroup className="flex flex-col gap-1">
+                    {premiumServices.map((service) => {
+                      const Icon = (LucideIcons as any)[service.icon];
+                      return (
+                        <DropdownMenuItem key={service.slug} asChild>
+                          <Link href={`/services/${service.slug}`} className="items-start gap-3">
+                            {Icon && <Icon className="mt-1 text-primary" />}
+                            <div>
+                              <p className="font-semibold">{service.title}</p>
+                              <p className="text-xs text-muted-foreground whitespace-normal">{service.shortDescription}</p>
+                            </div>
+                          </Link>
+                        </DropdownMenuItem>
+                      );
+                    })}
+                  </DropdownMenuGroup>
+                </div>
+              </div>
             </DropdownMenuContent>
           </DropdownMenu>
 
