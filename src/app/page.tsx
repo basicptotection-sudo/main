@@ -15,8 +15,8 @@ import {
 } from "@/components/shared";
 import { servicesData } from "@/lib/services-data";
 import { locationsData } from "@/lib/locations-data";
-
-type LinkItem = { name: string; href: string; key: string };
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find((p) => p.id === "hero");
@@ -165,22 +165,10 @@ export default function Home() {
     },
   ];
 
-  // Zones (déduplication propre)
-  const zonesFromData: LinkItem[] = locationsData.map((loc) => ({
+  const coverageZones = locationsData.map(loc => ({
     name: loc.name,
-    href: `/zones/${loc.slug}`,
-    key: `zone-${loc.slug}`,
+    href: `/zones/${loc.slug}`
   }));
-
-  const coreZones: LinkItem[] = [
-    { name: "Plaisir (78370)", href: "/zones/plaisir-78370", key: "zone-plaisir-78370" },
-    { name: "Yvelines (78)", href: "/zones/yvelines-78", key: "zone-yvelines-78" },
-    { name: "Île-de-France", href: "/zones/ile-de-france", key: "zone-ile-de-france" },
-  ];
-
-  const zoneMap = new Map<string, LinkItem>();
-  [...coreZones, ...zonesFromData].forEach((z) => zoneMap.set(z.key, z));
-  const coverageZones = Array.from(zoneMap.values()).map(({ name, href }) => ({ name, href }));
 
   const phoneHref = `tel:${siteConfig.contact.phoneE164 ?? siteConfig.contact.phone.replace(/\s/g, "")}`;
 
@@ -235,7 +223,13 @@ export default function Home() {
             title="Basés à Plaisir — intervention 78 & Île-de-France"
             description="Une présence locale, une organisation flexible et des équipes adaptées à chaque mission."
             zones={coverageZones}
-          />
+          >
+             <div className="text-center mt-8">
+                <Button asChild>
+                    <Link href="/zones">Voir toutes nos zones d'intervention</Link>
+                </Button>
+            </div>
+          </CoverageSection>
         </section>
       </AnimateOnScroll>
 

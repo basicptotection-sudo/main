@@ -11,9 +11,10 @@ type CoverageSectionProps = {
   title: string;
   description: string;
   zones: Zone[];
+  children?: React.ReactNode;
 };
 
-export function CoverageSection({ title, description, zones }: CoverageSectionProps) {
+export function CoverageSection({ title, description, zones, children }: CoverageSectionProps) {
   return (
     <section className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4">
@@ -37,12 +38,13 @@ export function CoverageSection({ title, description, zones }: CoverageSectionPr
               </div>
             );
 
-            if (zone.href) {
+            if (zone.href && zone.href !== '#') {
                 return <Link href={zone.href} key={zone.name}>{content}</Link>;
             }
             return content;
           })}
         </div>
+        {children && <div className="mt-12">{children}</div>}
       </div>
     </section>
   );
