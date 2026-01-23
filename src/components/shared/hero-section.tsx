@@ -43,18 +43,18 @@ export function HeroSection({
           data-ai-hint={imageHint}
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-transparent" />
+      
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-3xl text-left">
             {breadcrumbs && (
-                <div className="[&_a]:text-white/80 [&_a:hover]:text-white [&_li:last-child>a]:text-white">
+                <div className="[&_a]:text-white/80 [&_a:hover]:text-white [&_li:last-child>a]:text-white [&_a]:[text-shadow:0_1px_2px_rgba(0,0,0,0.5)]">
                     {breadcrumbs}
                 </div>
             )}
-            <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tight">
+            <h1 className="text-4xl md:text-6xl font-headline font-bold tracking-tight [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
             {title}
             </h1>
-            <p className="mt-4 text-lg md:text-xl text-gray-200">
+            <p className="mt-4 text-lg md:text-xl text-gray-200 [text-shadow:0_2px_4px_rgba(0,0,0,0.5)]">
             {description}
             </p>
             <div className="mt-8 flex flex-wrap justify-start gap-4">

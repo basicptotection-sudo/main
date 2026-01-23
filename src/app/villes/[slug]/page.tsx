@@ -1,43 +1,28 @@
-// src/app/villes/[slug]/page.tsx
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
+import * as LucideIcons from "lucide-react";
 
-import { citiesData } from "@/lib/cities-data";
-import { servicesData } from "@/lib/services-data";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { citiesData, type City } from "@/lib/cities-data";
+import { servicesData, type Service } from "@/lib/services-data";
 import { siteConfig } from "@/lib/config";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 import {
   HeroSection,
   ServicesGrid,
-  TrustElements,
   FAQAccordion,
   CTASection,
   Breadcrumbs,
   AnimateOnScroll,
-  ProcessSteps,
+  TrustElements,
 } from "@/components/shared";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-
-import {
-  Building2,
-  Sparkles,
-  HardHat,
-  Factory,
-  CalendarDays,
-  Home,
-  Cpu,
-  MapPin,
-  ShieldCheck,
-  Phone,
-} from "lucide-react";
-
 import { cn } from "@/lib/utils";
+
+type CityPageProps = { params: { slug: string } };
 
 type Focus =
   | "luxe"
@@ -48,43 +33,8 @@ type Focus =
   | "résidentiel"
   | "tech";
 
-const FOCUS_META: Record<Focus, { label: string; Icon: React.ElementType; hint: string }> = {
-  luxe: {
-    label: "Luxe",
-    Icon: Sparkles,
-    hint: "Boutiques premium, joaillerie, hôtellerie, zones à forte exposition.",
-  },
-  bureaux: {
-    label: "Bureaux",
-    Icon: Building2,
-    hint: "Sièges, tours, accueil, contrôle d’accès, sûreté des flux.",
-  },
-  chantiers: {
-    label: "Chantiers",
-    Icon: HardHat,
-    hint: "Prévention intrusions, surveillance nocturne, anti-vol matériels.",
-  },
-  logistique: {
-    label: "Logistique",
-    Icon: Factory,
-    hint: "Entrepôts, quais, zones de stockage, rondes et levée de doute.",
-  },
-  événementiel: {
-    label: "Événementiel",
-    Icon: CalendarDays,
-    hint: "Accréditations, filtrage, gestion des flux, coordination.",
-  },
-  résidentiel: {
-    label: "Résidentiel",
-    Icon: Home,
-    hint: "Copropriétés, syndics, résidences, présence dissuasive.",
-  },
-  tech: {
-    label: "Tech",
-    Icon: Cpu,
-    hint: "Campus, sites sensibles, protocoles, exigences élevées.",
-  },
-};
+type UseCase = { icon: string; title: string; content: string };
+type FaqItem = { question: string; answer: string };
 
 function normalizeTel(phoneE164?: string, fallback?: string) {
   if (phoneE164) return `tel:${phoneE164}`;
@@ -92,301 +42,344 @@ function normalizeTel(phoneE164?: string, fallback?: string) {
   return raw ? `tel:${raw}` : "tel:";
 }
 
-// slug -> label "Paris 8ème (75008)" / "Plaisir (78370)"
-function inferCityLabelFromSlug(slug: string) {
-  // ex: paris-8-75008 / plaisir-78370 / la-defense-92400
-  const parts = slug.split("-");
-  const last = parts[parts.length - 1] || "";
-  const maybeZip = /^\d{5}$/.test(last) ? last : "";
-  const base = maybeZip ? parts.slice(0, -1).join(" ") : parts.join(" ");
-  const name = base
-    .replace(/\b(la)\b/gi, "La")
-    .replace(/\b(de)\b/gi, "de")
-    .replace(/\b(du)\b/gi, "du")
-    .replace(/\b(des)\b/gi, "des")
-    .split(" ")
-    .map((w) => (w.length <= 2 ? w.toLowerCase() : w.charAt(0).toUpperCase() + w.slice(1)))
-    .join(" ")
-    .replace(/\bParis (\d{1,2})\b/i, (_, n) => `Paris ${n}ème`);
-
-  return maybeZip ? `${name} (${maybeZip})` : name;
+function pickHeroImageIdByFocus(focus: Focus[]) {
+  // utilise tes placeholders existants si tu les as.
+  // fallback sur "hero" si non trouvé.
+  if (focus.includes("luxe")) return "hero";
+  if (focus.includes("bureaux") || focus.includes("tech")) return "hero";
+  if (focus.includes("chantiers")) return "hero";
+  if (focus.includes("logistique")) return "hero";
+  if (focus.includes("événementiel")) return "hero";
+  return "hero";
 }
 
-// focus -> services suggérés
-const FOCUS_SERVICES: Partial<Record<Focus, string[]>> = {
-  luxe: ["protection-rapprochee", "securite-evenementielle", "agent-securite-qualifie"],
-  bureaux: ["agent-securite-qualifie", "agent-rondier", "audit-conseil-surete"],
-  chantiers: ["agent-cynophile", "agent-rondier", "agent-securite-qualifie"],
-  logistique: ["agent-rondier", "agent-cynophile", "agent-securite-qualifie"],
-  événementiel: ["securite-evenementielle", "agent-securite-qualifie", "agent-incendie-ssiap"],
-  résidentiel: ["agent-securite-qualifie", "agent-rondier", "agent-cynophile"],
-  tech: ["audit-conseil-surete", "agent-securite-qualifie", "agent-rondier"],
-};
+function focusLabel(f: Focus) {
+  switch (f) {
+    case "luxe":
+      return "Luxe";
+    case "bureaux":
+      return "Bureaux";
+    case "chantiers":
+      return "Chantiers";
+    case "logistique":
+      return "Logistique";
+    case "événementiel":
+      return "Événementiel";
+    case "résidentiel":
+      return "Résidentiel";
+    case "tech":
+      return "Tech";
+  }
+}
 
-const DEFAULT_SERVICES_ORDER = [
-  "agent-securite-qualifie",
-  "agent-rondier",
-  "agent-cynophile",
-  "agent-incendie-ssiap",
-  "securite-evenementielle",
-  "protection-rapprochee",
-  "audit-conseil-surete",
-] as const;
+function buildCityContent(city: City) {
+  const focus = city.focus;
 
-function pickServicesForCity(focus: Focus[]) {
-  const slugs = new Set<string>();
-  focus.forEach((f) => (FOCUS_SERVICES[f] ?? []).forEach((s) => slugs.add(s)));
+  // HERO
+  const heroTitle = `${city.title} — Gardiennage & dispositifs sur-mesure`;
+  const heroDescription = (() => {
+    if (focus.includes("luxe")) {
+      return "Discrétion, présentation irréprochable et contrôle des flux pour boutiques premium, hôtels, sièges de marque et événements haut de gamme. Dispositif calibré selon vos contraintes.";
+    }
+    if (focus.includes("bureaux") || focus.includes("tech")) {
+      return "Contrôle d’accès, gestion des flux salariés/prestataires, rondes, prévention et reporting : un dispositif stable pour sites tertiaires, IGH et pôles d’activité.";
+    }
+    if (focus.includes("logistique")) {
+      return "Sécurisation d’entrepôts, quais et zones de stockage : rondes de nuit, levée de doute, contrôle PL/visiteurs et prévention des intrusions.";
+    }
+    if (focus.includes("chantiers")) {
+      return "Prévention des vols et intrusions, surveillance de nuit, rondes et cynophile selon configuration : un dispositif efficace pour chantiers et sites techniques.";
+    }
+    if (focus.includes("événementiel")) {
+      return "Accueil, filtrage, gestion des flux et sécurisation des zones sensibles : une organisation claire pour événements privés, corporate ou publics.";
+    }
+    return "Sécurité privée locale : surveillance, rondes, contrôle d’accès et prévention, avec une organisation claire et un suivi terrain.";
+  })();
 
-  if (slugs.size === 0) {
-    DEFAULT_SERVICES_ORDER.slice(0, 4).forEach((s) => slugs.add(s));
+  // USE CASES (4–6)
+  const useCases: UseCase[] = [];
+
+  if (focus.includes("luxe")) {
+    useCases.push(
+      { icon: "Gem", title: "Boutiques premium & hôtellerie", content: "Accueil filtré, posture discrète, surveillance des flux, prévention du vol et gestion d’incidents sans perturber l’expérience client." },
+      { icon: "CalendarDays", title: "Événements VIP & lancements", content: "Briefing équipes, contrôle accréditations, zones VIP/backstage, gestion des entrées et coordination organisation." }
+    );
+  }
+  if (focus.includes("bureaux")) {
+    useCases.push(
+      { icon: "Building2", title: "Contrôle d’accès tertiaire", content: "Gestion badges/visiteurs, filtrage prestataires, rondes, supervision des zones sensibles et reporting." }
+    );
+  }
+  if (focus.includes("tech")) {
+    useCases.push(
+      { icon: "Cpu", title: "Sites sensibles & data / tech", content: "Accès restreints, procédures, traçabilité, discipline opérationnelle et coordination avec vos équipes internes." }
+    );
+  }
+  if (focus.includes("chantiers")) {
+    useCases.push(
+      { icon: "HardHat", title: "Chantiers & sécurisation nocturne", content: "Prévention vols de matériaux, contrôle des points d’accès, rondes et cynophile selon périmètre." }
+    );
+  }
+  if (focus.includes("logistique")) {
+    useCases.push(
+      { icon: "Warehouse", title: "Entrepôts, quais, stockage", content: "Contrôle PL/visiteurs, prévention intrusions, rondes aléatoires, levée de doute et rapports." }
+    );
+  }
+  if (focus.includes("événementiel")) {
+    useCases.push(
+      { icon: "Users", title: "Gestion des flux & accueil", content: "Filtrage, orientation, prévention des tensions, coordination avec l’organisation pour une expérience fluide et sûre." }
+    );
+  }
+  if (focus.includes("résidentiel")) {
+    useCases.push(
+      { icon: "Home", title: "Résidences & copropriétés", content: "Présence dissuasive, rondes, contrôle visiteurs/livraisons et remontées terrain en lien avec le syndic." }
+    );
   }
 
-  return DEFAULT_SERVICES_ORDER.filter((s) => slugs.has(s))
-    .map((slug) => servicesData.find((sv) => sv.slug === slug))
-    .filter(Boolean)
-    .map((sv) => ({
-      icon: (sv as any).icon ?? "ShieldCheck",
-      title: (sv as any).title,
-      description: (sv as any).shortDescription,
-      href: `/services/${(sv as any).slug}`,
-    }));
+  // sécurité : limiter à 6
+  const finalUseCases = useCases.slice(0, 6);
+
+  // SERVICES à mettre en avant selon focus (ordre)
+  const prioritySlugs = (() => {
+    const base = [
+      "agent-securite-qualifie",
+      "agent-rondier",
+      "agent-incendie-ssiap",
+      "agent-cynophile",
+      "securite-evenementielle",
+      "protection-rapprochee",
+      "audit-conseil-surete",
+    ];
+
+    // Réordonnancement simple
+    const prefer: string[] = [];
+    if (focus.includes("luxe")) prefer.push("protection-rapprochee", "securite-evenementielle", "agent-securite-qualifie");
+    if (focus.includes("bureaux") || focus.includes("tech")) prefer.push("agent-securite-qualifie", "audit-conseil-surete", "agent-incendie-ssiap");
+    if (focus.includes("chantiers")) prefer.push("agent-cynophile", "agent-rondier", "agent-securite-qualifie");
+    if (focus.includes("logistique")) prefer.push("agent-rondier", "agent-securite-qualifie", "agent-cynophile");
+    if (focus.includes("événementiel")) prefer.push("securite-evenementielle", "agent-securite-qualifie", "agent-incendie-ssiap");
+    if (focus.includes("résidentiel")) prefer.push("agent-securite-qualifie", "agent-rondier");
+
+    const unique = Array.from(new Set([...prefer, ...base]));
+    return unique;
+  })();
+
+  const orderedServices = prioritySlugs
+    .map((slug) => servicesData.find((s) => s.slug === slug))
+    .filter(Boolean) as Service[];
+
+  // FAQ locale (6–8)
+  const faq: FaqItem[] = [
+    {
+      question: `Intervenez-vous rapidement à ${city.title.replace("Sécurité Privée ", "")} ?`,
+      answer:
+        "Oui, selon la mission et le dimensionnement. Pour une demande urgente, nous pouvons organiser une solution temporaire rapide, puis stabiliser un dispositif pérenne après cadrage.",
+    },
+    {
+      question: "Quels services sont les plus adaptés ici ?",
+      answer:
+        "Cela dépend de votre contexte (flux, horaires, risques, configuration). Nous dimensionnons le dispositif : agent qualifié, rondier, SSIAP, cynophile, événementiel, protection rapprochée ou audit/conseil.",
+    },
+  ];
+
+  if (focus.includes("luxe")) {
+    faq.push(
+      {
+        question: "Proposez-vous une présence très discrète (luxe / VIP) ?",
+        answer:
+          "Oui. Posture, tenue, communication et procédures sont calibrées pour préserver l’image de marque, avec un contrôle des flux et une gestion d’incident maîtrisée.",
+      },
+      {
+        question: "Faites-vous de la protection rapprochée ?",
+        answer:
+          "Oui, sur demande, avec des profils adaptés et un protocole clair (reconnaissance, itinéraires, coordination). Le cadre légal est étudié au cas par cas.",
+      }
+    );
+  }
+
+  if (focus.includes("bureaux") || focus.includes("tech")) {
+    faq.push({
+      question: "Gérez-vous les flux visiteurs / prestataires ?",
+      answer:
+        "Oui : enregistrement, filtrage, orientation, badges, zones autorisées, et reporting. Le tout aligné avec vos procédures internes.",
+    });
+  }
+
+  if (focus.includes("logistique")) {
+    faq.push({
+      question: "Sécurisez-vous entrepôts et quais (nuit / week-end) ?",
+      answer:
+        "Oui : rondes, contrôle des accès, levée de doute, sécurisation après incident et rapports d’intervention. Le dispositif varie selon la taille et les contraintes du site.",
+    });
+  }
+
+  if (focus.includes("chantiers")) {
+    faq.push({
+      question: "Le cynophile est-il pertinent sur chantier ?",
+      answer:
+        "Souvent oui : très dissuasif et efficace sur grands périmètres. Nous analysons l’environnement (clôtures, accès, voisinage) avant recommandation.",
+    });
+  }
+
+  faq.push({
+    question: "Comment suivez-vous la qualité des prestations ?",
+    answer:
+      "Cadrage des consignes, supervision, remontées terrain, rapports, et ajustements. L’objectif : un service stable et conforme à vos attentes.",
+  });
+
+  const whyUs = [
+    {
+      icon: "ShieldCheck",
+      title: "Organisation claire",
+      description: "Cadrage, consignes et suivi : un dispositif lisible et piloté.",
+    },
+    {
+      icon: "FileText",
+      title: "Reporting & traçabilité",
+      description: "Remontées terrain et rapports utiles pour piloter la sécurité.",
+    },
+    {
+      icon: "Zap",
+      title: "Réactivité opérationnelle",
+      description: "Mise en place selon mission, et ajustements rapides si besoin.",
+    },
+    {
+      icon: "Lock",
+      title: "Discrétion & confidentialité",
+      description: "Procédures et posture adaptées à vos activités et contraintes.",
+    },
+  ];
+
+  return {
+    heroTitle,
+    heroDescription,
+    useCases: finalUseCases,
+    orderedServices,
+    faq,
+    whyUs,
+  };
 }
 
 export async function generateStaticParams() {
   return citiesData.map((c) => ({ slug: c.slug }));
 }
 
-type CityPageProps = { params: { slug: string } };
-
 export async function generateMetadata({ params }: CityPageProps): Promise<Metadata> {
   const city = citiesData.find((c) => c.slug === params.slug);
   if (!city) return {};
 
-  const cityLabel = inferCityLabelFromSlug(city.slug);
+  const content = buildCityContent(city);
 
   return {
-    title: `${city.title} — ${siteConfig.name}`,
-    description: `Sécurité privée et gardiennage à ${cityLabel}. Agents qualifiés, rondes, cynophile, SSIAP, événementiel, audit sûreté. Devis rapide et dispositif sur-mesure.`,
-    keywords: [
-      ...city.keywords,
-      "sécurité privée",
-      "gardiennage",
-      "surveillance",
-      "agent de sécurité",
-      cityLabel,
-      city.department,
-    ],
-    alternates: { canonical: `/villes/${city.slug}` },
+    title: city.title,
+    description: content.heroDescription,
+    keywords: city.keywords,
+    alternates: {
+      canonical: `/villes/${city.slug}`,
+    },
   };
 }
+
+const UseCasesSection = ({ cases }: { cases: UseCase[] }) => (
+  <section className="py-16 md:py-24 bg-muted/20">
+    <div className="container mx-auto px-4">
+      <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary text-center">
+        Cas d’usage locaux
+      </h2>
+      <p className="mt-3 text-center text-muted-foreground max-w-3xl mx-auto">
+        Chaque ville a ses réalités : flux, horaires, zones sensibles et typologies de risques.
+      </p>
+
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        {cases.map((uc) => {
+          const Icon = (LucideIcons as any)[uc.icon];
+          return (
+            <Card key={uc.title} className="rounded-2xl">
+              <CardHeader className="flex flex-row items-center gap-4">
+                {Icon && <Icon className="w-10 h-10 text-primary" />}
+                <CardTitle className="text-base md:text-lg">{uc.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground">{uc.content}</p>
+              </CardContent>
+            </Card>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+);
 
 export default function CityPage({ params }: CityPageProps) {
   const city = citiesData.find((c) => c.slug === params.slug);
   if (!city) notFound();
 
-  const cityLabel = inferCityLabelFromSlug(city.slug);
+  const content = buildCityContent(city);
+  const heroImageId = pickHeroImageIdByFocus(city.focus);
+  const heroImage = PlaceHolderImages.find((p) => p.id === heroImageId) ?? PlaceHolderImages.find((p) => p.id === "hero");
 
-  const heroImage =
-    PlaceHolderImages.find((p) => p.id === `city-${city.slug}`) ??
-    PlaceHolderImages.find((p) => p.id === "cities-default") ??
-    PlaceHolderImages.find((p) => p.id === "hero");
-
-  const telHref = normalizeTel(siteConfig.contact.phoneE164, siteConfig.contact.phone);
+  const phoneHref = normalizeTel((siteConfig.contact as any).phoneE164, siteConfig.contact.phone);
 
   const breadcrumbItems = [
     { label: "Accueil", href: "/" },
     { label: "Villes", href: "/villes" },
-    { label: cityLabel, href: `/villes/${city.slug}` },
+    { label: city.title.replace("Sécurité Privée ", ""), href: `/villes/${city.slug}` },
   ];
 
-  const servicesForCity = pickServicesForCity(city.focus as Focus[]);
-  const focusBadges = (city.focus as Focus[]).map((f) => ({ f, meta: FOCUS_META[f] }));
+  const servicesForGrid = content.orderedServices.map((s) => {
+    const Icon = (LucideIcons as any)[s.icon];
+    return {
+      icon: Icon ? <Icon className="w-12 h-12 text-primary" /> : null,
+      title: s.title,
+      description: s.shortDescription,
+      href: `/services/${s.slug}`,
+    };
+  });
 
-  const localIntro = (() => {
-    const f = city.focus as Focus[];
-    if (f.includes("luxe")) {
-      return `Dans les environnements premium (boutiques, hôtels, événements), la sécurité doit être discrète, maîtrisée et orientée image. Nous concevons un dispositif qui protège sans perturber l’expérience client.`;
-    }
-    if (f.includes("bureaux") || f.includes("tech")) {
-      return `Sur les sites tertiaires, la sûreté repose sur un contrôle des accès rigoureux, une présence professionnelle et un suivi fiable. Nous structurons une organisation claire, auditable et évolutive.`;
-    }
-    if (f.includes("chantiers")) {
-      return `Les chantiers sont exposés (intrusions, vols, dégradations). Nous mettons en place une surveillance adaptée (rondes, cynophile, filtrage) pour sécuriser matériels, zones et accès.`;
-    }
-    if (f.includes("logistique")) {
-      return `Les sites logistiques demandent une sécurité mobile et réactive : rondes, levée de doute, prévention et coordination. Nous calibrons le dispositif selon vos flux et horaires.`;
-    }
-    if (f.includes("événementiel")) {
-      return `La sécurité événementielle doit être fluide, maîtrisée et orientée accueil : gestion des flux, contrôle d’accès et coordination. Nous dimensionnons les effectifs selon le lieu et la jauge.`;
-    }
-    if (f.includes("résidentiel")) {
-      return `Nous intervenons pour renforcer la tranquillité (copropriétés, résidences, syndics) avec une présence dissuasive, des rondes et des procédures simples.`;
-    }
-    return `Nous adaptons la sécurité privée à votre contexte : surveillance, contrôle d’accès, rondes et dispositifs sur-mesure.`;
-  })();
-
-  const whyUs = [
-    {
-      icon: "ShieldCheck",
-      title: "Agents habilités & encadrement",
-      description: "Agents qualifiés (cartes pro), briefés selon vos consignes et la réalité du site.",
-    },
-    {
-      icon: "FileText",
-      title: "Dispositif clair & traçable",
-      description: "Organisation structurée, suivi opérationnel, et reporting pour piloter la prestation.",
-    },
-    {
-      icon: "MapPin",
-      title: `Connaissance locale — ${city.department}`,
-      description: "Dispositifs adaptés aux spécificités locales (flux, horaires, typologies de risques).",
-    },
-    {
-      icon: "Phone",
-      title: "Réactivité",
-      description: "Mise en place rapide d’une solution temporaire, puis dispositif pérenne si besoin.",
-    },
-  ];
-
-  const steps = [
-    {
-      icon: "MessageCircle",
-      title: "1. Cadrage",
-      description: "Analyse du site, objectifs, horaires, flux, contraintes, niveaux d’accès et points sensibles.",
-    },
-    {
-      icon: "FileText",
-      title: "2. Proposition",
-      description: "Plan de poste, consignes, effectifs, options, et devis transparent (avec recommandations).",
-    },
-    {
-      icon: "ShieldCheck",
-      title: "3. Déploiement",
-      description: "Briefing, mise en place, coordination avec vos équipes, et démarrage opérationnel maîtrisé.",
-    },
-    {
-      icon: "ThumbsUp",
-      title: "4. Suivi",
-      description: "Contrôles, rapports, ajustements et amélioration continue pour stabiliser la prestation.",
-    },
-  ];
-
-  const faqItems = [
-    {
-      question: `Intervenez-vous rapidement à ${cityLabel} ?`,
-      answer:
-        "Selon la mission et les effectifs nécessaires, un démarrage peut être organisé rapidement. Pour un dispositif complet, une courte phase de cadrage garantit la continuité et la qualité.",
-    },
-    {
-      question: "Quels services recommandez-vous en priorité ?",
-      answer:
-        "Nous priorisons selon votre contexte (bureaux, chantier, logistique, événementiel, résidentiel). Après une écoute de vos contraintes, nous proposons un dispositif dimensionné (agents, rondes, cynophile, SSIAP…).",
-    },
-    {
-      question: "Proposez-vous des agents SSIAP ?",
-      answer:
-        "Oui, pour les configurations qui le nécessitent (ERP/IGH). Nous déployons des agents SSIAP (1/2/3) selon le besoin et le cadre réglementaire.",
-    },
-    {
-      question: "Comment se passe le suivi qualité ?",
-      answer:
-        "Consignes claires, points de contrôle et reporting. L’objectif : une prestation stable, mesurable et ajustable dans la durée.",
-    },
-  ];
-
-  // “autres villes” = même département (même libellé)
-  const relatedCities = citiesData
-    .filter((c) => c.department === city.department && c.slug !== city.slug)
-    .slice(0, 9);
+  const chips = city.focus.map((f) => focusLabel(f as Focus));
 
   return (
     <>
       <HeroSection
-        title={`Sécurité privée à ${cityLabel} — ${city.department}`}
-        description={`${localIntro} Demandez un devis : réponse rapide et proposition adaptée.`}
-        cta1={{ label: "Demander un devis", href: `/devis?city=${city.slug}` }}
-        cta2={{ label: "Appeler", href: telHref, variant: "secondary" }}
+        title={content.heroTitle}
+        description={content.heroDescription}
+        cta1={{ label: "Demander un devis", href: "/devis" }}
+        cta2={{ label: "Appeler", href: phoneHref, variant: "secondary" }}
         imageUrl={heroImage?.imageUrl}
-        imageAlt={heroImage?.description ?? `Sécurité privée à ${cityLabel}`}
+        imageAlt={heroImage?.description ?? `Sécurité privée — ${city.title}`}
         imageHint={heroImage?.imageHint}
         breadcrumbs={<Breadcrumbs items={breadcrumbItems} className="py-0 mb-4" />}
       />
 
       <AnimateOnScroll>
-        <section className="py-10 md:py-14 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-              <div className="flex items-start justify-between gap-6 flex-wrap">
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-headline font-bold">
-                    Contexte local & priorités
-                  </h2>
-                  <p className="mt-2 text-muted-foreground">
-                    Cette page est structurée selon les besoins typiques à {cityLabel}.
-                  </p>
-                </div>
-
-                <Button asChild variant="outline">
-                  <Link href="/villes">
-                    <MapPin className="mr-2 h-4 w-4" />
-                    Retour aux villes
-                  </Link>
-                </Button>
-              </div>
-
-              <div className="mt-6 flex flex-wrap gap-2">
-                {focusBadges.map(({ f, meta }) => (
-                  <Badge
-                    key={f}
-                    variant="secondary"
-                    className="inline-flex items-center gap-2 py-1.5"
-                  >
-                    <meta.Icon className="h-4 w-4 text-primary" />
-                    {meta.label}
-                  </Badge>
-                ))}
-              </div>
-
-              <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-                {focusBadges.slice(0, 3).map(({ f, meta }) => (
-                  <Card key={f} className="shadow-sm">
-                    <CardHeader className="pb-2">
-                      <CardTitle className="flex items-center gap-2 text-base">
-                        <meta.Icon className="h-5 w-5 text-primary" />
-                        {meta.label}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-sm text-muted-foreground">{meta.hint}</p>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-
-              {focusBadges.length > 3 && (
-                <p className="mt-3 text-xs text-muted-foreground">
-                  +{focusBadges.length - 3} autres focus pris en compte.
-                </p>
-              )}
-            </div>
+        <section className="container mx-auto max-w-5xl px-4 py-10">
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            {chips.map((label) => (
+              <span
+                key={label}
+                className="rounded-full border bg-background px-3 py-1 text-xs text-muted-foreground"
+              >
+                {label}
+              </span>
+            ))}
           </div>
-        </section>
-      </AnimateOnScroll>
 
-      <AnimateOnScroll>
-        <section className="py-12 md:py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto">
-              <h2 className="text-2xl md:text-3xl font-headline font-bold text-center">
-                Pourquoi {siteConfig.name} à {cityLabel} ?
-              </h2>
-              <p className="mt-3 text-center text-muted-foreground max-w-3xl mx-auto">
-                Un dispositif clair, adapté et contrôlé — pour une sécurité fiable dans la durée.
-              </p>
+          <div className="mt-8 rounded-2xl border bg-card p-6 md:p-8">
+            <h2 className="text-2xl md:text-3xl font-headline font-bold text-primary">
+              Une approche locale, cadrée, pilotée
+            </h2>
+            <p className="mt-3 text-muted-foreground text-lg">
+              Notre priorité : comprendre vos flux, vos horaires, vos contraintes et vos risques, puis mettre en place
+              un dispositif clair (postes, consignes, reporting, supervision).
+            </p>
 
-              <div className="mt-10">
-                <TrustElements elements={whyUs} />
-              </div>
+            <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+              <Button asChild>
+                <Link href="/devis">Obtenir un devis</Link>
+              </Button>
+              <Button asChild variant="outline">
+                <a href={phoneHref}>Appeler un expert</a>
+              </Button>
             </div>
           </div>
         </section>
@@ -394,132 +387,55 @@ export default function CityPage({ params }: CityPageProps) {
 
       <AnimateOnScroll>
         <ServicesGrid
-          id="services-city"
-          title={`Services recommandés à ${cityLabel}`}
-          description="Une sélection de prestations pertinentes selon votre contexte. Chaque mission est cadrée et adaptée à vos contraintes."
-          services={servicesForCity}
+          id="services"
+          title={`Services recommandés — ${city.title.replace("Sécurité Privée ", "")}`}
+          description="Nous adaptons le dispositif au terrain : agent qualifié, rondes, SSIAP, cynophile, événementiel, protection rapprochée, audit/conseil."
+          services={servicesForGrid}
         />
       </AnimateOnScroll>
 
       <AnimateOnScroll>
-        <ProcessSteps
-          title="Notre méthode d’intervention"
-          description="Simple, carrée, efficace : du cadrage à l’amélioration continue."
-          steps={steps}
-        />
+        <UseCasesSection cases={content.useCases} />
       </AnimateOnScroll>
 
       <AnimateOnScroll>
-        <section className="py-10 md:py-12 bg-white">
+        <section className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4">
-            <Card className="shadow-sm">
-              <CardContent className="p-6 md:p-8">
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-                  <div className="max-w-2xl">
-                    <h3 className="text-xl md:text-2xl font-headline font-semibold">
-                      Besoin d’un dispositif à {cityLabel} ?
-                    </h3>
-                    <p className="mt-2 text-muted-foreground">
-                      Donnez-nous vos horaires, vos contraintes et le type de site : nous vous répondons avec une proposition structurée.
-                    </p>
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-2">
-                    <Button asChild>
-                      <Link href={`/devis?city=${city.slug}`}>Demander un devis</Link>
-                    </Button>
-                    <Button asChild variant="outline">
-                      <a href={telHref}>
-                        <Phone className="mr-2 h-4 w-4" />
-                        Appeler
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+            <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary text-center mb-10">
+              Pourquoi Basic Protection Privée ?
+            </h2>
+            <div className="max-w-5xl mx-auto">
+              <TrustElements elements={content.whyUs} />
+            </div>
           </div>
         </section>
       </AnimateOnScroll>
 
       <AnimateOnScroll>
         <FAQAccordion
-          title={`Questions fréquentes — ${cityLabel}`}
-          description="Réponses claires avant de demander un devis."
-          items={faqItems}
+          title={`Questions fréquentes — ${city.title.replace("Sécurité Privée ", "")}`}
+          description="Délais, organisation, conformité, qualité et choix du dispositif."
+          items={content.faq}
         />
       </AnimateOnScroll>
 
       <AnimateOnScroll>
         <CTASection
           id="contact"
-          title={`Obtenir un devis sécurité à ${cityLabel}`}
-          description="Contactez-nous pour une analyse confidentielle. Nous vous répondrons avec une proposition adaptée à votre contexte."
-          cta={{ label: "Demander un devis", href: `/devis?city=${city.slug}` }}
+          title={`Demander un devis — ${city.title.replace("Sécurité Privée ", "")}`}
+          description="Expliquez votre site, vos horaires, vos flux et vos contraintes. Nous vous répondons avec une proposition claire et adaptée."
+          cta={{ label: "Demander un devis", href: `/devis?villes=${city.slug}` }}
         />
       </AnimateOnScroll>
 
       <AnimateOnScroll>
-        <section className="py-12 md:py-16 bg-background">
-          <div className="container mx-auto px-4">
-            <div className="max-w-5xl mx-auto">
-              <div className="flex items-end justify-between gap-4 flex-wrap">
-                <div>
-                  <h2 className="text-2xl md:text-3xl font-headline font-bold">
-                    Autres villes — {city.department}
-                  </h2>
-                  <p className="mt-2 text-muted-foreground">
-                    Explorez d’autres pages locales du même département.
-                  </p>
-                </div>
-                <Button asChild variant="outline">
-                  <Link href="/villes">Voir toutes les villes</Link>
-                </Button>
-              </div>
-
-              <Separator className="my-6" />
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                {relatedCities.map((c) => {
-                  const label = inferCityLabelFromSlug(c.slug);
-                  return (
-                    <Link
-                      key={c.slug}
-                      href={`/villes/${c.slug}`}
-                      className={cn("rounded-md border bg-card p-3 transition-colors hover:bg-muted/40")}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <p className="font-semibold truncate">{label}</p>
-                          <p className="text-xs text-muted-foreground truncate">{c.title}</p>
-                        </div>
-                        <ShieldCheck className="h-4 w-4 text-primary mt-0.5" />
-                      </div>
-
-                      <div className="mt-2 flex flex-wrap gap-1.5">
-                        {(c.focus as Focus[]).slice(0, 3).map((f) => {
-                          const meta = FOCUS_META[f];
-                          return (
-                            <span
-                              key={f}
-                              className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-[11px] text-muted-foreground"
-                            >
-                              <meta.Icon className="h-3 w-3 text-primary" />
-                              {meta.label}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-
-              {relatedCities.length === 0 && (
-                <p className="text-sm text-muted-foreground">
-                  Aucune autre ville n’est encore configurée pour ce département.
-                </p>
-              )}
-            </div>
+        <section className="container mx-auto max-w-5xl px-4 pb-16 md:pb-20">
+          <div className="text-center text-sm text-muted-foreground">
+            Pour une demande urgente :{" "}
+            <a className={cn("underline underline-offset-4 hover:text-foreground")} href={phoneHref}>
+              appelez-nous
+            </a>
+            .
           </div>
         </section>
       </AnimateOnScroll>
