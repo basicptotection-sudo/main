@@ -1,58 +1,32 @@
 export const siteConfig = {
   name: "Basic Protection Privée",
   description:
-    "Solutions professionnelles de sécurité privée, surveillance et gardiennage pour entreprises et particuliers à Plaisir (78) et en Île-de-France. Protégez vos biens et vos équipes avec des agents qualifiés.",
-  url: "https://basic-protection.com",
+    "Société de sécurité privée à Plaisir (78) : gardiennage, surveillance, rondes, SSIAP, cynophile, protection rapprochée et sécurité événementielle en Île-de-France.",
+  url: "https://www.basic-protection.com",
   ogImage: "/brand/og.png",
-
   contact: {
     email: "contact@basic-protection.com",
     phone: "06 77 93 28 31",
     phoneE164: "+33677932831",
   },
-
   links: {
-    // Mets uniquement les liens réels. Sinon, laisse vide.
-    twitter: "",
-    facebook: "",
-    linkedin: "",
+    twitter: "https://twitter.com/basicprotection",
+    facebook: "https://facebook.com/basicprotection",
+    linkedin: "https://linkedin.com/company/basic-protection",
   },
-
   business: {
     name: "Basic Protection Privée",
-
     address: {
-      street: "5 Rue des Frères Lumière",
+      street: "5 rue des Frères Lumière",
       city: "Plaisir",
       postalCode: "78370",
-      region: "Île-de-France",
       country: "France",
-      countryCode: "FR",
     },
-
-    // À renseigner uniquement si tu es sûr
-    foundingDate: "", // ex: "2010-01-01"
-    vatID: "",        // ex: "FRXXXXXXXXXXX"
-
-    areaServed: [
-      "Plaisir",
-      "Yvelines (78)",
-      "Île-de-France",
-       "Paris",
-       "Hauts-de-Seine",
-       "Seine-Saint-Denis",
-       "Val-de-Marne",
-       "essonne",
-       "Seine-et-Marne",
-       "Val d'Oise",
-    ],
-
+    areaServed: ["Yvelines (78)", "Paris (75)", "Hauts-de-Seine (92)", "Seine-Saint-Denis (93)", "Val-de-Marne (94)", "Val-d'Oise (95)", "Seine-et-Marne (77)", "Essonne (91)"],
     telephone: "+33677932831",
-    email: "basic.protect@gmail.com",
-
-    // Mets des horaires vrais (ou laisse vide)
-    openingHours: "Mo-Fr 09:00-18:00"
+    email: "contact@basic-protection.com",
+    openingHours: "Lundi - Vendredi : 9h00 - 18h00",
   },
-} as const;
+};
 
 export type SiteConfig = typeof siteConfig;

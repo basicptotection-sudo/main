@@ -14,7 +14,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
@@ -25,8 +24,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { servicesData, Service } from "@/lib/services-data";
-import * as LucideIcons from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getLucideIcon } from "@/lib/icons";
 
 const navLinks = [
   { href: "/zones", label: "Zones" },
@@ -41,44 +40,62 @@ function normalizeTel(phoneE164?: string, fallback?: string) {
   return raw ? `tel:${raw}` : "tel:";
 }
 
+function isActiveLink(pathname: string, href: string) {
+  // usePathname() ne contient pas le hash (#about)
+  if (href.startsWith("/#")) return false;
+  if (href === "/") return pathname === "/";
+  return pathname === href || pathname.startsWith(href + "/");
+}
+
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
 
-  const terrainServices = useMemo(() => servicesData.filter((s) =>
-    [
-      "agent-securite-qualifie",
-      "agent-cynophile",
-      "agent-incendie-ssiap",
-      "agent-rondier",
-    ].includes(s.slug)
-  ), []);
+  // (Option future) => remplace ces filtres par un champ tier: "terrain"|"premium" dans servicesData
+  const terrainServices = useMemo(
+    () =>
+      servicesData.filter((s) =>
+        [
+          "agent-securite-qualifie",
+          "agent-cynophile",
+          "agent-incendie-ssiap",
+          "agent-rondier",
+        ].includes(s.slug)
+      ),
+    []
+  );
 
-  const premiumServices = useMemo(() => servicesData.filter((s) =>
-    [
-      "protection-rapprochee",
-      "securite-evenementielle",
-      "audit-conseil-surete",
-    ].includes(s.slug)
-  ), []);
+  const premiumServices = useMemo(
+    () =>
+      servicesData.filter((s) =>
+        ["protection-rapprochee", "securite-evenementielle", "audit-conseil-surete"].includes(
+          s.slug
+        )
+      ),
+    []
+  );
 
   const telHref = useMemo(
-    () => normalizeTel(siteConfig.contact.phoneE164, siteConfig.contact.phone),
+    () => normalizeTel((siteConfig.contact as any).phoneE164, siteConfig.contact.phone),
     []
   );
 
   const ServiceMenuItem = ({ service }: { service: Service }) => {
-    const Icon = (LucideIcons as any)[service.icon];
+    const Icon = getLucideIcon(service.icon);
     return (
-      <Link href={`/services/${service.slug}`} className="flex w-full items-start gap-3 rounded-md p-2 text-sm transition-colors hover:bg-muted" onClick={() => setIsMobileMenuOpen(false)}>
-        {Icon && <Icon className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />}
+      <Link
+        href={`/services/${service.slug}`}
+        className="flex w-full items-start gap-3 rounded-md p-2 text-sm transition-colors hover:bg-muted"
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        <Icon className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />
         <div className="flex-1">
           <p className="font-semibold text-foreground">{service.title}</p>
           <p className="text-xs text-muted-foreground">{service.shortDescription}</p>
         </div>
       </Link>
-    )
-  }
+    );
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
@@ -105,7 +122,7 @@ export function Header() {
               {siteConfig.name}
             </div>
             <div className="hidden text-xs text-muted-foreground md:block">
-              Sécurité privée • Gardiennage • Surveillance
+              Plaisir (78) • Île-de-France • Sécurité privée
             </div>
           </div>
         </Link>
@@ -114,27 +131,39 @@ export function Header() {
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-               <button className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus:outline-none">
+              <button
+                aria-label="Ouvrir le menu des services"
+                className="flex items-center gap-1 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
+              >
                 Nos services
                 <ChevronDown className="h-4 w-4" />
               </button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[40rem]" align="start">
+
+            <DropdownMenuContent
+              className="w-[44rem] max-w-[calc(100vw-2rem)]"
+              align="start"
+            >
               <div className="grid grid-cols-2 gap-x-6 p-4">
                 <div>
                   <DropdownMenuLabel className="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Services de Terrain
+                    Services de terrain
                   </DropdownMenuLabel>
                   <DropdownMenuGroup className="flex flex-col gap-1">
                     {terrainServices.map((service) => {
-                      const Icon = (LucideIcons as any)[service.icon];
+                      const Icon = getLucideIcon(service.icon);
                       return (
                         <DropdownMenuItem key={service.slug} asChild>
-                          <Link href={`/services/${service.slug}`} className="items-start gap-3">
-                            {Icon && <Icon className="mt-1 text-primary" />}
+                          <Link
+                            href={`/services/${service.slug}`}
+                            className="items-start gap-3"
+                          >
+                            <Icon className="mt-1 text-primary" />
                             <div>
                               <p className="font-semibold">{service.title}</p>
-                              <p className="text-xs text-muted-foreground whitespace-normal">{service.shortDescription}</p>
+                              <p className="text-xs text-muted-foreground whitespace-normal">
+                                {service.shortDescription}
+                              </p>
                             </div>
                           </Link>
                         </DropdownMenuItem>
@@ -142,20 +171,26 @@ export function Header() {
                     })}
                   </DropdownMenuGroup>
                 </div>
+
                 <div>
                   <DropdownMenuLabel className="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Services Premium
+                    Services premium
                   </DropdownMenuLabel>
                   <DropdownMenuGroup className="flex flex-col gap-1">
                     {premiumServices.map((service) => {
-                      const Icon = (LucideIcons as any)[service.icon];
+                      const Icon = getLucideIcon(service.icon);
                       return (
                         <DropdownMenuItem key={service.slug} asChild>
-                          <Link href={`/services/${service.slug}`} className="items-start gap-3">
-                            {Icon && <Icon className="mt-1 text-primary" />}
+                          <Link
+                            href={`/services/${service.slug}`}
+                            className="items-start gap-3"
+                          >
+                            <Icon className="mt-1 text-primary" />
                             <div>
                               <p className="font-semibold">{service.title}</p>
-                              <p className="text-xs text-muted-foreground whitespace-normal">{service.shortDescription}</p>
+                              <p className="text-xs text-muted-foreground whitespace-normal">
+                                {service.shortDescription}
+                              </p>
                             </div>
                           </Link>
                         </DropdownMenuItem>
@@ -168,7 +203,7 @@ export function Header() {
           </DropdownMenu>
 
           {navLinks.map((link) => {
-            const isActive = pathname.startsWith(link.href) && (link.href !== '/' || pathname === '/');
+            const isActive = isActiveLink(pathname, link.href);
             return (
               <Link
                 key={link.href}
@@ -229,28 +264,41 @@ export function Header() {
                     <span className="font-headline font-semibold">{siteConfig.name}</span>
                   </Link>
 
-                  <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
                     <X className="h-5 w-5" />
                     <span className="sr-only">Fermer le menu</span>
                   </Button>
                 </div>
 
                 <nav className="flex flex-col p-4 text-base">
-                   <Accordion type="single" collapsible className="w-full">
+                  <Accordion type="single" collapsible className="w-full">
                     <AccordionItem value="services" className="border-b-0">
                       <AccordionTrigger className="rounded-md px-2 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors hover:no-underline font-normal">
                         Nos services
                       </AccordionTrigger>
                       <AccordionContent className="pt-2 pl-4">
                         <div className="flex flex-col gap-1">
-                          <p className="px-2 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Services de Terrain</p>
-                          {terrainServices.map(service => <ServiceMenuItem key={service.slug} service={service} />)}
-                          <p className="px-2 pt-4 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Services Premium</p>
-                          {premiumServices.map(service => <ServiceMenuItem key={service.slug} service={service} />)}
+                          <p className="px-2 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            Services de terrain
+                          </p>
+                          {terrainServices.map((service) => (
+                            <ServiceMenuItem key={service.slug} service={service} />
+                          ))}
+                          <p className="px-2 pt-4 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                            Services premium
+                          </p>
+                          {premiumServices.map((service) => (
+                            <ServiceMenuItem key={service.slug} service={service} />
+                          ))}
                         </div>
                       </AccordionContent>
                     </AccordionItem>
                   </Accordion>
+
                   {navLinks.map((link) => (
                     <Link
                       key={link.href}
@@ -276,7 +324,8 @@ export function Header() {
                     </Link>
                   </Button>
                   <div className="pt-2 text-xs text-muted-foreground">
-                    Basés à {siteConfig.business.address.city} ({siteConfig.business.address.postalCode})
+                    Basés à {siteConfig.business.address.city} (
+                    {siteConfig.business.address.postalCode})
                   </div>
                 </div>
               </div>

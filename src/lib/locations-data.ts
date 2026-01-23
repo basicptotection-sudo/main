@@ -80,10 +80,10 @@ export const locationsData: Location[] = [
             { icon: 'Building2', title: 'Contrôle d’Accès en Entreprise', content: 'Gestion des flux de visiteurs et de livraisons pour les parcs d\'activités et sièges sociaux, avec des agents formés à l\'accueil et à la gestion des accès.' }
         ],
         mainCities: [
-            { name: 'Plaisir', href: '#' },
-            { name: 'Versailles', href: '#' },
-            { name: 'Saint-Germain-en-Laye', href: '#' },
-            { name: 'Montigny-le-Bretonneux', href: '#' }
+            { name: 'Plaisir', href: '/villes/plaisir-78370' },
+            { name: 'Versailles', href: '/villes/versailles-78000' },
+            { name: 'Saint-Germain-en-Laye', href: '/villes/saint-germain-en-laye-78100' },
+            { name: 'Montigny-le-Bretonneux', href: '/villes/montigny-le-bretonneux-78180' }
         ],
         whyUs: commonWhyUs,
         faq: [
@@ -108,10 +108,10 @@ export const locationsData: Location[] = [
             { icon: 'CalendarDays', title: 'Sécurisation d\'Événements de Prestige', content: 'Coordination complète de la sûreté pour vos lancements de produits, défilés, galas ou soirées privées, incluant le contrôle d\'accès, la gestion des foules et la protection des zones VIP.' }
         ],
         mainCities: [
-            { name: 'Paris 8e (Triangle d\'Or)', href: '#' },
-            { name: 'Paris 1er (Vendôme)', href: '#' },
+            { name: 'Paris 8e (Triangle d\'Or)', href: '/villes/paris-8-75008' },
+            { name: 'Paris 1er (Vendôme)', href: '/villes/paris-1-75001' },
             { name: 'Le Marais', href: '#' },
-            { name: 'La Défense (via Courbevoie)', href: '#' }
+            { name: 'La Défense (via Courbevoie)', href: '/villes/la-defense-92400' }
         ],
         whyUs: commonWhyUs,
         faq: [
@@ -136,10 +136,10 @@ export const locationsData: Location[] = [
             { icon: 'Users', title: 'Contrôle d\'Accès et Accueil Sûreté', content: 'Agents formés à la gestion des systèmes de contrôle d\'accès modernes, à l\'accueil des visiteurs et à la détection des comportements suspects dans les halls d\'entrée.' }
         ],
         mainCities: [
-            { name: 'La Défense', href: '#' },
-            { name: 'Neuilly-sur-Seine', href: '#' },
-            { name: 'Boulogne-Billancourt', href: '#' },
-            { name: 'Levallois-Perret', href: '#' }
+            { name: 'La Défense', href: '/villes/la-defense-92400' },
+            { name: 'Neuilly-sur-Seine', href: '/villes/neuilly-sur-seine-92200' },
+            { name: 'Boulogne-Billancourt', href: '/villes/boulogne-billancourt-92100' },
+            { name: 'Levallois-Perret', href: '/villes/levallois-perret-92300' }
         ],
         whyUs: commonWhyUs,
         faq: [
@@ -164,8 +164,8 @@ export const locationsData: Location[] = [
             { icon: 'Factory', title: 'Sécurisation de Plateformes Logistiques', content: 'Contrôle des conducteurs, vérification des scellés, surveillance des zones de stockage et prévention de la démarque inconnue pour les entrepôts et zones de fret.' }
         ],
         mainCities: [
-            { name: 'Saint-Denis', href: '#' },
-            { name: 'Aubervilliers', href: '#' },
+            { name: 'Saint-Denis', href: '/villes/saint-denis-93200' },
+            { name: 'Aubervilliers', href: '/villes/aubervilliers-93300' },
             { name: 'Montreuil', href: '#' },
             { name: 'Pantin', href: '#' }
         ],
@@ -192,10 +192,10 @@ export const locationsData: Location[] = [
             { icon: 'Building2', title: 'Gardiennage de Parcs Tertiaires', content: 'Présence dissuasive, rondes de fermeture et d\'ouverture, et intervention sur alarme pour les ensembles de bureaux et les zones d\'activités du département.' }
         ],
         mainCities: [
-            { name: 'Créteil', href: '#' },
+            { name: 'Créteil', href: '/villes/creteil-94000' },
             { name: 'Vitry-sur-Seine', href: '#' },
-            { name: 'Rungis', href: '#' },
-            { name: 'Ivry-sur-Seine', href: '#' }
+            { name: 'Rungis', href: '/villes/rungis-94150' },
+            { name: 'Ivry-sur-Seine', href: '/villes/ivry-sur-seine-94200' }
         ],
         whyUs: commonWhyUs,
         faq: [
@@ -220,9 +220,9 @@ export const locationsData: Location[] = [
             { icon: 'Building2', title: 'Surveillance des Parcs d\'Activités', content: 'Mutualisation de services de rondes et d\'intervention pour plusieurs entreprises au sein d\'un même parc d\'activités, offrant une solution de sécurité performante et économique.' }
         ],
         mainCities: [
-            { name: 'Cergy', href: '#' },
-            { name: 'Argenteuil', href: '#' },
-            { name: 'Roissy-en-France', href: '#' },
+            { name: 'Cergy', href: '/villes/cergy-95000' },
+            { name: 'Argenteuil', href: '/villes/argenteuil-95100' },
+            { name: 'Roissy-en-France', href: '/villes/roissy-en-france-95700' },
             { name: 'Sarcelles', href: '#' }
         ],
         whyUs: commonWhyUs,
@@ -248,9 +248,9 @@ export const locationsData: Location[] = [
             { icon: 'Castle', title: 'Soutien Sécurité pour Sites Touristiques', content: 'Renforts pour la gestion des flux lors des pics de fréquentation, la surveillance des parkings et la sécurisation des événements spéciaux pour les parcs de loisirs et sites touristiques.' }
         ],
         mainCities: [
-            { name: 'Marne-la-Vallée / Chessy', href: '#' },
-            { name: 'Meaux', href: '#' },
-            { name: 'Melun', href: '#' },
+            { name: 'Marne-la-Vallée / Chessy', href: '/villes/marne-la-vallee-77700' },
+            { name: 'Meaux', href: '/villes/meaux-77100' },
+            { name: 'Melun', href: '/villes/melun-77000' },
             { name: 'Serris', href: '#' }
         ],
         whyUs: commonWhyUs,
@@ -276,10 +276,10 @@ export const locationsData: Location[] = [
             { icon: 'Building2', title: 'Sûreté des Parcs d\'Affaires de Massy et Évry', content: 'Services de gardiennage, rondes d\'intervention mutualisées et contrôle des accès pour les entreprises des grands parcs tertiaires du département.' }
         ],
         mainCities: [
-            { name: 'Évry-Courcouronnes', href: '#' },
-            { name: 'Massy', href: '#' },
+            { name: 'Évry-Courcouronnes', href: '/villes/evry-courcouronnes-91000' },
+            { name: 'Massy', href: '/villes/massy-91300' },
             { name: 'Palaiseau', href: '#' },
-            { name: 'Saclay', href: '#' }
+            { name: 'Saclay', href: '/villes/saclay-91400' }
         ],
         whyUs: commonWhyUs,
         faq: [
