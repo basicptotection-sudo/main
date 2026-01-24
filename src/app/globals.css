@@ -4,108 +4,112 @@
 
 @layer base {
   :root {
-    /* Palette basée sur le logo Basic Protection :
-       - Bleu nuit (texte/logo) ~ #2E3169
-       - Bleu cyan (liserés) ~ #2985C1
-       - Bleus clairs (fonds) ~ #ADD0E9 / #ECF7FA
+    /* Palette 2 couleurs (logo)
+      - Bleu nuit : #1F2A44  -> 222 37% 19%
+      - Bleu cyan : #2F8FD8  -> 206 68% 52%
+      Le reste = tints (dérivés) de ces deux couleurs + neutres (blanc/noir)
     */
 
-    --background: 200 55% 96%;
-    --foreground: 237 35% 18%;
+    /* Fond = tint très clair du cyan */
+    --background: 206 68% 97%;
+    --foreground: 222 37% 19%;
 
     --card: 0 0% 100%;
-    --card-foreground: 237 35% 18%;
+    --card-foreground: 222 37% 19%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 237 35% 18%;
+    --popover-foreground: 222 37% 19%;
 
     /* Brand primary = bleu nuit */
-    --primary: 237 40% 30%;
+    --primary: 222 37% 19%;
     --primary-foreground: 0 0% 98%;
 
-    /* Secondary = bleu clair (soft) */
-    --secondary: 210 40% 92%;
-    --secondary-foreground: 237 40% 26%;
+    /* Secondary = tint clair du bleu nuit */
+    --secondary: 222 35% 94%;
+    --secondary-foreground: 222 37% 19%;
 
-    --muted: 210 35% 92%;
-    --muted-foreground: 210 20% 45%;
+    /* Muted = tint encore plus clair */
+    --muted: 222 30% 95%;
+    --muted-foreground: 222 20% 40%;
 
-    /* Accent = cyan du logo */
-    --accent: 204 65% 46%;
+    /* Accent = cyan */
+    --accent: 206 68% 52%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 210 30% 86%;
-    --input: 210 30% 86%;
-    --ring: 204 65% 46%;
+    /* Border/Input = tint du cyan (clair) */
+    --border: 206 40% 88%;
+    --input: 206 40% 88%;
+    --ring: 206 68% 52%;
 
-    --chart-1: 204 65% 46%;
-    --chart-2: 237 40% 30%;
-    --chart-3: 219 44% 40%;
-    --chart-4: 210 40% 70%;
-    --chart-5: 190 55% 60%;
+    /* Charts = uniquement variations de nos 2 couleurs */
+    --chart-1: 206 68% 52%;
+    --chart-2: 222 37% 19%;
+    --chart-3: 206 55% 62%;
+    --chart-4: 222 28% 35%;
+    --chart-5: 206 35% 85%;
 
     --radius: 0.5rem;
 
-    /* Sidebar (tint bleu très léger) */
-    --sidebar-background: 200 55% 97%;
-    --sidebar-foreground: 237 35% 18%;
-    --sidebar-primary: 237 40% 30%;
+    /* Sidebar */
+    --sidebar-background: 206 68% 97%;
+    --sidebar-foreground: 222 37% 19%;
+    --sidebar-primary: 222 37% 19%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 210 40% 92%;
-    --sidebar-accent-foreground: 237 40% 26%;
-    --sidebar-border: 210 30% 86%;
-    --sidebar-ring: 204 65% 46%;
+    --sidebar-accent: 222 35% 94%;
+    --sidebar-accent-foreground: 222 37% 19%;
+    --sidebar-border: 206 40% 88%;
+    --sidebar-ring: 206 68% 52%;
   }
 
   .dark {
-    /* Dark mode : fond bleu nuit, actions cyan */
-    --background: 237 30% 10%;
-    --foreground: 200 55% 96%;
+    /* Dark mode : fond bleu nuit + actions cyan */
+    --background: 222 37% 10%;
+    --foreground: 206 68% 96%;
 
-    --card: 237 28% 14%;
-    --card-foreground: 200 55% 96%;
+    --card: 222 37% 13%;
+    --card-foreground: 206 68% 96%;
 
-    --popover: 237 30% 10%;
-    --popover-foreground: 200 55% 96%;
+    --popover: 222 37% 10%;
+    --popover-foreground: 206 68% 96%;
 
-    /* Primary (boutons) = cyan logo */
-    --primary: 204 65% 46%;
-    --primary-foreground: 237 30% 10%;
+    /* Primary = cyan (CTA plus visibles en dark) */
+    --primary: 206 68% 52%;
+    --primary-foreground: 222 37% 10%;
 
-    --secondary: 237 22% 18%;
-    --secondary-foreground: 200 55% 96%;
+    --secondary: 222 30% 18%;
+    --secondary-foreground: 206 68% 96%;
 
-    --muted: 237 22% 18%;
-    --muted-foreground: 210 20% 70%;
+    --muted: 222 30% 18%;
+    --muted-foreground: 206 25% 75%;
 
-    /* Accent = bleu moyen issu du logo */
-    --accent: 219 44% 40%;
+    /* Accent = bleu nuit (variante) */
+    --accent: 222 37% 19%;
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 237 20% 25%;
-    --input: 237 20% 25%;
-    --ring: 204 65% 46%;
+    --border: 222 25% 22%;
+    --input: 222 25% 22%;
+    --ring: 206 68% 52%;
 
-    --chart-1: 204 65% 46%;
-    --chart-2: 237 40% 30%;
-    --chart-3: 219 44% 50%;
-    --chart-4: 210 40% 70%;
-    --chart-5: 190 55% 60%;
+    --chart-1: 206 68% 52%;
+    --chart-2: 222 37% 19%;
+    --chart-3: 206 55% 62%;
+    --chart-4: 222 28% 35%;
+    --chart-5: 206 35% 85%;
 
-    --sidebar-background: 237 30% 10%;
-    --sidebar-foreground: 200 55% 96%;
-    --sidebar-primary: 204 65% 46%;
-    --sidebar-primary-foreground: 237 30% 10%;
-    --sidebar-accent: 237 22% 18%;
-    --sidebar-accent-foreground: 200 55% 96%;
-    --sidebar-border: 237 20% 25%;
-    --sidebar-ring: 204 65% 46%;
+    --sidebar-background: 222 37% 10%;
+    --sidebar-foreground: 206 68% 96%;
+    --sidebar-primary: 206 68% 52%;
+    --sidebar-primary-foreground: 222 37% 10%;
+    --sidebar-accent: 222 30% 18%;
+    --sidebar-accent-foreground: 206 68% 96%;
+    --sidebar-border: 222 25% 22%;
+    --sidebar-ring: 206 68% 52%;
   }
 }
 
@@ -116,11 +120,12 @@
   body {
     @apply bg-background text-foreground;
   }
+
   .prose {
     --tw-prose-body: hsl(var(--foreground));
     --tw-prose-headings: hsl(var(--primary));
     --tw-prose-lead: hsl(var(--muted-foreground));
-    --tw-prose-links: hsl(var(--primary));
+    --tw-prose-links: hsl(var(--accent));
     --tw-prose-bold: hsl(var(--foreground));
     --tw-prose-counters: hsl(var(--muted-foreground));
     --tw-prose-bullets: hsl(var(--border));
@@ -137,7 +142,7 @@
     --tw-prose-invert-body: hsl(var(--foreground));
     --tw-prose-invert-headings: hsl(var(--primary));
     --tw-prose-invert-lead: hsl(var(--muted-foreground));
-    --tw-prose-invert-links: hsl(var(--primary));
+    --tw-prose-invert-links: hsl(var(--accent));
     --tw-prose-invert-bold: hsl(var(--foreground));
     --tw-prose-invert-counters: hsl(var(--muted-foreground));
     --tw-prose-invert-bullets: hsl(var(--border));

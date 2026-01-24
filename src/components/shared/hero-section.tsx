@@ -1,17 +1,17 @@
-
 import Image from "next/image";
 import Link from "next/link";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 type CTA = {
   label: string;
   href: string;
   variant?: "default" | "secondary" | "destructive" | "outline" | "ghost" | "link";
+  className?: string;
 };
 
 type HeroSectionProps = {
-  title: string;
+  title: string | React.ReactNode;
   description: string;
   cta1: CTA;
   cta2: CTA;
@@ -58,10 +58,10 @@ export function HeroSection({
             {description}
             </p>
             <div className="mt-8 flex flex-wrap justify-start gap-4">
-            <Link href={cta1.href} className={cn(buttonVariants({ size: "lg" }), "font-bold")}>
+            <Link href={cta1.href} className={cn(buttonVariants({ size: "lg", variant: cta1.variant }), "font-bold", cta1.className)}>
                 {cta1.label}
             </Link>
-            <Link href={cta2.href} className={cn(buttonVariants({ variant: cta2.variant || 'secondary', size: "lg" }), "font-bold")}>
+            <Link href={cta2.href} className={cn(buttonVariants({ size: "lg", variant: cta2.variant }), "font-bold", cta2.className)}>
                 {cta2.label}
             </Link>
             </div>
