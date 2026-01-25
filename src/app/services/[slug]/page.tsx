@@ -243,29 +243,51 @@ function getPageSections(service: Service): PageSection[] {
  * Si tu veux un tri parfait portrait/paysage: on pourra ajouter un champ aspect dans PlaceHolderImages.
  */
 function pickServiceImages(service: Service) {
+  const simpleHash = (str: string) => {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      const char = str.charCodeAt(i);
+      hash = (hash << 5) - hash + char;
+      hash |= 0; // Convert to 32bit integer
+    }
+    return Math.abs(hash);
+  };
+
   const hero =
     PlaceHolderImages.find((p) => p.id === service.heroImageId) ??
     PlaceHolderImages.find((p) => p.id === "hero");
 
-  // pool d’images (hors hero) – on évite les doublons
-  const pool = PlaceHolderImages.filter((p) => p.imageUrl && p.id !== hero?.id);
+  // Pool of images excluding the hero image to avoid repetition on the same page
+  const pool = PlaceHolderImages.filter((p) => p.id !== hero?.id && p.imageUrl);
 
-  // heuristique: si imageHint ou description contient "portrait" / "vertical"
-  const isPortrait = (p: any) => {
-    const t = `${p?.imageHint ?? ""} ${p?.description ?? ""}`.toLowerCase();
-    return t.includes("portrait") || t.includes("vertical");
-  };
+  // Fallback if the pool is too small
+  if (pool.length < 3) {
+    return {
+      portrait: pool[0] ?? hero!,
+      landscape1: pool[1] ?? pool[0] ?? hero!,
+      landscape2: pool[2] ?? pool[1] ?? pool[0] ?? hero!,
+    };
+  }
 
-  const portrait = pool.find(isPortrait) ?? pool[0] ?? hero;
-  const landscapes = pool.filter((p) => p.id !== portrait?.id);
+  const hash = simpleHash(service.slug);
 
-  const land1 = landscapes[0] ?? hero;
-  const land2 = landscapes[1] ?? landscapes[0] ?? hero;
+  // Use the hash to get different starting points for each service
+  const index1 = hash % pool.length;
+  const index2 = (index1 + 1) % pool.length;
+  const index3 = (index2 + 1) % pool.length;
 
+  // This ensures 3 different images if the pool is large enough
+  const img1 = pool[index1];
+  const img2 = pool[index2];
+  const img3 = pool[index3];
+
+  // Heuristic to find a portrait-like image. This can be improved.
+  // For now, we'll just assign them based on index.
+  // The layout is what will determine the final rendering shape.
   return {
-    portrait: portrait!,
-    landscape1: land1!,
-    landscape2: land2!,
+    portrait: img1!,
+    landscape1: img2!,
+    landscape2: img3!,
   };
 }
 
