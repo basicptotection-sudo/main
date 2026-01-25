@@ -37,9 +37,8 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-3">
+            <Link href="/" className="inline-block">
               <div className="relative h-10 w-10 overflow-hidden rounded-md">
-                {/* Remplace si ton logo n'est pas en png */}
                 <Image
                   src="/images/logo.png"
                   alt={`Logo ${siteConfig.name}`}
@@ -47,15 +46,6 @@ export function Footer() {
                   sizes="40px"
                   className="object-contain"
                 />
-              </div>
-
-              <div className="leading-tight">
-                <div className="font-headline text-lg font-semibold tracking-tight">
-                  {siteConfig.name}
-                </div>
-                <div className="text-sm text-muted-foreground">
-                  Sécurité privée • Gardiennage • Surveillance
-                </div>
               </div>
             </Link>
 
