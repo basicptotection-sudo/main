@@ -11,6 +11,7 @@ import {
   AnimateOnScroll,
   Breadcrumbs,
   CTASection,
+  HeroSection,
 } from "@/components/shared";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
