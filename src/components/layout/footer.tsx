@@ -40,11 +40,18 @@ export function Footer() {
             <Link href="/" className="inline-block">
               <div className="relative h-20 w-20 overflow-hidden rounded-md">
                 <Image
-                  src="/images/logo.png"
+                  src="/images/logo-clair.png"
                   alt={`Logo ${siteConfig.name}`}
                   fill
                   sizes="80px"
-                  className="object-contain"
+                  className="object-contain block dark:hidden"
+                />
+                <Image
+                  src="/images/logo-sombre.png"
+                  alt={`Logo ${siteConfig.name}`}
+                  fill
+                  sizes="80px"
+                  className="object-contain hidden dark:block"
                 />
               </div>
             </Link>
