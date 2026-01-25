@@ -107,12 +107,12 @@ export function Header() {
           aria-label={`${siteConfig.name} — Accueil`}
           onClick={() => setIsMobileMenuOpen(false)}
         >
-          <div className="relative h-9 w-9 overflow-hidden rounded-md">
+          <div className="relative h-10 w-10 overflow-hidden rounded-md">
             <Image
               src="/images/logo.png"
               alt={`Logo ${siteConfig.name}`}
               fill
-              sizes="36px"
+              sizes="40px"
               className="object-contain"
               priority
             />
@@ -244,12 +244,12 @@ export function Header() {
                     className="flex items-center gap-3"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <div className="relative h-9 w-9 overflow-hidden rounded-md">
+                    <div className="relative h-10 w-10 overflow-hidden rounded-md">
                       <Image
                         src="/images/logo.png"
                         alt={`Logo ${siteConfig.name}`}
                         fill
-                        sizes="36px"
+                        sizes="40px"
                         className="object-contain"
                       />
                     </div>
