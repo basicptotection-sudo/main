@@ -193,7 +193,7 @@ export default function Home() {
       />
       <div className="relative -mt-16 z-10">
         <div className="container mx-auto px-4">
-          <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mx-auto grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Stat
               variant="onBlack"
               Icon={StatShieldCheck}

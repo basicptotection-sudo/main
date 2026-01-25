@@ -17,11 +17,12 @@ type FAQAccordionProps = {
   description: string;
   items: FAQItem[];
   className?: string;
+  id?: string;
 };
 
-export function FAQAccordion({ title, description, items, className }: FAQAccordionProps) {
+export function FAQAccordion({ id, title, description, items, className }: FAQAccordionProps) {
   return (
-    <section className={cn("py-16 md:py-24", className)}>
+    <section id={id} className={cn("py-16 md:py-24", className)}>
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
@@ -31,7 +32,7 @@ export function FAQAccordion({ title, description, items, className }: FAQAccord
             {description}
           </p>
         </div>
-        <div className="mt-12 max-w-3xl mx-auto">
+        <div className="mt-12 max-w-4xl mx-auto">
           <Accordion type="single" collapsible className="w-full">
             {items.map((item, index) => (
               <AccordionItem key={index} value={`item-${index}`}>

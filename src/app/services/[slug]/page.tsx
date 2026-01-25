@@ -1,3 +1,4 @@
+
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -9,7 +10,6 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { siteConfig } from "@/lib/config";
 
 import {
-  HeroSection,
   ProcessSteps,
   SectorsGrid,
   FAQAccordion,
@@ -18,6 +18,7 @@ import {
   BenefitsSection,
   AnimateOnScroll,
   TrustElements,
+  HeroSection,
 } from "@/components/shared";
 
 import ServiceJsonLd from "@/components/seo/service-json-ld";
@@ -357,13 +358,11 @@ export default function ServicePage({ params }: ServicePageProps) {
         breadcrumbs={<Breadcrumbs items={breadcrumbItems} className="mb-4 py-0" />}
       />
 
-      <AnimateOnScroll>
-          <ServicePageNavigation items={miniNav} />
-      </AnimateOnScroll>
+      <ServicePageNavigation items={miniNav} />
 
       <AnimateOnScroll>
           <section id="overview" className="py-16 md:py-24">
-              <div className="container mx-auto max-w-5xl px-4">
+              <div className="container mx-auto max-w-6xl px-4">
                   <div className="mx-auto max-w-3xl text-center">
                         <p className="text-sm font-semibold uppercase tracking-wider text-primary">Vue d'ensemble</p>
                         <h2 className="mt-2 font-headline text-3xl font-bold tracking-tight text-primary md:text-4xl">
@@ -528,58 +527,48 @@ export default function ServicePage({ params }: ServicePageProps) {
       
       {service.benefits && service.benefits.length > 0 && (
           <AnimateOnScroll>
-              <section id="benefits" className="bg-card">
-                  <BenefitsSection
-                      title="Vos avantages clés"
-                      description={`Découvrez les bénéfices concrets de notre service : ${service.title.toLowerCase()}.`}
-                      benefits={service.benefits ?? []}
-                  />
-              </section>
+              <BenefitsSection
+                id="benefits"
+                title="Vos avantages clés"
+                description={`Découvrez les bénéfices concrets de notre service : ${service.title.toLowerCase()}.`}
+                benefits={service.benefits ?? []}
+                className="bg-card"
+              />
           </AnimateOnScroll>
       )}
       
       {service.method?.steps.length > 0 && (
           <AnimateOnScroll>
-              <section id="method" className="py-16 md:py-24">
-                  <div className="container mx-auto max-w-6xl px-4">
-                      <ProcessSteps
-                          title={service.method?.title ?? "Une méthode claire, un pilotage précis"}
-                          description={ service.method?.description ?? "Du cadrage à l’exécution : un dispositif pensé, déployé, puis supervisé."}
-                          steps={service.method?.steps ?? []}
-                      />
-                  </div>
-              </section>
+            <ProcessSteps
+                id="method"
+                title={service.method?.title ?? "Une méthode claire, un pilotage précis"}
+                description={ service.method?.description ?? "Du cadrage à l’exécution : un dispositif pensé, déployé, puis supervisé."}
+                steps={service.method?.steps ?? []}
+            />
           </AnimateOnScroll>
       )}
 
       {service.sectors && service.sectors.length > 0 && (
           <AnimateOnScroll>
-              <section id="sectors" className="bg-card py-16 md:py-24">
-                  <div className="container mx-auto max-w-6xl px-4">
-                      <SectorsGrid sectors={service.sectors ?? []} />
-                  </div>
-              </section>
+            <SectorsGrid id="sectors" sectors={service.sectors ?? []} className="bg-card" />
           </AnimateOnScroll>
       )}
 
       {faqItems.length > 0 && (
             <AnimateOnScroll>
-              <section id="faq" className="py-16 md:py-24">
-                  <div className="container mx-auto max-w-3xl px-4">
-                      <FAQAccordion
-                      title="Questions fréquentes"
-                      description={`Les réponses à vos questions sur ${service.title.toLowerCase()}.`}
-                      items={faqItems}
-                      />
-                  </div>
-              </section>
+              <FAQAccordion
+                id="faq"
+                title="Questions fréquentes"
+                description={`Les réponses à vos questions sur ${service.title.toLowerCase()}.`}
+                items={faqItems}
+              />
           </AnimateOnScroll>
       )}
 
       {related.length > 0 && (
           <AnimateOnScroll>
               <section className="bg-card py-16 md:py-24">
-                  <div className="container mx-auto max-w-5xl px-4">
+                  <div className="container mx-auto max-w-6xl px-4">
                       <div className="mx-auto max-w-3xl text-center">
                           <h2 className="font-headline text-3xl font-bold md:text-4xl">
                               Services Complémentaires

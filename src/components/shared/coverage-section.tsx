@@ -28,7 +28,7 @@ export function CoverageSection({ title, description, zones, children, className
             {description}
           </p>
         </div>
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 max-w-4xl mx-auto">
+        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-8 max-w-5xl mx-auto">
           {zones.map((zone) => {
             const content = (
               <div key={zone.name} className="flex items-center gap-3 group">

@@ -1,4 +1,6 @@
+
 import { CheckCircle } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type Benefit = {
     title: string;
@@ -6,14 +8,16 @@ type Benefit = {
 };
 
 type BenefitsSectionProps = {
+    id?: string;
     title: string;
     description: string;
     benefits: Benefit[];
+    className?: string;
 };
 
-export function BenefitsSection({ title, description, benefits }: BenefitsSectionProps) {
+export function BenefitsSection({ id, title, description, benefits, className }: BenefitsSectionProps) {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section id={id} className={cn("py-16 md:py-24", className)}>
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">

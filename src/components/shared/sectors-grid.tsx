@@ -1,21 +1,22 @@
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import * as LucideIcons from "lucide-react";
 import { cn } from "@/lib/utils";
+import { getLucideIcon } from "@/lib/icons";
 
 type Sector = {
-  icon: React.ReactNode | string;
+  icon: string;
   name: string;
 };
 
 type SectorsGridProps = {
+  id?: string;
   sectors: Sector[];
   className?: string;
 };
 
-export function SectorsGrid({ sectors, className }: SectorsGridProps) {
+export function SectorsGrid({ id, sectors, className }: SectorsGridProps) {
   return (
-    <section className={cn("py-16 md:py-24", className)}>
+    <section id={id} className={cn("py-16 md:py-24", className)}>
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
@@ -27,17 +28,11 @@ export function SectorsGrid({ sectors, className }: SectorsGridProps) {
         </div>
         <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
           {sectors.map((sector) => {
-             let IconComponent: React.ReactNode;
-             if (typeof sector.icon === 'string') {
-               const Icon = (LucideIcons as any)[sector.icon];
-               IconComponent = Icon ? <Icon className="w-10 h-10" /> : null;
-             } else {
-               IconComponent = sector.icon;
-             }
+             const IconComponent = getLucideIcon(sector.icon);
             return (
               <Card key={sector.name} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
                 <CardHeader className="items-center pb-2">
-                  {IconComponent}
+                  {IconComponent && <IconComponent className="w-10 h-10" />}
                 </CardHeader>
                 <CardContent>
                   <h3 className="font-semibold text-base">{sector.name}</h3>
