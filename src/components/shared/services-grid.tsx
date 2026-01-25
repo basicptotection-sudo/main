@@ -17,9 +17,10 @@ type ServicesGridProps = {
   description: string;
   services: Service[];
   className?: string;
+  gridClassName?: string;
 };
 
-export function ServicesGrid({ id, title, description, services, className }: ServicesGridProps) {
+export function ServicesGrid({ id, title, description, services, className, gridClassName }: ServicesGridProps) {
   return (
     <section id={id} className={cn("py-16 md:py-24", className)}>
       <div className="container mx-auto px-4">
@@ -31,7 +32,7 @@ export function ServicesGrid({ id, title, description, services, className }: Se
             {description}
           </p>
         </div>
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className={cn("mt-12 grid grid-cols-1 md:grid-cols-2 gap-8", gridClassName || "lg:grid-cols-4")}>
           {services.map((service, index) => {
              let IconComponent: React.ReactNode;
             if (typeof service.icon === 'string') {
