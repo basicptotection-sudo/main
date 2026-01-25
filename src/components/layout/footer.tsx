@@ -38,12 +38,12 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="inline-block">
-              <div className="relative h-10 w-10 overflow-hidden rounded-md">
+              <div className="relative h-20 w-20 overflow-hidden rounded-md">
                 <Image
                   src="/images/logo.png"
                   alt={`Logo ${siteConfig.name}`}
                   fill
-                  sizes="40px"
+                  sizes="80px"
                   className="object-contain"
                 />
               </div>
