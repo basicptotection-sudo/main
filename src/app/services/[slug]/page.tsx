@@ -15,6 +15,7 @@ import {
   Breadcrumbs,
   BenefitsSection,
   AnimateOnScroll,
+  TrustElements,
 } from "@/components/shared";
 
 import ServiceJsonLd from "@/components/seo/service-json-ld";
@@ -82,10 +83,11 @@ function serviceContextBlocks(service: Service) {
     case "agent-securite-qualifie":
       return {
         ...common,
+        whenTitle: "Quand faire appel à un Agent de Sécurité Qualifié ?",
         when:
-          "Quand vous avez besoin d’une présence dissuasive, d’un contrôle d’accès (visiteurs, livraisons), de rondes et d’un reporting fiable. Idéal pour bureaux, commerces, sites techniques et résidences.",
+          "Pour une surveillance continue (24/7 ou horaires de bureau), le contrôle d'accès d'un siège, la prévention du vol dans un commerce, ou pour sécuriser un site la nuit et les week-ends.",
         scope:
-          "Contrôle d’accès, rondes, prévention des incidents, gestion des anomalies, application des consignes, tenue de main courante, transmission des consignes et coordination si besoin.",
+          "Contrôle d'accès (personnes, véhicules), rondes de prévention, gestion des alarmes, application des consignes de sécurité, rédaction de rapports, première intervention et assistance à personnes.",
       };
 
     case "agent-cynophile":
@@ -262,6 +264,21 @@ export default function ServicePage({ params }: ServicePageProps) {
           )}
         </section>
       </AnimateOnScroll>
+      
+      {service.whyUs && service.whyUs.length > 0 && (
+        <AnimateOnScroll>
+            <section className="py-16 md:py-24 bg-muted/30">
+              <div className="container mx-auto px-4">
+                <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary text-center mb-12">
+                  Nos Engagements pour ce Service
+                </h2>
+                <div className="max-w-5xl mx-auto">
+                  <TrustElements elements={service.whyUs} />
+                </div>
+              </div>
+            </section>
+          </AnimateOnScroll>
+      )}
 
       <AnimateOnScroll>
         <BenefitsSection

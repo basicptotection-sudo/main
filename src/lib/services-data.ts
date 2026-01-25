@@ -10,6 +10,12 @@ export type Benefit = {
     description: string;
 };
 
+export type TrustElement = {
+    icon: string;
+    title: string;
+    description: string;
+};
+
 export type Service = {
     slug: string;
     icon: string;
@@ -32,6 +38,7 @@ export type Service = {
         icon: string;
         name: string;
     }[];
+    whyUs?: TrustElement[];
     faq: FAQ[];
 };
 
@@ -39,38 +46,48 @@ export const servicesData: Service[] = [
     {
         slug: 'agent-securite-qualifie',
         icon: 'Shield',
-        title: 'Agent de Sécurité Qualifié',
-        shortDescription: 'Présence dissuasive et professionnelle pour la surveillance de vos sites.',
-        description: 'Nos agents de sécurité qualifiés (CQP-APS) assurent la protection des biens et des personnes. Ils contrôlent les accès, effectuent des rondes et préviennent les actes de malveillance, garantissant un environnement sûr pour vos collaborateurs et visiteurs.',
-        keywords: ['agent de sécurité', 'gardiennage', 'surveillance site', 'CQP-APS', 'sécurité entreprise'],
+        title: 'Agent de Sécurité Qualifié (APS)',
+        shortDescription: 'La référence en gardiennage et surveillance de site. Fiabilité, rigueur et professionnalisme pour une tranquillité d’esprit totale.',
+        description: 'Nos agents de sécurité qualifiés (CQP-APS) sont le pilier de la protection des biens et des personnes. Postés, véhiculés ou en rondes, ils contrôlent les accès, préviennent les actes de malveillance et gèrent les incidents, garantissant un environnement sûr pour vos collaborateurs, vos clients et vos actifs.',
+        keywords: ['agent de sécurité', 'gardiennage', 'surveillance de site', 'agent APS', 'sécurité entreprise', 'contrôle d\'accès', 'prévention malveillance'],
         heroImageId: 'service-agent-qualifie',
         benefits: [
-            { title: 'Dissuasion Naturelle', description: 'Une présence visible pour décourager toute tentative d\'acte malveillant.' },
-            { title: 'Contrôle des Accès', description: 'Filtrage rigoureux des entrées et sorties de personnes, véhicules et marchandises.' },
-            { title: 'Réactivité Immédiate', description: 'Premiers intervenants en cas d\'anomalie, d\'incident ou de conflit.' },
-            { title: 'Connaissance des Procédures', description: 'Application stricte de vos consignes et des procédures de sécurité.' },
-            { title: 'Reporting Fiable', description: 'Tenue d\'une main courante informatique pour une traçabilité complète des événements.' },
-            { title: 'Professionnalisme', description: 'Agents formés, dotés d\'un grand sens du service et d\'une présentation irréprochable.' }
+            { title: 'Dissuasion & Prévention Active', description: 'Une présence visible et professionnelle réduit significativement les risques d\'intrusion, de vol et de vandalisme. Nos agents sont formés pour détecter les comportements suspects et agir en amont.' },
+            { title: 'Contrôle d\'Accès Rigoureux', description: 'Nous appliquons vos procédures à la lettre pour le filtrage des visiteurs, véhicules et livraisons, assurant que seules les personnes autorisées accèdent à vos locaux.' },
+            { title: 'Gestion Sereine des Incidents', description: 'En cas d\'anomalie ou d\'urgence, nos agents sont les premiers intervenants. Leur calme et leur formation leur permettent de gérer la situation efficacement avant l\'arrivée des secours.' },
+            { title: 'Traçabilité & Reporting Complet', description: 'Chaque action est consignée dans une main courante électronique. Vous recevez des rapports clairs et réguliers sur l\'activité, les incidents et les points d\'amélioration.' },
+            { title: 'Flexibilité & Adaptabilité', description: 'Nous adaptons les horaires, les missions et les effectifs à vos besoins réels, que ce soit pour une surveillance 24/7, des renforts ponctuels ou des missions spécifiques.' },
+            { title: 'Image de Marque Valoriseé', description: 'La posture, la tenue et le professionnalisme de nos agents contribuent à l\'image de sérieux et de sécurité de votre entreprise auprès de vos clients et partenaires.' }
+        ],
+        whyUs: [
+            { icon: 'UserCheck', title: 'Recrutement Sélectif', description: 'Nous ne recrutons que des agents titulaires de la carte professionnelle, avec une expérience vérifiée et un casier judiciaire vierge. Le savoir-être est un critère essentiel.' },
+            { icon: 'BookOpen', title: 'Formation Continue', description: 'Nos agents suivent des formations régulières : secourisme (SST), gestion de conflit, et mises à niveau réglementaires pour une compétence toujours à jour.' },
+            { icon: 'Users', title: 'Management de Proximité', description: 'Chaque site est suivi par un chef de secteur qui assure la bonne prise de poste, la compréhension des consignes et des contrôles qualité inopinés.' },
+            { icon: 'Smartphone', title: 'Technologie & Transparence', description: 'Nous utilisons des mains courantes informatisées et des contrôleurs de ronde pour une traçabilité totale et des rapports que vous pouvez consulter.' }
         ],
         method: {
-            title: "Notre protocole pour la sécurité de site",
-            description: "Une méthodologie éprouvée pour une protection efficace et fiable.",
+            title: "Notre Protocole de Déploiement : Rigueur et Transparence",
+            description: "Chaque mission de gardiennage est encadrée par une méthode en 4 étapes qui garantit la qualité et la fiabilité de notre prestation.",
             steps: [
-                { icon: 'FileText', title: 'Élaboration des consignes', description: 'Définition précise de vos besoins, des points de contrôle et des procédures d\'urgence.' },
-                { icon: 'Users', title: 'Sélection de l\'agent', description: 'Affectation d\'un agent dont le profil et l\'expérience correspondent à votre site.' },
-                { icon: 'ShieldCheck', title: 'Prise de poste et formation', description: 'Intégration de l\'agent avec formation spécifique aux particularités de votre environnement.' },
-                { icon: 'ThumbsUp', title: 'Suivi et contrôle qualité', description: 'Contrôles réguliers, audits de performance et communication transparente avec vous.' }
+                { icon: 'FileSearch', title: '1. Audit & Cadrage', description: 'Analyse de votre site, des flux et des risques pour définir des consignes précises et un plan de prévention adapté.' },
+                { icon: 'UserCheck', title: '2. Sélection & Formation', description: 'Affectation d\'un ou plusieurs agents dont le profil correspond à votre culture d\'entreprise, suivie d\'une formation spécifique à votre site.' },
+                { icon: 'ShieldCheck', title: '3. Déploiement & Suivi', description: 'Mise en place du dispositif avec notre responsable d\'exploitation. Le suivi est assuré par des visites de site régulières.' },
+                { icon: 'TrendingUp', title: '4. Évaluation & Optimisation', description: 'Points mensuels ou trimestriels pour analyser les rapports, évaluer la performance et ajuster le dispositif si nécessaire.' }
             ]
         },
         sectors: [
-            { icon: 'Building2', name: 'Entreprises & Sièges' },
-            { icon: 'Store', name: 'Commerces & Retail' },
-            { icon: 'Factory', name: 'Entrepôts & Logistique' },
-            { icon: 'HardHat', name: 'Chantiers (BTP)' }
+            { icon: 'Building2', name: 'Sièges Sociaux & Bureaux' },
+            { icon: 'Factory', name: 'Sites Industriels & Entrepôts' },
+            { icon: 'HardHat', name: 'Chantiers & BTP' },
+            { icon: 'Store', name: 'Retail & Centres Commerciaux' },
+            { icon: 'Landmark', name: 'Sites Publics & Institutionnels' },
+            { icon: 'Home', name: 'Immobilier Résidentiel' }
         ],
         faq: [
-            { question: 'Quelle est la différence entre un agent de sécurité et un vigile ?', answer: 'Le terme "vigile" est ancien. Aujourd\'hui, on parle d\'Agent de Prévention et de Sécurité (APS), qui est un professionnel titulaire d\'une carte professionnelle délivrée par le CNAPS et ayant suivi une formation certifiante (CQP-APS).' },
-            { question: 'Vos agents sont-ils disponibles pour des missions courtes ?', answer: 'Oui, nous pouvons mettre en place des dispositifs pour des besoins ponctuels, comme le remplacement d\'un agent absent ou un renfort temporaire, tout comme pour des missions de longue durée.' }
+            { question: 'Quelles sont les qualifications obligatoires pour un agent de sécurité ?', answer: 'Chaque agent doit détenir une carte professionnelle en cours de validité, délivrée par le CNAPS. Cela atteste qu\'il a suivi une formation certifiante (CQP APS), qu\'il n\'a pas de casier judiciaire et qu\'il est apte à exercer.' },
+            { question: 'Pouvez-vous fournir des agents pour une mission urgente (ex: le jour même) ?', answer: 'Selon nos disponibilités, nous pouvons être très réactifs. Pour une urgence, le plus simple est de nous appeler directement. Nous ferons notre maximum pour trouver une solution fiable dans les meilleurs délais.' },
+            { question: 'Comment gérez-vous l\'absence imprévue d\'un agent ?', answer: 'Nous disposons d\'un pool d\'agents polyvalents et d\'un système d\'astreinte qui nous permet de remplacer un agent malade ou absent rapidement, afin de garantir la continuité de service sur votre site.' },
+            { question: 'Puis-je changer d\'agent si le profil ne me convient pas ?', answer: 'Oui. La relation de confiance est essentielle. Si le courant ne passe pas ou si le profil de l\'agent ne correspond pas parfaitement à vos attentes malgré nos efforts, nous nous engageons à vous proposer un autre agent.' }
         ]
     },
     {
