@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import React from "react";
 
 import { servicesData, type Service } from "@/lib/services-data";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -381,46 +382,6 @@ export default function ServicePage({ params }: ServicePageProps) {
           id="overview"
           className="container mx-auto max-w-6xl px-4 pb-14 md:pb-20"
         >
-          {/* ✅ GALERIE 3 IMAGES */}
-          <div className="mb-6 grid gap-4 md:grid-cols-[1fr_1.3fr]">
-            {/* Portrait */}
-            <div className="relative overflow-hidden rounded-3xl border border-border bg-muted/10">
-              <div className="relative aspect-[3/4] w-full">
-                <Image
-                  src={gallery.portrait.imageUrl}
-                  alt={gallery.portrait.description ?? `${service.title} — visuel`}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 36vw"
-                  priority={false}
-                />
-              </div>
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
-            </div>
-
-            {/* 2 paysages */}
-            <div className="grid gap-4">
-              {[gallery.landscape1, gallery.landscape2].map((img, idx) => (
-                <div
-                  key={`${img.id}-${idx}`}
-                  className="relative overflow-hidden rounded-3xl border border-border bg-muted/10"
-                >
-                  <div className="relative aspect-[16/9] w-full">
-                    <Image
-                      src={img.imageUrl}
-                      alt={img.description ?? `${service.title} — visuel`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 60vw"
-                      priority={false}
-                    />
-                  </div>
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/35 via-transparent to-transparent" />
-                </div>
-              ))}
-            </div>
-          </div>
-
           <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
             {/* Colonne contenu */}
             <div className="space-y-8">
@@ -604,7 +565,7 @@ export default function ServicePage({ params }: ServicePageProps) {
             <div className="container mx-auto max-w-6xl px-4">
               <div className="mx-auto max-w-4xl text-center">
                 <h2 className="font-headline text-3xl font-bold md:text-4xl">
-                  Nos engagements
+                  Nos engagements pour ce service
                 </h2>
                 <p className="mt-4 text-muted-foreground">
                   Exécution propre, encadrement, traçabilité : un standard stable,
@@ -628,77 +589,131 @@ export default function ServicePage({ params }: ServicePageProps) {
           >
             <div className="mx-auto max-w-4xl">
               <h2 className="font-headline text-3xl font-bold md:text-4xl">
-                Détails & approche
+                Approche & Méthodologie
               </h2>
               <p className="mt-3 text-muted-foreground">
-                Un contenu plus complet pour comprendre la méthode, le cadrage et
-                le niveau d’exigence.
+                Un contenu détaillé pour comprendre la méthode, le cadrage et
+                le niveau d’exigence de nos prestations.
               </p>
 
               <div className="mt-10 space-y-10">
-                {longSections.map((sec) => (
-                  <article key={sec.id} className="border-l-2 border-border pl-6">
-                    <div className="flex items-start justify-between gap-4">
-                      <h3 className="font-headline text-2xl font-semibold">
-                        {sec.title}
-                      </h3>
-                      <span
-                        className="mt-1 hidden h-3 w-3 shrink-0 rounded-full md:inline-flex"
-                        style={{
-                          backgroundColor:
-                            "color-mix(in oklab, var(--brand-accent) 65%, transparent)",
-                        }}
-                      />
-                    </div>
-
-                    {sec.intro ? (
-                      <p className="mt-3 text-muted-foreground">{sec.intro}</p>
-                    ) : null}
-
-                    {sec.paragraphs?.length ? (
-                      <div className="mt-4 space-y-3 text-muted-foreground">
-                        {sec.paragraphs.map((p, i) => (
-                          <p key={i}>{p}</p>
-                        ))}
+                {longSections.map((sec, index) => (
+                  <React.Fragment key={sec.id}>
+                    <article className="border-l-2 border-border pl-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <h3 className="font-headline text-2xl font-semibold">
+                          {sec.title}
+                        </h3>
+                        <span
+                          className="mt-1 hidden h-3 w-3 shrink-0 rounded-full md:inline-flex"
+                          style={{
+                            backgroundColor:
+                              "color-mix(in oklab, var(--brand-accent) 65%, transparent)",
+                          }}
+                        />
                       </div>
-                    ) : null}
 
-                    {sec.bullets?.length ? (
-                      <ul className="mt-5 grid gap-2 sm:grid-cols-2">
-                        {sec.bullets.map((b, i) => (
-                          <li
-                            key={i}
-                            className="rounded-2xl border border-border bg-muted/10 px-4 py-3 text-sm"
-                          >
-                            {b}
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
+                      {sec.intro ? (
+                        <p className="mt-3 text-muted-foreground">{sec.intro}</p>
+                      ) : null}
 
-                    {sec.internalLinks?.length ? (
-                      <div className="mt-5 flex flex-wrap gap-2">
-                        {sec.internalLinks.map((l) => (
-                          <Link
-                            key={l.href}
-                            href={l.href}
-                            className="rounded-xl border border-border bg-muted/10 px-3 py-2 text-sm hover:bg-muted/30"
-                          >
-                            {l.label}
-                          </Link>
-                        ))}
-                      </div>
-                    ) : null}
+                      {sec.paragraphs?.length ? (
+                        <div className="mt-4 space-y-3 text-muted-foreground">
+                          {sec.paragraphs.map((p, i) => (
+                            <p key={i}>{p}</p>
+                          ))}
+                        </div>
+                      ) : null}
 
-                    {sec.note ? (
-                      <div className="mt-6 rounded-2xl border border-border bg-background p-5">
-                        <div className="text-sm font-semibold">À retenir</div>
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {sec.note}
-                        </p>
-                      </div>
-                    ) : null}
-                  </article>
+                      {sec.bullets?.length ? (
+                        <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+                          {sec.bullets.map((b, i) => (
+                            <li
+                              key={i}
+                              className="rounded-2xl border border-border bg-muted/10 px-4 py-3 text-sm"
+                            >
+                              {b}
+                            </li>
+                          ))}
+                        </ul>
+                      ) : null}
+
+                      {sec.internalLinks?.length ? (
+                        <div className="mt-5 flex flex-wrap gap-2">
+                          {sec.internalLinks.map((l) => (
+                            <Link
+                              key={l.href}
+                              href={l.href}
+                              className="rounded-xl border border-border bg-muted/10 px-3 py-2 text-sm hover:bg-muted/30"
+                            >
+                              {l.label}
+                            </Link>
+                          ))}
+                        </div>
+                      ) : null}
+
+                      {sec.note ? (
+                        <div className="mt-6 rounded-2xl border border-border bg-background p-5">
+                          <div className="text-sm font-semibold">À retenir</div>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {sec.note}
+                          </p>
+                        </div>
+                      ) : null}
+                    </article>
+
+                    {index === 1 && longSections.length > 2 && (
+                        <div className="relative my-12 overflow-hidden rounded-2xl border border-border bg-muted/10">
+                        <div className="relative aspect-video w-full">
+                            <Image
+                            src={gallery.landscape1.imageUrl}
+                            alt={gallery.landscape1.description ?? `${service.title} illustration`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 1024px) 100vw, 800px"
+                            priority={false}
+                            />
+                        </div>
+                        </div>
+                    )}
+                    
+                    {index === 3 && longSections.length > 4 && (
+                        <div className="my-12 grid grid-cols-1 items-center gap-8 md:grid-cols-3">
+                            <div className="relative order-last overflow-hidden rounded-2xl border border-border bg-muted/10 md:order-first md:col-span-1">
+                                <div className="relative aspect-[3/4] w-full">
+                                <Image
+                                    src={gallery.portrait.imageUrl}
+                                    alt={gallery.portrait.description ?? `${service.title} en situation`}
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                    priority={false}
+                                />
+                                </div>
+                            </div>
+                            <div className="md:col-span-2">
+                                <blockquote className="border-l-4 border-primary pl-6 text-xl italic text-muted-foreground">
+                                    "La qualité d'un dispositif de sécurité ne se mesure pas au nombre d'agents, mais à la rigueur de son organisation, à la clarté de ses consignes et à la pertinence de sa supervision."
+                                </blockquote>
+                            </div>
+                        </div>
+                    )}
+
+                    {index === 5 && longSections.length > 6 && (
+                        <div className="relative my-12 overflow-hidden rounded-2xl border border-border bg-muted/10">
+                        <div className="relative aspect-video w-full">
+                            <Image
+                            src={gallery.landscape2.imageUrl}
+                            alt={gallery.landscape2.description ?? `${service.title} en action`}
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 1024px) 100vw, 800px"
+                            priority={false}
+                            />
+                        </div>
+                        </div>
+                    )}
+                  </React.Fragment>
                 ))}
               </div>
             </div>
