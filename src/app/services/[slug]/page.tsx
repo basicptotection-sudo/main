@@ -1,8 +1,9 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
-import { servicesData, Service } from "@/lib/services-data";
+import { servicesData, type Service } from "@/lib/services-data";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { siteConfig } from "@/lib/config";
 
@@ -20,10 +21,14 @@ import {
 
 import ServiceJsonLd from "@/components/seo/service-json-ld";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 type ServicePageProps = {
   params: { slug: string };
 };
+
+const BRAND_ACCENT = "#2F8FD8";
 
 export async function generateStaticParams() {
   return servicesData.map((service) => ({ slug: service.slug }));
@@ -34,15 +39,16 @@ function toCanonical(path: string) {
 }
 
 function buildMetaDescription(service: Service) {
-  // meta description courte (évite les textes longs tronqués)
-  const base = service.shortDescription || service.title;
-  const suffix = " Intervention Île-de-France : 78, 75, 92, 93, 94, 95, 77, 91.";
-  const text = `${base}.${suffix}`;
+  const base = (service.shortDescription || service.title)
+    .trim()
+    .replace(/\s+/g, " ");
+  const suffix =
+    " Intervention Île-de-France : 78, 75, 92, 93, 94, 95, 77, 91.";
+  const text = `${base}${base.endsWith(".") ? "" : "."}${suffix}`;
   return text.length > 170 ? `${text.slice(0, 167)}…` : text;
 }
 
 function cityLinksForService(slug: string) {
-  // Optionnel : liens “villes stratégiques” (à adapter si tu veux)
   const map: Record<string, { name: string; href: string }[]> = {
     "securite-evenementielle": [
       { name: "Paris 8", href: "/villes/paris-8-75008" },
@@ -65,15 +71,10 @@ function cityLinksForService(slug: string) {
       { name: "Boulogne-Billancourt", href: "/villes/boulogne-billancourt-92100" },
     ],
   };
-
   return map[slug] ?? [];
 }
 
 function serviceContextBlocks(service: Service) {
-  // Bloc SEO/Conversion : texte “sur-mesure” par service
-  const city = siteConfig.business.address.city;
-  const dept = siteConfig.business.address.postalCode?.slice(0, 2);
-
   const common = {
     whenTitle: "Quand choisir ce service ?",
     scopeTitle: "Ce que couvre la prestation",
@@ -85,20 +86,18 @@ function serviceContextBlocks(service: Service) {
         ...common,
         whenTitle: "Quand faire appel à un Agent de Sécurité Qualifié ?",
         when:
-          "Pour une surveillance continue (24/7 ou horaires de bureau), le contrôle d'accès d'un siège, la prévention du vol dans un commerce, ou pour sécuriser un site la nuit et les week-ends.",
+          "Pour une surveillance continue (24/7 ou horaires de bureau), le contrôle d’accès d’un siège, la prévention du vol dans un commerce, ou la sécurisation d’un site la nuit et le week-end.",
         scope:
-          "Contrôle d'accès (personnes, véhicules), rondes de prévention, gestion des alarmes, application des consignes de sécurité, rédaction de rapports, première intervention et assistance à personnes.",
+          "Contrôle d’accès (personnes/véhicules), rondes de prévention, gestion des alarmes, application des consignes, rapports, première intervention et assistance à personnes.",
       };
-
     case "agent-cynophile":
       return {
         ...common,
         when:
           "Quand la dissuasion doit être maximale : chantiers, sites isolés, grands périmètres, zones de stockage. Le binôme homme-chien renforce la détection et réduit les risques d’intrusion.",
         scope:
-          "Rondes sur périmètre, sécurisation des points sensibles, levée de doute, surveillance nocturne, détection précoce, procédure d’alerte et mise en sécurité selon consignes.",
+          "Rondes périmétriques, sécurisation des points sensibles, levée de doute, surveillance nocturne, détection précoce, procédure d’alerte et mise en sécurité selon consignes.",
       };
-
     case "agent-incendie-ssiap":
       return {
         ...common,
@@ -107,7 +106,6 @@ function serviceContextBlocks(service: Service) {
         scope:
           "Rondes techniques, vérifications SSI, gestion des alarmes, assistance à personnes, registre de sécurité, procédures d’évacuation, coordination avec les secours.",
       };
-
     case "agent-rondier":
       return {
         ...common,
@@ -116,16 +114,14 @@ function serviceContextBlocks(service: Service) {
         scope:
           "Planification de rondes, points de contrôle, levée de doute, sécurisation temporaire, compte rendu détaillé, coordination avec forces de l’ordre selon protocole.",
       };
-
     case "protection-rapprochee":
       return {
         ...common,
         when:
-          "Quand une personne exposée doit être sécurisée sans perturber son quotidien : dirigeants, VIP, familles, délégations. Discrétion, anticipation, gestion d’itinéraires et protocoles de crise.",
+          "Quand une personne exposée doit être sécurisée sans perturber son quotidien : dirigeants, VIP, familles, délégations. Discrétion, anticipation, itinéraires et protocoles de crise.",
         scope:
           "Évaluation du risque, plan de protection, reconnaissances, sécurisation des déplacements, gestion des accès, coordination événementielle, adaptation en temps réel.",
       };
-
     case "securite-evenementielle":
       return {
         ...common,
@@ -134,7 +130,6 @@ function serviceContextBlocks(service: Service) {
         scope:
           "Plan de sécurité, accueil et filtrage, zones sensibles, coordination avec l’organisation, briefings, reporting, ajustements selon l’évolution de l’événement.",
       };
-
     case "audit-conseil-surete":
       return {
         ...common,
@@ -143,7 +138,6 @@ function serviceContextBlocks(service: Service) {
         scope:
           "Immersion, cartographie des risques, analyse des vulnérabilités, rapport priorisé et chiffré, aide au cahier des charges et accompagnement à la mise en œuvre.",
       };
-
     default:
       return {
         ...common,
@@ -155,16 +149,151 @@ function serviceContextBlocks(service: Service) {
   }
 }
 
-export async function generateMetadata({ params }: ServicePageProps): Promise<Metadata> {
+function isTerrain(slug: string) {
+  return [
+    "agent-securite-qualifie",
+    "agent-cynophile",
+    "agent-incendie-ssiap",
+    "agent-rondier",
+  ].includes(slug);
+}
+
+function isPremium(slug: string) {
+  return [
+    "protection-rapprochee",
+    "securite-evenementielle",
+    "audit-conseil-surete",
+  ].includes(slug);
+}
+
+function relatedServicesFor(service: Service) {
+  const explicit = (service as any)?.page?.relatedServices as string[] | undefined;
+  if (explicit?.length) {
+    const bySlug = new Map(servicesData.map((s) => [s.slug, s] as const));
+    return explicit
+      .map((slug) => bySlug.get(slug))
+      .filter(Boolean)
+      .slice(0, 3) as Service[];
+  }
+
+  const group = isTerrain(service.slug)
+    ? "terrain"
+    : isPremium(service.slug)
+    ? "premium"
+    : "other";
+
+  const candidates = servicesData.filter((s) => {
+    if (s.slug === service.slug) return false;
+    if (group === "terrain") return isTerrain(s.slug);
+    if (group === "premium") return isPremium(s.slug);
+    return !isTerrain(s.slug) && !isPremium(s.slug);
+  });
+
+  return candidates.slice(0, 3);
+}
+
+type FAQItem = { question: string; answer: string };
+
+function normalizeFaq(service: Service): FAQItem[] {
+  const longFaq = (service as any)?.page?.faqLong as
+    | { question: string; answer: string }[]
+    | undefined;
+
+  if (Array.isArray(longFaq) && longFaq.length) {
+    return longFaq
+      .map((x) => ({
+        question: x.question?.trim() ?? "",
+        answer: x.answer?.trim() ?? "",
+      }))
+      .filter((x) => x.question && x.answer);
+  }
+
+  const baseFaq = (service.faq ?? []) as any[];
+  return baseFaq
+    .map((x) => ({
+      question: String(x.question ?? x.q ?? "").trim(),
+      answer: String(x.answer ?? x.a ?? "").trim(),
+    }))
+    .filter((x) => x.question && x.answer);
+}
+
+type PageSection = {
+  id: string;
+  title: string;
+  intro?: string;
+  paragraphs?: string[];
+  bullets?: string[];
+  note?: string;
+  internalLinks?: { label: string; href: string }[];
+};
+
+function getPageSections(service: Service): PageSection[] {
+  const sections = (service as any)?.page?.sections as PageSection[] | undefined;
+  return Array.isArray(sections) ? sections : [];
+}
+
+/**
+ * 3 images par page:
+ * - 1 verticale (portrait)
+ * - 2 paysages (landscape)
+ *
+ * Ici on fait simple: on prend un pool d’images PlaceHolderImages
+ * et on “pin” l’image hero + 2 autres différentes.
+ * Si tu veux un tri parfait portrait/paysage: on pourra ajouter un champ aspect dans PlaceHolderImages.
+ */
+function pickServiceImages(service: Service) {
+  const hero =
+    PlaceHolderImages.find((p) => p.id === service.heroImageId) ??
+    PlaceHolderImages.find((p) => p.id === "hero");
+
+  // pool d’images (hors hero) – on évite les doublons
+  const pool = PlaceHolderImages.filter((p) => p.imageUrl && p.id !== hero?.id);
+
+  // heuristique: si imageHint ou description contient "portrait" / "vertical"
+  const isPortrait = (p: any) => {
+    const t = `${p?.imageHint ?? ""} ${p?.description ?? ""}`.toLowerCase();
+    return t.includes("portrait") || t.includes("vertical");
+  };
+
+  const portrait = pool.find(isPortrait) ?? pool[0] ?? hero;
+  const landscapes = pool.filter((p) => p.id !== portrait?.id);
+
+  const land1 = landscapes[0] ?? hero;
+  const land2 = landscapes[1] ?? landscapes[0] ?? hero;
+
+  return {
+    portrait: portrait!,
+    landscape1: land1!,
+    landscape2: land2!,
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: ServicePageProps): Promise<Metadata> {
   const service = servicesData.find((s) => s.slug === params.slug);
   if (!service) return {};
 
+  const title = `${service.title} | ${siteConfig.name}`;
+  const description = buildMetaDescription(service);
+  const url = toCanonical(`/services/${service.slug}`);
+
   return {
-    title: `${service.title} | ${siteConfig.name}`,
-    description: buildMetaDescription(service),
+    title,
+    description,
     keywords: service.keywords,
-    alternates: {
-      canonical: toCanonical(`/services/${service.slug}`),
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      url,
+      title,
+      description,
+      siteName: siteConfig.name,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
     },
   };
 }
@@ -173,8 +302,17 @@ export default function ServicePage({ params }: ServicePageProps) {
   const service = servicesData.find((s) => s.slug === params.slug);
   if (!service) return notFound();
 
-  const heroImage = PlaceHolderImages.find((p) => p.id === service.heroImageId) ?? PlaceHolderImages.find((p) => p.id === "hero");
-  const phoneHref = `tel:${(siteConfig.contact as any).phoneE164 ?? siteConfig.contact.phone.replace(/\s/g, "")}`;
+  const heroImage =
+    PlaceHolderImages.find((p) => p.id === service.heroImageId) ??
+    PlaceHolderImages.find((p) => p.id === "hero");
+
+  const gallery = pickServiceImages(service);
+
+  const phoneHref = `tel:${String(
+    (siteConfig.contact as any).phoneE164 ?? siteConfig.contact.phone
+  )
+    .replace(/\s/g, "")
+    .trim()}`;
 
   const breadcrumbItems = [
     { label: "Accueil", href: "/" },
@@ -184,126 +322,444 @@ export default function ServicePage({ params }: ServicePageProps) {
 
   const blocks = serviceContextBlocks(service);
   const cityLinks = cityLinksForService(service.slug);
+  const related = relatedServicesFor(service);
+
+  const pageLead = (service as any)?.page?.lead as string | undefined;
+  const longSections = getPageSections(service);
+  const faqItems = normalizeFaq(service);
+
+  const miniNav = [
+    { id: "overview", label: "Vue d’ensemble" },
+    ...(longSections.length ? [{ id: "details", label: "Détails" }] : []),
+    { id: "benefits", label: "Avantages" },
+    { id: "method", label: "Méthode" },
+    { id: "sectors", label: "Secteurs" },
+    { id: "faq", label: "FAQ" },
+    { id: "contact", label: "Contact" },
+  ];
 
   return (
-    <div className="bg-background text-foreground">
+    <div
+      className="bg-background text-foreground"
+      style={{ ["--brand-accent" as any]: BRAND_ACCENT }}
+    >
       <ServiceJsonLd service={service} breadcrumbs={breadcrumbItems} />
 
       <HeroSection
         title={service.title}
-        description={service.shortDescription || service.description}
+        description={pageLead || service.shortDescription || service.description}
         cta1={{ label: "Demander un devis", href: "/devis" }}
         cta2={{ label: "Appeler", href: phoneHref, variant: "secondary" }}
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description ?? `${service.title} — ${siteConfig.name}`}
         imageHint={heroImage?.imageHint}
-        breadcrumbs={<Breadcrumbs items={breadcrumbItems} className="py-0 mb-4" />}
+        breadcrumbs={<Breadcrumbs items={breadcrumbItems} className="mb-4 py-0" />}
       />
 
+      {/* MINI NAV — plus léger + scroll horizontal */}
       <AnimateOnScroll>
-        <section className="container mx-auto max-w-5xl px-4 py-10 md:py-12">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="rounded-2xl border p-6 md:p-7">
-              <h2 className="font-headline text-xl font-semibold">{blocks.whenTitle}</h2>
-              <p className="mt-2 text-muted-foreground">{blocks.when}</p>
+        <section className="container mx-auto max-w-6xl px-4 -mt-10 pb-6">
+          <div className="sticky top-2 z-20 rounded-2xl border border-border bg-background/75 p-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="no-scrollbar flex gap-2 overflow-x-auto px-1 py-1">
+              {miniNav.map((it) => (
+                <Link
+                  key={it.id}
+                  href={`#${it.id}`}
+                  className="shrink-0 rounded-full border border-border px-3 py-2 text-sm text-muted-foreground hover:bg-muted/40 hover:text-foreground"
+                >
+                  {it.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      </AnimateOnScroll>
 
-              <div className="mt-4 flex flex-wrap gap-2">
-                {["78", "75", "92", "93", "94", "95", "77", "91"].map((d) => (
-                  <Badge key={d} variant="secondary">
-                    Île-de-France {d}
-                  </Badge>
-                ))}
+      {/* VUE D’ENSEMBLE — contenu + conversion + ressources */}
+      <AnimateOnScroll>
+        <section
+          id="overview"
+          className="container mx-auto max-w-6xl px-4 pb-14 md:pb-20"
+        >
+          {/* ✅ GALERIE 3 IMAGES */}
+          <div className="mb-6 grid gap-4 md:grid-cols-[1fr_1.3fr]">
+            {/* Portrait */}
+            <div className="relative overflow-hidden rounded-3xl border border-border bg-muted/10">
+              <div className="relative aspect-[3/4] w-full">
+                <Image
+                  src={gallery.portrait.imageUrl}
+                  alt={gallery.portrait.description ?? `${service.title} — visuel`}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 36vw"
+                  priority={false}
+                />
               </div>
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/40 via-transparent to-transparent" />
             </div>
 
-            <div className="rounded-2xl border p-6 md:p-7">
-              <h2 className="font-headline text-xl font-semibold">{blocks.scopeTitle}</h2>
-              <p className="mt-2 text-muted-foreground">{blocks.scope}</p>
-
-              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
-                <Link
-                  className="inline-flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-primary-foreground"
-                  href="/devis"
+            {/* 2 paysages */}
+            <div className="grid gap-4">
+              {[gallery.landscape1, gallery.landscape2].map((img, idx) => (
+                <div
+                  key={`${img.id}-${idx}`}
+                  className="relative overflow-hidden rounded-3xl border border-border bg-muted/10"
                 >
-                  Demander un devis
-                </Link>
-                <a
-                  className="inline-flex items-center justify-center rounded-md border px-5 py-2.5"
-                  href={phoneHref}
-                >
-                  Appeler
-                </a>
-              </div>
+                  <div className="relative aspect-[16/9] w-full">
+                    <Image
+                      src={img.imageUrl}
+                      alt={img.description ?? `${service.title} — visuel`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 60vw"
+                      priority={false}
+                    />
+                  </div>
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/35 via-transparent to-transparent" />
+                </div>
+              ))}
             </div>
           </div>
 
-          {(cityLinks.length > 0) && (
-            <div className="mt-6 rounded-2xl border p-6">
-              <h3 className="font-headline text-lg font-semibold">Exemples de pages locales</h3>
-              <p className="mt-2 text-muted-foreground">
-                Des pages adaptées aux enjeux : luxe, bureaux, chantiers, logistique, événements.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                {cityLinks.map((c) => (
-                  <Link
-                    key={c.href}
-                    href={c.href}
-                    className="rounded-md border px-3 py-1.5 text-sm hover:bg-muted/50"
-                  >
-                    {c.name}
-                  </Link>
-                ))}
-                <Link
-                  href="/villes"
-                  className="rounded-md border px-3 py-1.5 text-sm hover:bg-muted/50"
-                >
-                  Voir toutes les villes
-                </Link>
-              </div>
-            </div>
-          )}
-        </section>
-      </AnimateOnScroll>
-      
-      {service.whyUs && service.whyUs.length > 0 && (
-        <AnimateOnScroll>
-            <section className="py-16 md:py-24 bg-muted/30">
-              <div className="container mx-auto px-4">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary text-center mb-12">
-                  Nos Engagements pour ce Service
-                </h2>
-                <div className="max-w-5xl mx-auto">
-                  <TrustElements elements={service.whyUs} />
+          <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
+            {/* Colonne contenu */}
+            <div className="space-y-8">
+              <div className="rounded-3xl border border-border bg-background p-6 md:p-8">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <h2 className="font-headline text-2xl font-semibold md:text-3xl">
+                      {blocks.whenTitle}
+                    </h2>
+                    <p className="mt-3 text-muted-foreground">{blocks.when}</p>
+                  </div>
+                  <span
+                    className="hidden h-11 w-11 rounded-2xl md:inline-flex"
+                    style={{
+                      backgroundColor:
+                        "color-mix(in oklab, var(--brand-accent) 16%, transparent)",
+                    }}
+                  />
+                </div>
+
+                <div className="mt-6 grid gap-4 md:grid-cols-2">
+                  <div className="rounded-2xl border border-border bg-muted/10 p-5">
+                    <div className="text-sm font-semibold">
+                      {blocks.scopeTitle}
+                    </div>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {blocks.scope}
+                    </p>
+                  </div>
+
+                  <div className="rounded-2xl border border-border bg-muted/10 p-5">
+                    <div className="text-sm font-semibold">
+                      Couverture Île-de-France
+                    </div>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Dispositifs cadrés, équipes qualifiées, supervision et
+                      reporting.
+                    </p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {["75", "92", "93", "94", "95", "78", "77", "91"].map(
+                        (d) => (
+                          <Badge key={d} variant="secondary">
+                            {d}
+                          </Badge>
+                        )
+                      )}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-border bg-background p-5">
+                    <div className="text-sm font-semibold">Encadrement</div>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Briefings, consignes, contrôle qualité, supervision terrain.
+                    </p>
+                  </div>
+                  <div className="rounded-2xl border border-border bg-background p-5">
+                    <div className="text-sm font-semibold">Reporting</div>
+                    <p className="mt-1 text-sm text-muted-foreground">
+                      Remontées claires, rapports, ajustements selon activité.
+                    </p>
+                  </div>
                 </div>
               </div>
-            </section>
-          </AnimateOnScroll>
-      )}
 
-      <AnimateOnScroll>
-        <BenefitsSection
-          title="Vos avantages clés"
-          description={`Découvrez les bénéfices concrets de notre service : ${service.title.toLowerCase()}.`}
-          benefits={service.benefits}
-        />
+              {(cityLinks.length > 0 || related.length > 0) && (
+                <div className="grid gap-4 md:grid-cols-2">
+                  {cityLinks.length > 0 && (
+                    <div className="rounded-3xl border border-border bg-background p-6">
+                      <div className="flex items-end justify-between gap-4">
+                        <div>
+                          <h3 className="font-headline text-lg font-semibold">
+                            Exemples de pages locales
+                          </h3>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            Pages adaptées aux enjeux (luxe, bureaux, chantiers,
+                            événementiel…).
+                          </p>
+                        </div>
+                        <Link
+                          href="/villes"
+                          className="text-sm font-medium hover:underline"
+                          style={{ color: "var(--brand-accent)" }}
+                        >
+                          Tout voir
+                        </Link>
+                      </div>
+
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {cityLinks.map((c) => (
+                          <Link
+                            key={c.href}
+                            href={c.href}
+                            className="rounded-xl border border-border bg-muted/10 px-3 py-2 text-sm hover:bg-muted/30"
+                          >
+                            {c.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {related.length > 0 && (
+                    <div className="rounded-3xl border border-border bg-background p-6">
+                      <h3 className="font-headline text-lg font-semibold">
+                        Services liés
+                      </h3>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        Prestations complémentaires pour un dispositif cohérent.
+                      </p>
+
+                      <div className="mt-4 space-y-3">
+                        {related.map((s) => (
+                          <Link
+                            key={s.slug}
+                            href={`/services/${s.slug}`}
+                            className="block rounded-2xl border border-border bg-muted/10 p-4 transition hover:bg-muted/30"
+                          >
+                            <div className="text-sm font-semibold">{s.title}</div>
+                            <div className="mt-1 text-sm text-muted-foreground">
+                              {s.shortDescription}
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Colonne sticky conversion (desktop) */}
+            <aside className="lg:sticky lg:top-24 lg:h-fit">
+              <div className="rounded-3xl border border-border bg-background p-6">
+                <div className="text-sm font-semibold">Demande rapide</div>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Décris ton site, tes horaires, tes accès et tes contraintes : on
+                  te répond avec une proposition structurée.
+                </p>
+
+                <div className="mt-5 flex flex-col gap-3">
+                  <Button
+                    asChild
+                    className={cn(
+                      "h-11 rounded-xl text-white",
+                      "bg-[var(--brand-accent)] hover:bg-[var(--brand-accent)]/90"
+                    )}
+                  >
+                    <Link href="/devis">Demander un devis</Link>
+                  </Button>
+
+                  <Button asChild variant="outline" className="h-11 rounded-xl">
+                    <a href={phoneHref} aria-label="Appeler">
+                      Appeler
+                    </a>
+                  </Button>
+                </div>
+
+                <div className="mt-6 rounded-2xl border border-border bg-muted/10 p-4">
+                  <div className="text-sm font-semibold">
+                    À préciser (idéalement)
+                  </div>
+                  <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
+                    <li>• Type de site / lieu</li>
+                    <li>• Horaires & jours</li>
+                    <li>• Accès, flux, zones sensibles</li>
+                    <li>• Contraintes (ERP/IGH, VIP, événement…)</li>
+                  </ul>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </section>
       </AnimateOnScroll>
 
+      {/* ENGAGEMENTS */}
+      {service.whyUs?.length ? (
+        <AnimateOnScroll>
+          <section className="border-y border-border bg-muted/10 py-14 md:py-20">
+            <div className="container mx-auto max-w-6xl px-4">
+              <div className="mx-auto max-w-4xl text-center">
+                <h2 className="font-headline text-3xl font-bold md:text-4xl">
+                  Nos engagements
+                </h2>
+                <p className="mt-4 text-muted-foreground">
+                  Exécution propre, encadrement, traçabilité : un standard stable,
+                  mission après mission.
+                </p>
+              </div>
+              <div className="mt-10">
+                <TrustElements elements={service.whyUs} />
+              </div>
+            </div>
+          </section>
+        </AnimateOnScroll>
+      ) : null}
+
+      {/* SECTIONS LONGUES */}
+      {longSections.length ? (
+        <AnimateOnScroll>
+          <section
+            id="details"
+            className="container mx-auto max-w-6xl px-4 py-14 md:py-20"
+          >
+            <div className="mx-auto max-w-4xl">
+              <h2 className="font-headline text-3xl font-bold md:text-4xl">
+                Détails & approche
+              </h2>
+              <p className="mt-3 text-muted-foreground">
+                Un contenu plus complet pour comprendre la méthode, le cadrage et
+                le niveau d’exigence.
+              </p>
+
+              <div className="mt-10 space-y-10">
+                {longSections.map((sec) => (
+                  <article key={sec.id} className="border-l-2 border-border pl-6">
+                    <div className="flex items-start justify-between gap-4">
+                      <h3 className="font-headline text-2xl font-semibold">
+                        {sec.title}
+                      </h3>
+                      <span
+                        className="mt-1 hidden h-3 w-3 shrink-0 rounded-full md:inline-flex"
+                        style={{
+                          backgroundColor:
+                            "color-mix(in oklab, var(--brand-accent) 65%, transparent)",
+                        }}
+                      />
+                    </div>
+
+                    {sec.intro ? (
+                      <p className="mt-3 text-muted-foreground">{sec.intro}</p>
+                    ) : null}
+
+                    {sec.paragraphs?.length ? (
+                      <div className="mt-4 space-y-3 text-muted-foreground">
+                        {sec.paragraphs.map((p, i) => (
+                          <p key={i}>{p}</p>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {sec.bullets?.length ? (
+                      <ul className="mt-5 grid gap-2 sm:grid-cols-2">
+                        {sec.bullets.map((b, i) => (
+                          <li
+                            key={i}
+                            className="rounded-2xl border border-border bg-muted/10 px-4 py-3 text-sm"
+                          >
+                            {b}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+
+                    {sec.internalLinks?.length ? (
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {sec.internalLinks.map((l) => (
+                          <Link
+                            key={l.href}
+                            href={l.href}
+                            className="rounded-xl border border-border bg-muted/10 px-3 py-2 text-sm hover:bg-muted/30"
+                          >
+                            {l.label}
+                          </Link>
+                        ))}
+                      </div>
+                    ) : null}
+
+                    {sec.note ? (
+                      <div className="mt-6 rounded-2xl border border-border bg-background p-5">
+                        <div className="text-sm font-semibold">À retenir</div>
+                        <p className="mt-1 text-sm text-muted-foreground">
+                          {sec.note}
+                        </p>
+                      </div>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+            </div>
+          </section>
+        </AnimateOnScroll>
+      ) : null}
+
+      {/* BENEFITS */}
       <AnimateOnScroll>
-        <ProcessSteps title={service.method.title} description={service.method.description} steps={service.method.steps} />
+        <section id="benefits">
+          <BenefitsSection
+            title="Vos avantages clés"
+            description={`Découvrez les bénéfices concrets de notre service : ${service.title.toLowerCase()}.`}
+            benefits={service.benefits ?? []}
+          />
+        </section>
       </AnimateOnScroll>
 
+      {/* METHOD */}
       <AnimateOnScroll>
-        <SectorsGrid sectors={service.sectors} />
+        <section
+          id="method"
+          className="container mx-auto max-w-6xl px-4 py-14 md:py-20"
+        >
+          <ProcessSteps
+            title={service.method?.title ?? "Une méthode claire, un pilotage précis"}
+            description={
+              service.method?.description ??
+              "Du cadrage à l’exécution : un dispositif pensé, déployé, puis supervisé."
+            }
+            steps={service.method?.steps ?? []}
+          />
+        </section>
       </AnimateOnScroll>
 
+      {/* SECTORS */}
       <AnimateOnScroll>
-        <FAQAccordion
-          title="Questions fréquentes"
-          description={`Les réponses à vos questions sur ${service.title.toLowerCase()}.`}
-          items={service.faq}
-        />
+        <section
+          id="sectors"
+          className="border-t border-border bg-background py-14 md:py-20"
+        >
+          <div className="container mx-auto max-w-6xl px-4">
+            <SectorsGrid sectors={service.sectors ?? []} />
+          </div>
+        </section>
       </AnimateOnScroll>
 
+      {/* FAQ */}
+      <AnimateOnScroll>
+        <section id="faq" className="border-t border-border bg-background py-14 md:py-20">
+          <div className="container mx-auto max-w-4xl px-4">
+            <FAQAccordion
+              title="Questions fréquentes"
+              description={`Les réponses à vos questions sur ${service.title.toLowerCase()}.`}
+              items={faqItems}
+            />
+          </div>
+        </section>
+      </AnimateOnScroll>
+
+      {/* CTA FINAL */}
       <AnimateOnScroll>
         <CTASection
           id="contact"
