@@ -23,6 +23,7 @@ import {
 import ServiceJsonLd from "@/components/seo/service-json-ld";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ServicePageNavigation } from "@/components/services/service-page-navigation";
 
 type ServicePageProps = {
   params: { slug: string };
@@ -357,35 +358,7 @@ export default function ServicePage({ params }: ServicePageProps) {
       />
 
       <AnimateOnScroll>
-          <section className="sticky top-0 z-20 border-b bg-background/80 backdrop-blur-lg">
-              <div className="container mx-auto max-w-7xl px-4">
-                  <div className="no-scrollbar flex gap-2 overflow-x-auto">
-                      {miniNav.map((it) => (
-                      <Link
-                          key={it.id}
-                          href={`#${it.id}`}
-                          onClick={(e) => {
-                              e.preventDefault();
-                              const element = document.getElementById(it.id);
-                              if (element) {
-                                  const headerOffset = 80; 
-                                  const elementPosition = element.getBoundingClientRect().top;
-                                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-                              
-                                  window.scrollTo({
-                                      top: offsetPosition,
-                                      behavior: "smooth"
-                                  });
-                              }
-                          }}
-                          className="shrink-0 border-b-2 border-transparent px-1 py-4 text-sm font-medium text-muted-foreground hover:border-primary hover:text-primary"
-                      >
-                          {it.label}
-                      </Link>
-                      ))}
-                  </div>
-              </div>
-          </section>
+          <ServicePageNavigation items={miniNav} />
       </AnimateOnScroll>
 
       <AnimateOnScroll>
