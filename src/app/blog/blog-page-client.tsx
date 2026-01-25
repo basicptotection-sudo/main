@@ -17,6 +17,7 @@ import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { ArrowRight, Search, Sparkles, TrendingUp } from "lucide-react";
 import type { Post, PostFrontmatter } from "@/lib/blog";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 type SortKey = "recent" | "oldest" | "title";
 
@@ -37,13 +38,17 @@ function readingTimeFrom(text?: string) {
 function getPostCover(post: Post<PostFrontmatter>) {
   // Supporte frontmatter.cover / image / hero etc.
   const fm = post?.frontmatter ?? {};
-  return (
+  const imageId =
     (fm as any).cover ||
     fm.image ||
     (fm as any).hero ||
     (fm as any).thumbnail ||
-    null
-  );
+    null;
+  
+  if (!imageId) return null;
+
+  const postImage = PlaceHolderImages.find(p => p.id === imageId);
+  return postImage ? postImage.imageUrl : null;
 }
 
 function getPostContent(post: any) {
