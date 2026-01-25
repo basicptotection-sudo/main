@@ -81,7 +81,7 @@
     {
       "id": "service-agent-qualifie",
       "description": "Professional security guard in uniform standing watch inside a modern building lobby.",
-      "imageUrl": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cml0eSUyMGd1YXJkfGVufDB8fHx8MTc2OTEwMDAwMHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cml0eSUyMGd1YXJkfGVufDB8fHx8fDE3NjkwOTk5OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "security guard"
     },
     {
@@ -101,6 +101,18 @@
       "description": "Security guard with a flashlight making rounds in a dark parking garage at night.",
       "imageUrl": "https://images.unsplash.com/photo-1618214362883-a7493b8a3e75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cml0eSUyMHBhdHJvbCUyMG5pZ2h0fGVufDB8fHx8MTc2OTEwMDAwMnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "security patrol night"
+    },
+    {
+      "id": "about-hero",
+      "description": "Diverse team of security professionals standing together, looking confident.",
+      "imageUrl": "https://images.unsplash.com/photo-1521791136064-7986c2920216?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDE3fHx8ZW58MHx8fHw%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "team diverse"
+    },
+    {
+      "id": "founder-portrait",
+      "description": "Portrait of a confident male business leader in a modern office.",
+      "imageUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fA%3D%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "business leader"
     }
   ]
 }

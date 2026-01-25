@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import Image from "next/image";
 import { Linkedin, Twitter, Facebook, Phone, Mail, MapPin } from "lucide-react";
@@ -18,9 +19,10 @@ export function Footer() {
   const footerLinks = [
     { href: "/services", label: "Services" },
     { href: "/zones", label: "Zones" },
+    { href: "/a-propos", label: "À propos" },
+    { href: "/blog", label: "Blog" },
     { href: "/devis", label: "Devis" },
     { href: "/contact", label: "Contact" },
-    { href: "/blog", label: "Blog" },
   ];
 
   const legalLinks = [

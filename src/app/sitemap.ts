@@ -1,4 +1,5 @@
 
+
 import { MetadataRoute } from 'next';
 import { siteConfig } from '@/lib/config';
 import { servicesData } from '@/lib/services-data';
@@ -6,7 +7,7 @@ import { locationsData } from '@/lib/locations-data';
 import { getAllPosts } from '@/lib/blog';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ['', '/devis', '/merci', '/services', '/zones', '/contact', '/blog'];
+  const staticRoutes = ['', '/a-propos', '/devis', '/merci', '/services', '/zones', '/contact', '/blog'];
 
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${siteConfig.url}${route}`,

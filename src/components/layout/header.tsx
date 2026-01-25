@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -31,7 +32,7 @@ import { getLucideIcon } from "@/lib/icons";
 const navLinks = [
   { href: "/zones", label: "Zones" },
   { href: "/blog", label: "Blog" },
-  { href: "/#about", label: "À propos" },
+  { href: "/a-propos", label: "À propos" },
   { href: "/contact", label: "Contact" },
 ];
 
