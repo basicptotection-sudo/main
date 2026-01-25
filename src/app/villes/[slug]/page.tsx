@@ -1,16 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import * as LucideIcons from "lucide-react";
-
-import { citiesData, type City, type CityFocus } from "@/lib/cities-data";
-import { servicesData, type Service } from "@/lib/services-data";
-import { siteConfig } from "@/lib/config";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import CityJsonLd from "@/components/seo/city-json-ld";
-import FaqJsonLd from "@/components/seo/faq-json-ld";
 import {
-  HeroSection,
   ServicesGrid,
   FAQAccordion,
   CTASection,
@@ -18,10 +9,14 @@ import {
   AnimateOnScroll,
   TrustElements,
 } from "@/components/shared";
+import { citiesData, type City, type CityFocus } from "@/lib/cities-data";
+import { servicesData, type Service } from "@/lib/services-data";
+import { siteConfig } from "@/lib/config";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import CityJsonLd from "@/components/seo/city-json-ld";
+import FaqJsonLd from "@/components/seo/faq-json-ld";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 /* ----------------------------------
    Types
@@ -30,7 +25,7 @@ import { cn } from "@/lib/utils";
 type CityPageProps = { params: { slug: string } };
 
 type UseCase = {
-  icon: string;
+  icon: string; // icône lucide (string)
   title: string;
   content: string;
 };
@@ -233,9 +228,8 @@ export default function CityPage({ params }: CityPageProps) {
   ];
 
   const servicesForGrid = content.orderedServices.map((s) => {
-    const Icon = (LucideIcons as any)[s.icon];
     return {
-      icon: Icon ? <Icon className="w-12 h-12 text-primary" /> : null,
+      icon: s.icon,
       title: s.title,
       description: s.shortDescription,
       href: `/services/${s.slug}`,

@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -6,14 +7,12 @@ import { servicesData } from "@/lib/services-data";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 import {
-  HeroSection,
   ServicesGrid,
   AnimateOnScroll,
   Breadcrumbs,
   CTASection,
 } from "@/components/shared";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { getLucideIcon } from "@/lib/icons";
 import { Button } from "@/components/ui/button";
 
 const BRAND_ACCENT = "#2F8FD8";
@@ -54,7 +53,7 @@ export default function ServicesHubPage() {
   const terrainServices = servicesData
     .filter((s) => ["agent-securite-qualifie", "agent-cynophile", "agent-incendie-ssiap", "agent-rondier"].includes(s.slug))
     .map((service) => ({
-      icon: getLucideIcon(service.icon),
+      icon: service.icon,
       title: service.title,
       description: service.shortDescription,
       href: `/services/${service.slug}`,
@@ -63,7 +62,7 @@ export default function ServicesHubPage() {
   const premiumServices = servicesData
     .filter((s) => ["protection-rapprochee", "securite-evenementielle", "audit-conseil-surete"].includes(s.slug))
     .map((service) => ({
-      icon: getLucideIcon(service.icon),
+      icon: service.icon,
       title: service.title,
       description: service.shortDescription,
       href: `/services/${service.slug}`,
