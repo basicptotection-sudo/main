@@ -107,23 +107,15 @@ export function Header() {
           aria-label={`${siteConfig.name} — Accueil`}
           onClick={() => setIsMobileMenuOpen(false)}
         >
-          <div className="relative h-9 w-9 overflow-hidden rounded-md border bg-muted">
+          <div className="relative h-9 w-9 overflow-hidden rounded-md">
             <Image
-              src="/brand/logo.png"
+              src="/images/logo.png"
               alt={`Logo ${siteConfig.name}`}
               fill
               sizes="36px"
-              className="object-contain p-1"
+              className="object-contain"
               priority
             />
-          </div>
-          <div className="leading-tight">
-            <div className="font-headline text-sm font-semibold tracking-tight md:text-base">
-              {siteConfig.name}
-            </div>
-            <div className="hidden text-xs text-muted-foreground md:block">
-              Plaisir (78) • Île-de-France • Sécurité privée
-            </div>
           </div>
         </Link>
 
@@ -252,16 +244,15 @@ export function Header() {
                     className="flex items-center gap-3"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <div className="relative h-9 w-9 overflow-hidden rounded-md border bg-muted">
+                    <div className="relative h-9 w-9 overflow-hidden rounded-md">
                       <Image
-                        src="/brand/logo.png"
+                        src="/images/logo.png"
                         alt={`Logo ${siteConfig.name}`}
                         fill
                         sizes="36px"
-                        className="object-contain p-1"
+                        className="object-contain"
                       />
                     </div>
-                    <span className="font-headline font-semibold">{siteConfig.name}</span>
                   </Link>
 
                   <Button

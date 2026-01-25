@@ -38,14 +38,14 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <Link href="/" className="flex items-center gap-3">
-              <div className="relative h-10 w-10 overflow-hidden rounded-md border bg-muted">
+              <div className="relative h-10 w-10 overflow-hidden rounded-md">
                 {/* Remplace si ton logo n'est pas en png */}
                 <Image
-                  src="/brand/logo.png"
+                  src="/images/logo.png"
                   alt={`Logo ${siteConfig.name}`}
                   fill
                   sizes="40px"
-                  className="object-contain p-1"
+                  className="object-contain"
                 />
               </div>
 
