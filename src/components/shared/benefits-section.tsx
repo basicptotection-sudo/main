@@ -18,7 +18,7 @@ type BenefitsSectionProps = {
 export function BenefitsSection({ id, title, description, benefits, className }: BenefitsSectionProps) {
   return (
     <section id={id} className={cn("py-16 md:py-24", className)}>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto max-w-6xl px-4">
         <div className="text-center max-w-3xl mx-auto">
           <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
             {title}
