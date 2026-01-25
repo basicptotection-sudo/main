@@ -21,15 +21,12 @@ import {
 } from "@/components/shared";
 
 import ServiceJsonLd from "@/components/seo/service-json-ld";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type ServicePageProps = {
   params: { slug: string };
 };
-
-const BRAND_ACCENT = "#2F8FD8";
 
 export async function generateStaticParams() {
   return servicesData.map((service) => ({ slug: service.slug }));
@@ -233,22 +230,13 @@ function getPageSections(service: Service): PageSection[] {
   return Array.isArray(sections) ? sections : [];
 }
 
-/**
- * 3 images par page:
- * - 1 verticale (portrait)
- * - 2 paysages (landscape)
- *
- * Ici on fait simple: on prend un pool d’images PlaceHolderImages
- * et on “pin” l’image hero + 2 autres différentes.
- * Si tu veux un tri parfait portrait/paysage: on pourra ajouter un champ aspect dans PlaceHolderImages.
- */
 function pickServiceImages(service: Service) {
   const simpleHash = (str: string) => {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       const char = str.charCodeAt(i);
       hash = (hash << 5) - hash + char;
-      hash |= 0; // Convert to 32bit integer
+      hash |= 0;
     }
     return Math.abs(hash);
   };
@@ -257,10 +245,8 @@ function pickServiceImages(service: Service) {
     PlaceHolderImages.find((p) => p.id === service.heroImageId) ??
     PlaceHolderImages.find((p) => p.id === "hero");
 
-  // Pool of images excluding the hero image to avoid repetition on the same page
   const pool = PlaceHolderImages.filter((p) => p.id !== hero?.id && p.imageUrl);
 
-  // Fallback if the pool is too small
   if (pool.length < 3) {
     return {
       portrait: pool[0] ?? hero!,
@@ -271,19 +257,14 @@ function pickServiceImages(service: Service) {
 
   const hash = simpleHash(service.slug);
 
-  // Use the hash to get different starting points for each service
   const index1 = hash % pool.length;
   const index2 = (index1 + 1) % pool.length;
   const index3 = (index2 + 1) % pool.length;
-
-  // This ensures 3 different images if the pool is large enough
+  
   const img1 = pool[index1];
   const img2 = pool[index2];
   const img3 = pool[index3];
 
-  // Heuristic to find a portrait-like image. This can be improved.
-  // For now, we'll just assign them based on index.
-  // The layout is what will determine the final rendering shape.
   return {
     portrait: img1!,
     landscape1: img2!,
@@ -344,7 +325,6 @@ export default function ServicePage({ params }: ServicePageProps) {
   ];
 
   const blocks = serviceContextBlocks(service);
-  const cityLinks = cityLinksForService(service.slug);
   const related = relatedServicesFor(service);
 
   const pageLead = (service as any)?.page?.lead as string | undefined;
@@ -354,18 +334,15 @@ export default function ServicePage({ params }: ServicePageProps) {
   const miniNav = [
     { id: "overview", label: "Vue d’ensemble" },
     ...(longSections.length ? [{ id: "details", label: "Détails" }] : []),
-    { id: "benefits", label: "Avantages" },
-    { id: "method", label: "Méthode" },
-    { id: "sectors", label: "Secteurs" },
-    { id: "faq", label: "FAQ" },
+    ...(service.benefits && service.benefits.length > 0 ? [{ id: "benefits", label: "Avantages" }] : []),
+    ...(service.method?.steps.length > 0 ? [{ id: "method", label: "Méthode" }] : []),
+    ...(service.sectors && service.sectors.length > 0 ? [{ id: "sectors", label: "Secteurs" }] : []),
+    ...(faqItems.length > 0 ? [{ id: "faq", label: "FAQ" }] : []),
     { id: "contact", label: "Contact" },
-  ];
+  ].filter(Boolean);
 
   return (
-    <div
-      className="bg-background text-foreground"
-      style={{ ["--brand-accent" as any]: BRAND_ACCENT }}
-    >
+    <div className="bg-background text-foreground">
       <ServiceJsonLd service={service} breadcrumbs={breadcrumbItems} />
 
       <HeroSection
@@ -379,424 +356,284 @@ export default function ServicePage({ params }: ServicePageProps) {
         breadcrumbs={<Breadcrumbs items={breadcrumbItems} className="mb-4 py-0" />}
       />
 
-      {/* MINI NAV — plus léger + scroll horizontal */}
       <AnimateOnScroll>
-        <section className="container mx-auto max-w-6xl px-4 -mt-10 pb-6">
-          <div className="sticky top-2 z-20 rounded-2xl border border-border bg-background/75 p-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="no-scrollbar flex gap-2 overflow-x-auto px-1 py-1">
-              {miniNav.map((it) => (
-                <Link
-                  key={it.id}
-                  href={`#${it.id}`}
-                  className="shrink-0 rounded-full border border-border px-3 py-2 text-sm text-muted-foreground hover:bg-muted/40 hover:text-foreground"
-                >
-                  {it.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+          <section className="sticky top-0 z-20 border-b bg-background/80 backdrop-blur-lg">
+              <div className="container mx-auto max-w-7xl px-4">
+                  <div className="no-scrollbar flex gap-2 overflow-x-auto">
+                      {miniNav.map((it) => (
+                      <Link
+                          key={it.id}
+                          href={`#${it.id}`}
+                          onClick={(e) => {
+                              e.preventDefault();
+                              const element = document.getElementById(it.id);
+                              if (element) {
+                                  const headerOffset = 80; 
+                                  const elementPosition = element.getBoundingClientRect().top;
+                                  const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                              
+                                  window.scrollTo({
+                                      top: offsetPosition,
+                                      behavior: "smooth"
+                                  });
+                              }
+                          }}
+                          className="shrink-0 border-b-2 border-transparent px-1 py-4 text-sm font-medium text-muted-foreground hover:border-primary hover:text-primary"
+                      >
+                          {it.label}
+                      </Link>
+                      ))}
+                  </div>
+              </div>
+          </section>
       </AnimateOnScroll>
 
-      {/* VUE D’ENSEMBLE — contenu + conversion + ressources */}
       <AnimateOnScroll>
-        <section
-          id="overview"
-          className="container mx-auto max-w-6xl px-4 pb-14 md:pb-20"
-        >
-          <div className="grid gap-8 lg:grid-cols-[1fr_360px]">
-            {/* Colonne contenu */}
-            <div className="space-y-8">
-              <div className="rounded-3xl border border-border bg-background p-6 md:p-8">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h2 className="font-headline text-2xl font-semibold md:text-3xl">
-                      {blocks.whenTitle}
-                    </h2>
-                    <p className="mt-3 text-muted-foreground">{blocks.when}</p>
-                  </div>
-                  <span
-                    className="hidden h-11 w-11 rounded-2xl md:inline-flex"
-                    style={{
-                      backgroundColor:
-                        "color-mix(in oklab, var(--brand-accent) 16%, transparent)",
-                    }}
-                  />
-                </div>
-
-                <div className="mt-6 grid gap-4 md:grid-cols-2">
-                  <div className="rounded-2xl border border-border bg-muted/10 p-5">
-                    <div className="text-sm font-semibold">
-                      {blocks.scopeTitle}
-                    </div>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      {blocks.scope}
-                    </p>
-                  </div>
-
-                  <div className="rounded-2xl border border-border bg-muted/10 p-5">
-                    <div className="text-sm font-semibold">
-                      Couverture Île-de-France
-                    </div>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Dispositifs cadrés, équipes qualifiées, supervision et
-                      reporting.
-                    </p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {["75", "92", "93", "94", "95", "78", "77", "91"].map(
-                        (d) => (
-                          <Badge key={d} variant="secondary">
-                            {d}
-                          </Badge>
-                        )
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-border bg-background p-5">
-                    <div className="text-sm font-semibold">Encadrement</div>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Briefings, consignes, contrôle qualité, supervision terrain.
-                    </p>
-                  </div>
-                  <div className="rounded-2xl border border-border bg-background p-5">
-                    <div className="text-sm font-semibold">Reporting</div>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Remontées claires, rapports, ajustements selon activité.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {(cityLinks.length > 0 || related.length > 0) && (
-                <div className="grid gap-4 md:grid-cols-2">
-                  {cityLinks.length > 0 && (
-                    <div className="rounded-3xl border border-border bg-background p-6">
-                      <div className="flex items-end justify-between gap-4">
-                        <div>
-                          <h3 className="font-headline text-lg font-semibold">
-                            Exemples de pages locales
-                          </h3>
-                          <p className="mt-1 text-sm text-muted-foreground">
-                            Pages adaptées aux enjeux (luxe, bureaux, chantiers,
-                            événementiel…).
-                          </p>
-                        </div>
-                        <Link
-                          href="/villes"
-                          className="text-sm font-medium hover:underline"
-                          style={{ color: "var(--brand-accent)" }}
-                        >
-                          Tout voir
-                        </Link>
-                      </div>
-
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {cityLinks.map((c) => (
-                          <Link
-                            key={c.href}
-                            href={c.href}
-                            className="rounded-xl border border-border bg-muted/10 px-3 py-2 text-sm hover:bg-muted/30"
-                          >
-                            {c.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {related.length > 0 && (
-                    <div className="rounded-3xl border border-border bg-background p-6">
-                      <h3 className="font-headline text-lg font-semibold">
-                        Services liés
-                      </h3>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        Prestations complémentaires pour un dispositif cohérent.
+          <section id="overview" className="py-16 md:py-24">
+              <div className="container mx-auto max-w-5xl px-4">
+                  <div className="mx-auto max-w-3xl text-center">
+                        <p className="text-sm font-semibold uppercase tracking-wider text-primary">Vue d'ensemble</p>
+                        <h2 className="mt-2 font-headline text-3xl font-bold tracking-tight text-primary md:text-4xl">
+                          {blocks.whenTitle}
+                      </h2>
+                      <p className="mt-4 text-lg text-muted-foreground">
+                          {blocks.when}
                       </p>
-
-                      <div className="mt-4 space-y-3">
-                        {related.map((s) => (
-                          <Link
-                            key={s.slug}
-                            href={`/services/${s.slug}`}
-                            className="block rounded-2xl border border-border bg-muted/10 p-4 transition hover:bg-muted/30"
-                          >
-                            <div className="text-sm font-semibold">{s.title}</div>
-                            <div className="mt-1 text-sm text-muted-foreground">
-                              {s.shortDescription}
-                            </div>
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Colonne sticky conversion (desktop) */}
-            <aside className="lg:sticky lg:top-24 lg:h-fit">
-              <div className="rounded-3xl border border-border bg-background p-6">
-                <div className="text-sm font-semibold">Demande rapide</div>
-                <p className="mt-2 text-sm text-muted-foreground">
-                  Décris ton site, tes horaires, tes accès et tes contraintes : on
-                  te répond avec une proposition structurée.
-                </p>
-
-                <div className="mt-5 flex flex-col gap-3">
-                  <Button
-                    asChild
-                    className={cn(
-                      "h-11 rounded-xl text-white",
-                      "bg-[var(--brand-accent)] hover:bg-[var(--brand-accent)]/90"
-                    )}
-                  >
-                    <Link href="/devis">Demander un devis</Link>
-                  </Button>
-
-                  <Button asChild variant="outline" className="h-11 rounded-xl">
-                    <a href={phoneHref} aria-label="Appeler">
-                      Appeler
-                    </a>
-                  </Button>
-                </div>
-
-                <div className="mt-6 rounded-2xl border border-border bg-muted/10 p-4">
-                  <div className="text-sm font-semibold">
-                    À préciser (idéalement)
                   </div>
-                  <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
-                    <li>• Type de site / lieu</li>
-                    <li>• Horaires & jours</li>
-                    <li>• Accès, flux, zones sensibles</li>
-                    <li>• Contraintes (ERP/IGH, VIP, événement…)</li>
-                  </ul>
-                </div>
-              </div>
-            </aside>
-          </div>
-        </section>
-      </AnimateOnScroll>
 
-      {/* ENGAGEMENTS */}
+                  <div className="mt-12 grid gap-8 md:grid-cols-2">
+                        <Card className="bg-muted/30">
+                            <CardHeader>
+                                <CardTitle>{blocks.scopeTitle}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">{blocks.scope}</p>
+                            </CardContent>
+                        </Card>
+                        <Card className="bg-muted/30">
+                          <CardHeader>
+                                <CardTitle>Couverture & Fiabilité</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-muted-foreground">
+                                  Dispositifs cadrés sur toute l'Île-de-France, équipes qualifiées, supervision et reporting.
+                                </p>
+                            </CardContent>
+                        </Card>
+                  </div>
+                    <div className="mt-12 text-center">
+                      <Button asChild size="lg">
+                          <Link href="/devis">Obtenir une proposition sur-mesure</Link>
+                      </Button>
+                  </div>
+              </div>
+          </section>
+      </AnimateOnScroll>
+      
       {service.whyUs?.length ? (
-        <AnimateOnScroll>
-          <section className="border-y border-border bg-muted/10 py-14 md:py-20">
-            <div className="container mx-auto max-w-6xl px-4">
-              <div className="mx-auto max-w-4xl text-center">
-                <h2 className="font-headline text-3xl font-bold md:text-4xl">
+          <AnimateOnScroll>
+          <section className="border-y bg-card py-16 md:py-24">
+              <div className="container mx-auto max-w-6xl px-4">
+              <div className="mx-auto max-w-3xl text-center">
+                  <h2 className="font-headline text-3xl font-bold md:text-4xl">
                   Nos engagements pour ce service
-                </h2>
-                <p className="mt-4 text-muted-foreground">
+                  </h2>
+                  <p className="mt-4 text-lg text-muted-foreground">
                   Exécution propre, encadrement, traçabilité : un standard stable,
                   mission après mission.
-                </p>
+                  </p>
               </div>
-              <div className="mt-10">
-                <TrustElements elements={service.whyUs} />
+              <div className="mt-12">
+                  <TrustElements elements={service.whyUs} />
               </div>
-            </div>
+              </div>
           </section>
-        </AnimateOnScroll>
+          </AnimateOnScroll>
       ) : null}
 
-      {/* SECTIONS LONGUES */}
-      {longSections.length ? (
-        <AnimateOnScroll>
+      {longSections.length > 0 && (
+          <AnimateOnScroll>
           <section
-            id="details"
-            className="container mx-auto max-w-6xl px-4 py-14 md:py-20"
+              id="details"
+              className="py-16 md:py-24"
           >
-            <div className="mx-auto max-w-4xl">
-              <h2 className="font-headline text-3xl font-bold md:text-4xl">
-                Approche & Méthodologie
-              </h2>
-              <p className="mt-3 text-muted-foreground">
-                Un contenu détaillé pour comprendre la méthode, le cadrage et
-                le niveau d’exigence de nos prestations.
-              </p>
+              <div className="container mx-auto max-w-4xl px-4">
+                  <div className="mx-auto max-w-3xl text-center">
+                      <h2 className="font-headline text-3xl font-bold md:text-4xl">
+                          Notre Approche en Détail
+                      </h2>
+                      <p className="mt-4 text-lg text-muted-foreground">
+                          Comprendre la méthode, le cadrage et le niveau d’exigence de nos prestations pour une sécurité maîtrisée.
+                      </p>
+                  </div>
 
-              <div className="mt-10 space-y-10">
-                {longSections.map((sec, index) => (
-                  <React.Fragment key={sec.id}>
-                    <article className="border-l-2 border-border pl-6">
-                      <div className="flex items-start justify-between gap-4">
-                        <h3 className="font-headline text-2xl font-semibold">
-                          {sec.title}
-                        </h3>
-                        <span
-                          className="mt-1 hidden h-3 w-3 shrink-0 rounded-full md:inline-flex"
-                          style={{
-                            backgroundColor:
-                              "color-mix(in oklab, var(--brand-accent) 65%, transparent)",
-                          }}
-                        />
-                      </div>
+                  <div className="mt-16 space-y-12 prose prose-lg dark:prose-invert max-w-none">
+                      {longSections.map((sec, index) => (
+                      <React.Fragment key={sec.id}>
+                          <div className="mx-auto">
+                              <h3 className="!mb-2 text-2xl font-semibold tracking-tight text-primary">
+                                  {sec.title}
+                              </h3>
 
-                      {sec.intro ? (
-                        <p className="mt-3 text-muted-foreground">{sec.intro}</p>
-                      ) : null}
+                              {sec.intro ? (
+                                  <p className="lead !my-4 text-muted-foreground">{sec.intro}</p>
+                              ) : null}
 
-                      {sec.paragraphs?.length ? (
-                        <div className="mt-4 space-y-3 text-muted-foreground">
-                          {sec.paragraphs.map((p, i) => (
-                            <p key={i}>{p}</p>
-                          ))}
-                        </div>
-                      ) : null}
+                              {sec.paragraphs?.length ? (
+                                  <div className="space-y-4 text-foreground/80">
+                                  {sec.paragraphs.map((p, i) => (
+                                      <p key={i}>{p}</p>
+                                  ))}
+                                  </div>
+                              ) : null}
 
-                      {sec.bullets?.length ? (
-                        <ul className="mt-5 grid gap-2 sm:grid-cols-2">
-                          {sec.bullets.map((b, i) => (
-                            <li
-                              key={i}
-                              className="rounded-2xl border border-border bg-muted/10 px-4 py-3 text-sm"
-                            >
-                              {b}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
+                              {sec.bullets?.length ? (
+                                  <ul className="mt-6 space-y-3">
+                                  {sec.bullets.map((b, i) => (
+                                      <li key={i}>{b}</li>
+                                  ))}
+                                  </ul>
+                              ) : null}
 
-                      {sec.internalLinks?.length ? (
-                        <div className="mt-5 flex flex-wrap gap-2">
-                          {sec.internalLinks.map((l) => (
-                            <Link
-                              key={l.href}
-                              href={l.href}
-                              className="rounded-xl border border-border bg-muted/10 px-3 py-2 text-sm hover:bg-muted/30"
-                            >
-                              {l.label}
-                            </Link>
-                          ))}
-                        </div>
-                      ) : null}
+                              {sec.note ? (
+                                  <div className="my-6 rounded-lg border bg-card p-5 not-prose">
+                                      <p className="text-sm font-semibold text-card-foreground">À retenir</p>
+                                      <p className="mt-1 text-sm text-muted-foreground">
+                                          {sec.note}
+                                      </p>
+                                  </div>
+                              ) : null}
 
-                      {sec.note ? (
-                        <div className="mt-6 rounded-2xl border border-border bg-background p-5">
-                          <div className="text-sm font-semibold">À retenir</div>
-                          <p className="mt-1 text-sm text-muted-foreground">
-                            {sec.note}
-                          </p>
-                        </div>
-                      ) : null}
-                    </article>
+                                {sec.internalLinks?.length ? (
+                                  <div className="mt-6 flex flex-wrap gap-2 not-prose">
+                                  {sec.internalLinks.map((l) => (
+                                      <Button asChild variant="secondary" size="sm" key={l.href}>
+                                          <Link href={l.href}>{l.label}</Link>
+                                      </Button>
+                                  ))}
+                                  </div>
+                              ) : null}
+                          </div>
+                          
+                          {index === 1 && longSections.length > 2 && (
+                              <div className="relative my-12 overflow-hidden rounded-2xl">
+                                  <div className="relative aspect-video w-full">
+                                      <Image src={gallery.landscape1.imageUrl} alt={gallery.landscape1.description ?? `${service.title} illustration`} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 800px" />
+                                  </div>
+                              </div>
+                          )}
+                          
+                          {index === 3 && longSections.length > 4 && (
+                              <div className="my-12 grid grid-cols-1 items-center gap-8 md:grid-cols-3">
+                                  <div className="relative order-last overflow-hidden rounded-2xl md:order-first md:col-span-1">
+                                      <div className="relative aspect-[3/4] w-full">
+                                          <Image src={gallery.portrait.imageUrl} alt={gallery.portrait.description ?? `${service.title} en situation`} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw"/>
+                                      </div>
+                                  </div>
+                                  <div className="md:col-span-2">
+                                      <blockquote className="border-l-4 border-primary pl-6 text-xl italic text-muted-foreground">
+                                          "La qualité d'un dispositif de sécurité ne se mesure pas au nombre d'agents, mais à la rigueur de son organisation, à la clarté de ses consignes et à la pertinence de sa supervision."
+                                      </blockquote>
+                                  </div>
+                              </div>
+                          )}
 
-                    {index === 1 && longSections.length > 2 && (
-                        <div className="relative my-12 overflow-hidden rounded-2xl border border-border bg-muted/10">
-                        <div className="relative aspect-video w-full">
-                            <Image
-                            src={gallery.landscape1.imageUrl}
-                            alt={gallery.landscape1.description ?? `${service.title} illustration`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 800px"
-                            priority={false}
-                            />
-                        </div>
-                        </div>
-                    )}
-                    
-                    {index === 3 && longSections.length > 4 && (
-                        <div className="my-12 grid grid-cols-1 items-center gap-8 md:grid-cols-3">
-                            <div className="relative order-last overflow-hidden rounded-2xl border border-border bg-muted/10 md:order-first md:col-span-1">
-                                <div className="relative aspect-[3/4] w-full">
-                                <Image
-                                    src={gallery.portrait.imageUrl}
-                                    alt={gallery.portrait.description ?? `${service.title} en situation`}
-                                    fill
-                                    className="object-cover"
-                                    sizes="(max-width: 768px) 100vw, 33vw"
-                                    priority={false}
-                                />
-                                </div>
-                            </div>
-                            <div className="md:col-span-2">
-                                <blockquote className="border-l-4 border-primary pl-6 text-xl italic text-muted-foreground">
-                                    "La qualité d'un dispositif de sécurité ne se mesure pas au nombre d'agents, mais à la rigueur de son organisation, à la clarté de ses consignes et à la pertinence de sa supervision."
-                                </blockquote>
-                            </div>
-                        </div>
-                    )}
-
-                    {index === 5 && longSections.length > 6 && (
-                        <div className="relative my-12 overflow-hidden rounded-2xl border border-border bg-muted/10">
-                        <div className="relative aspect-video w-full">
-                            <Image
-                            src={gallery.landscape2.imageUrl}
-                            alt={gallery.landscape2.description ?? `${service.title} en action`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 800px"
-                            priority={false}
-                            />
-                        </div>
-                        </div>
-                    )}
-                  </React.Fragment>
-                ))}
+                          {index === 5 && longSections.length > 6 && (
+                              <div className="relative my-12 overflow-hidden rounded-2xl">
+                                  <div className="relative aspect-video w-full">
+                                      <Image src={gallery.landscape2.imageUrl} alt={gallery.landscape2.description ?? `${service.title} en action`} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 800px"/>
+                                  </div>
+                              </div>
+                          )}
+                      </React.Fragment>
+                      ))}
+                  </div>
               </div>
-            </div>
           </section>
-        </AnimateOnScroll>
-      ) : null}
+          </AnimateOnScroll>
+      )}
+      
+      {service.benefits && service.benefits.length > 0 && (
+          <AnimateOnScroll>
+              <section id="benefits" className="bg-card">
+                  <BenefitsSection
+                      title="Vos avantages clés"
+                      description={`Découvrez les bénéfices concrets de notre service : ${service.title.toLowerCase()}.`}
+                      benefits={service.benefits ?? []}
+                  />
+              </section>
+          </AnimateOnScroll>
+      )}
+      
+      {service.method?.steps.length > 0 && (
+          <AnimateOnScroll>
+              <section id="method" className="py-16 md:py-24">
+                  <div className="container mx-auto max-w-6xl px-4">
+                      <ProcessSteps
+                          title={service.method?.title ?? "Une méthode claire, un pilotage précis"}
+                          description={ service.method?.description ?? "Du cadrage à l’exécution : un dispositif pensé, déployé, puis supervisé."}
+                          steps={service.method?.steps ?? []}
+                      />
+                  </div>
+              </section>
+          </AnimateOnScroll>
+      )}
 
-      {/* BENEFITS */}
-      <AnimateOnScroll>
-        <section id="benefits">
-          <BenefitsSection
-            title="Vos avantages clés"
-            description={`Découvrez les bénéfices concrets de notre service : ${service.title.toLowerCase()}.`}
-            benefits={service.benefits ?? []}
-          />
-        </section>
-      </AnimateOnScroll>
+      {service.sectors && service.sectors.length > 0 && (
+          <AnimateOnScroll>
+              <section id="sectors" className="bg-card py-16 md:py-24">
+                  <div className="container mx-auto max-w-6xl px-4">
+                      <SectorsGrid sectors={service.sectors ?? []} />
+                  </div>
+              </section>
+          </AnimateOnScroll>
+      )}
 
-      {/* METHOD */}
-      <AnimateOnScroll>
-        <section
-          id="method"
-          className="container mx-auto max-w-6xl px-4 py-14 md:py-20"
-        >
-          <ProcessSteps
-            title={service.method?.title ?? "Une méthode claire, un pilotage précis"}
-            description={
-              service.method?.description ??
-              "Du cadrage à l’exécution : un dispositif pensé, déployé, puis supervisé."
-            }
-            steps={service.method?.steps ?? []}
-          />
-        </section>
-      </AnimateOnScroll>
+      {faqItems.length > 0 && (
+            <AnimateOnScroll>
+              <section id="faq" className="py-16 md:py-24">
+                  <div className="container mx-auto max-w-3xl px-4">
+                      <FAQAccordion
+                      title="Questions fréquentes"
+                      description={`Les réponses à vos questions sur ${service.title.toLowerCase()}.`}
+                      items={faqItems}
+                      />
+                  </div>
+              </section>
+          </AnimateOnScroll>
+      )}
 
-      {/* SECTORS */}
-      <AnimateOnScroll>
-        <section
-          id="sectors"
-          className="border-t border-border bg-background py-14 md:py-20"
-        >
-          <div className="container mx-auto max-w-6xl px-4">
-            <SectorsGrid sectors={service.sectors ?? []} />
-          </div>
-        </section>
-      </AnimateOnScroll>
+      {related.length > 0 && (
+          <AnimateOnScroll>
+              <section className="bg-card py-16 md:py-24">
+                  <div className="container mx-auto max-w-5xl px-4">
+                      <div className="mx-auto max-w-3xl text-center">
+                          <h2 className="font-headline text-3xl font-bold md:text-4xl">
+                              Services Complémentaires
+                          </h2>
+                          <p className="mt-4 text-lg text-muted-foreground">
+                              Des prestations additionnelles pour construire un dispositif de sûreté global et cohérent.
+                          </p>
+                      </div>
+                      <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                          {related.map((s) => (
+                              <Link key={s.slug} href={`/services/${s.slug}`} className="block h-full">
+                                  <Card className="h-full transition hover:shadow-lg">
+                                      <CardHeader>
+                                          <CardTitle className="text-base">{s.title}</CardTitle>
+                                      </CardHeader>
+                                      <CardContent>
+                                          <p className="text-sm text-muted-foreground">{s.shortDescription}</p>
+                                      </CardContent>
+                                  </Card>
+                              </Link>
+                          ))}
+                      </div>
+                  </div>
+              </section>
+          </AnimateOnScroll>
+      )}
 
-      {/* FAQ */}
-      <AnimateOnScroll>
-        <section id="faq" className="border-t border-border bg-background py-14 md:py-20">
-          <div className="container mx-auto max-w-4xl px-4">
-            <FAQAccordion
-              title="Questions fréquentes"
-              description={`Les réponses à vos questions sur ${service.title.toLowerCase()}.`}
-              items={faqItems}
-            />
-          </div>
-        </section>
-      </AnimateOnScroll>
-
-      {/* CTA FINAL */}
       <AnimateOnScroll>
         <CTASection
           id="contact"
