@@ -1,14 +1,18 @@
+
 import Link from "next/link";
+import Image from "next/image";
 
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { siteConfig } from "@/lib/config";
 import { servicesData } from "@/lib/services-data";
+import { locationsData } from "@/lib/locations-data";
 
 import {
   TrustElements,
   ServicesGrid,
   ProcessSteps,
   SectorsGrid,
+  CoverageSection,
   Testimonials,
   FAQAccordion,
   CTASection,
@@ -26,7 +30,86 @@ import {
 } from "@/lib/homepage-data";
 
 import { Button } from "@/components/ui/button";
-import { ShieldCheck } from "lucide-react";
+import { BadgeCheck, Clock, MapPin, ShieldCheck } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { getLucideIcon } from "@/lib/icons";
+
+const BRAND_DARK = "#1F2A44";
+const BRAND_ON_BLACK = "#2F8FD8";
+
+function SectionHeader({
+  eyebrow,
+  title,
+  description,
+  align = "center",
+  className,
+}: {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+  align?: "center" | "left";
+  className?: string;
+}) {
+  return (
+    <div
+      className={cn(
+        "mx-auto max-w-3xl",
+        align === "center" ? "text-center" : "text-left",
+        className
+      )}
+    >
+      {eyebrow ? (
+        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+          {eyebrow}
+        </p>
+      ) : null}
+      <h2 className="mt-3 font-headline text-3xl font-bold tracking-tight text-primary md:text-4xl">
+        {title}
+      </h2>
+      {description ? (
+        <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+          {description}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function Stat({
+  Icon,
+  label,
+  value,
+  variant = "default",
+}: {
+  Icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  value: string;
+  variant?: "default" | "onBlack";
+}) {
+  const iconColor =
+    variant === "onBlack" ? `text-[${BRAND_ON_BLACK}]` : `text-[${BRAND_DARK}]`;
+  const iconBg =
+    variant === "onBlack"
+      ? `bg-[${BRAND_ON_BLACK}]/15`
+      : `bg-[${BRAND_DARK}]/10`;
+
+  return (
+    <div className="flex items-center gap-4 rounded-2xl border bg-card px-5 py-4 shadow-sm">
+      <div
+        className={cn(
+          "flex h-10 w-10 items-center justify-center rounded-xl",
+          iconBg
+        )}
+      >
+        <Icon className={cn("h-5 w-5", iconColor)} />
+      </div>
+      <div className="min-w-0">
+        <div className="text-xl font-bold leading-none">{value}</div>
+        <div className="mt-1 text-sm text-muted-foreground">{label}</div>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find((p) => p.id === "hero");
@@ -62,69 +145,111 @@ export default function Home() {
       href: `/services/${service.slug}`,
     }));
 
+  const coverageZones = locationsData.map((loc) => ({
+    name: loc.name,
+    href: `/zones/${loc.slug}`,
+  }));
+
   const phoneHref = `tel:${(siteConfig.contact.phoneE164 ??
     siteConfig.contact.phone)
     .replace(/\s/g, "")
     .trim()}`;
+
+  const StatShieldCheck = getLucideIcon("ShieldCheck");
+  const StatBadgeCheck = getLucideIcon("BadgeCheck");
+  const StatClock = getLucideIcon("Clock");
+  const StatMapPin = getLucideIcon("MapPin");
 
   return (
     <div className="flex min-h-screen flex-col overflow-hidden">
       <HeroSection
         title={
           <>
-            Une sécurité privée,
-            <br />
-            <span className="font-light text-[#2F8FD8]">discrète et maîtrisée</span>.
+            Sécurité privée,
+            <span className={`font-light text-[${BRAND_ON_BLACK}]`}>
+              {" "}
+              discrète
+            </span>{" "}
+            et{" "}
+            <span className={`font-light text-[${BRAND_ON_BLACK}]`}>
+              maîtrisée
+            </span>
+            .
           </>
         }
-        description="Surveillance de sites, événementiel, SSIAP, cynophile et protection rapprochée : des dispositifs sur-mesure, exécutés avec rigueur et discrétion."
+        description="Surveillance de sites, événementiel, SSIAP, cynophile et protection rapprochée : des dispositifs sur-mesure, exécutés avec rigueur."
         cta1={{
           label: "Demander un devis",
           href: "/devis",
-          className: "bg-[#2F8FD8] text-white hover:bg-[#2F8FD8]/90",
+          className: `bg-[${BRAND_ON_BLACK}] hover:bg-[${BRAND_ON_BLACK}]/90`,
         }}
         cta2={{
           label: "Appeler maintenant",
           href: phoneHref,
-          className: "bg-white text-[#1F2A44] hover:bg-white/90",
+          variant: "outline",
+          className: `bg-white text-[${BRAND_DARK}] hover:bg-white/90 hover:text-[${BRAND_DARK}]`,
         }}
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description ?? "Sécurité privée en Île-de-France"}
+        imageHint={heroImage?.imageHint}
         breadcrumbs={
           <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-sm text-white shadow-sm backdrop-blur">
-            <ShieldCheck className="h-4 w-4 text-[#2F8FD8]" />
+            <ShieldCheck className={`h-4 w-4 text-[${BRAND_ON_BLACK}]`} />
             <span className="font-medium">
               Sécurité privée • Encadrement • Discrétion
             </span>
           </div>
         }
       />
+      <div className="relative -mt-16 z-10">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Stat
+              variant="onBlack"
+              Icon={StatShieldCheck}
+              value="500+"
+              label="Missions sécurisées"
+            />
+            <Stat
+              variant="onBlack"
+              Icon={StatBadgeCheck}
+              value="98%"
+              label="Satisfaction client"
+            />
+            <Stat variant="onBlack" Icon={StatClock} value="< 24h" label="Mise en place" />
+            <Stat
+              variant="onBlack"
+              Icon={StatMapPin}
+              value="IDF"
+              label="Couverture régionale"
+            />
+          </div>
+        </div>
+      </div>
 
+      {/* TRUST / ABOUT */}
       <AnimateOnScroll>
-        <section id="about" className="py-16 md:py-24 bg-background">
+        <section id="about" className="py-16 md:py-24">
           <div className="container mx-auto px-4">
-            <div className="text-center max-w-3xl mx-auto">
-              <p className="font-semibold tracking-wide text-primary uppercase">
-                Le partenaire de votre tranquillité
-              </p>
-              <h2 className="mt-2 text-3xl md:text-4xl font-headline font-bold text-primary">
-                L’exigence, sans compromis.
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground">
-                Plus qu’un prestataire : un partenaire de confiance, avec une exécution propre, des équipes encadrées et une coordination réactive.
-              </p>
-            </div>
-            
+            <SectionHeader
+              eyebrow="BASIC PROTECTION"
+              title="L’exigence, sans compromis."
+              description="Plus qu’un prestataire : un partenaire de confiance, avec une exécution propre, des équipes encadrées et une coordination réactive."
+            />
+
             <div className="mt-12">
               <TrustElements elements={trustElements} />
             </div>
 
             <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button asChild>
+              <Button
+                asChild
+                className={cn(
+                  "rounded-full px-6",
+                  `bg-[${BRAND_DARK}] text-white hover:bg-[${BRAND_DARK}]/90`
+                )}
+              >
                 <Link href="/devis">Obtenir une proposition</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link href="/services">Découvrir nos services</Link>
               </Button>
             </div>
           </div>
@@ -132,43 +257,66 @@ export default function Home() {
       </AnimateOnScroll>
 
       {/* SERVICES */}
-      <AnimateOnScroll>
-        <ServicesGrid
-          id="services"
-          title="Protection opérationnelle de terrain"
-          description="Agents qualifiés, cynophiles, SSIAP, rondiers : des dispositifs clairs et rigoureux pour sécuriser vos sites au quotidien."
-          services={terrainServices}
-          className="bg-muted/30"
-        />
-      </AnimateOnScroll>
+      <div id="services">
+        <AnimateOnScroll>
+          <ServicesGrid
+            title="Protection opérationnelle"
+            description="Sécuriser un site au quotidien : présence, contrôle, rondes, prévention. Simple, robuste, efficace."
+            services={terrainServices}
+            className="bg-background"
+          />
+        </AnimateOnScroll>
 
-      <AnimateOnScroll>
-        <ServicesGrid
-          title="Sûreté et dispositifs premium"
-          description="Protection rapprochée, sécurité événementielle de prestige, audit et conseil : une expertise pointue pour les enjeux les plus sensibles."
-          services={premiumServices}
-          className="bg-white"
-        />
-      </AnimateOnScroll>
+        <AnimateOnScroll>
+          <ServicesGrid
+            title="Sûreté haut niveau"
+            description="Protection rapprochée, événementiel, audit & conseil : une expertise structurée, discrète et précise."
+            services={premiumServices}
+            className="bg-card"
+          />
+        </AnimateOnScroll>
+      </div>
 
       {/* PROCESS */}
       <AnimateOnScroll>
         <ProcessSteps
           title="Une méthode claire, un pilotage précis"
-          description="Du cadrage à l’exécution : un dispositif pensé, déployé, puis supervisé pour maintenir un niveau de qualité constant."
+          description="Du cadrage à l’exécution : un dispositif pensé, déployé, puis supervisé pour maintenir un niveau constant."
           steps={processSteps}
-          className="bg-muted/30"
+          className="bg-background"
         />
       </AnimateOnScroll>
 
       {/* SECTORS */}
       <AnimateOnScroll>
-        <SectorsGrid sectors={sectors} className="bg-white" />
+        <SectorsGrid sectors={sectors} className="bg-card" />
+      </AnimateOnScroll>
+
+      {/* COVERAGE */}
+      <AnimateOnScroll>
+        <CoverageSection
+          title="Île-de-France : présence et mobilité"
+          description="Basés à Plaisir (78), nous intervenons sur toute l’Île-de-France grâce à une organisation structurée et des équipes mobiles."
+          zones={coverageZones}
+          className="bg-background"
+        >
+          <div className="mt-10 text-center">
+            <Button
+              asChild
+              className={cn(
+                "rounded-full px-6",
+                `bg-[${BRAND_DARK}] text-white hover:bg-[${BRAND_DARK}]/90`
+              )}
+            >
+              <Link href="/zones">Voir toutes les zones d’intervention</Link>
+            </Button>
+          </div>
+        </CoverageSection>
       </AnimateOnScroll>
 
       {/* TESTIMONIALS */}
       <AnimateOnScroll>
-        <Testimonials testimonials={testimonials} className="bg-muted/30" />
+        <Testimonials testimonials={testimonials} className="bg-card" />
       </AnimateOnScroll>
 
       {/* FAQ */}
@@ -177,17 +325,17 @@ export default function Home() {
           title="Questions fréquentes"
           description="Délais, modalités, périmètre, encadrement : les réponses essentielles avant de démarrer."
           items={faqItems}
-          className="bg-white"
+          className="bg-background"
         />
       </AnimateOnScroll>
-      
+
       {/* CTA */}
       <AnimateOnScroll>
         <CTASection
           title="Prêt à définir votre stratégie de sûreté ?"
           description="Contactez nos experts pour une analyse confidentielle de vos besoins. Recevez une proposition sur-mesure et un devis structuré."
           cta={{ label: "Obtenir votre devis", href: "/devis" }}
-          className="bg-background border-t"
+          className="bg-card"
         />
       </AnimateOnScroll>
 
