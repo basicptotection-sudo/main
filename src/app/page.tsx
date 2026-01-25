@@ -34,9 +34,6 @@ import { BadgeCheck, Clock, MapPin, ShieldCheck } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getLucideIcon } from "@/lib/icons";
 
-const BRAND_DARK = "#1F2A44";
-const BRAND_ON_BLACK = "#2F8FD8";
-
 function SectionHeader({
   eyebrow,
   title,
@@ -86,22 +83,15 @@ function Stat({
   value: string;
   variant?: "default" | "onBlack";
 }) {
-  const iconColor =
-    variant === "onBlack" ? `text-[${BRAND_ON_BLACK}]` : `text-[${BRAND_DARK}]`;
-  const iconBg =
-    variant === "onBlack"
-      ? `bg-[${BRAND_ON_BLACK}]/15`
-      : `bg-[${BRAND_DARK}]/10`;
-
   return (
     <div className="flex items-center gap-4 rounded-2xl border bg-card px-5 py-4 shadow-sm">
       <div
         className={cn(
           "flex h-10 w-10 items-center justify-center rounded-xl",
-          iconBg
+          variant === 'onBlack' ? 'bg-[#2F8FD8]/15' : 'bg-[#1F2A44]/10'
         )}
       >
-        <Icon className={cn("h-5 w-5", iconColor)} />
+        <Icon className={cn("h-5 w-5", variant === 'onBlack' ? 'text-[#2F8FD8]' : 'text-[#1F2A44]')} />
       </div>
       <div className="min-w-0">
         <div className="text-xl font-bold leading-none">{value}</div>
@@ -166,12 +156,12 @@ export default function Home() {
         title={
           <>
             Sécurité privée,
-            <span className={`font-light text-[${BRAND_ON_BLACK}]`}>
+            <span className="font-light text-[#2F8FD8]">
               {" "}
               discrète
             </span>{" "}
             et{" "}
-            <span className={`font-light text-[${BRAND_ON_BLACK}]`}>
+            <span className="font-light text-[#2F8FD8]">
               maîtrisée
             </span>
             .
@@ -181,20 +171,20 @@ export default function Home() {
         cta1={{
           label: "Demander un devis",
           href: "/devis",
-          className: `bg-[${BRAND_ON_BLACK}] hover:bg-[${BRAND_ON_BLACK}]/90`,
+          className: "bg-[#2F8FD8] hover:bg-[#2F8FD8]/90",
         }}
         cta2={{
           label: "Appeler maintenant",
           href: phoneHref,
           variant: "outline",
-          className: `bg-white text-[${BRAND_DARK}] hover:bg-white/90 hover:text-[${BRAND_DARK}]`,
+          className: "bg-white text-[#1F2A44] hover:bg-white/90 hover:text-[#1F2A44]",
         }}
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description ?? "Sécurité privée en Île-de-France"}
         imageHint={heroImage?.imageHint}
         breadcrumbs={
           <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-sm text-white shadow-sm backdrop-blur">
-            <ShieldCheck className={`h-4 w-4 text-[${BRAND_ON_BLACK}]`} />
+            <ShieldCheck className="h-4 w-4 text-[#2F8FD8]" />
             <span className="font-medium">
               Sécurité privée • Encadrement • Discrétion
             </span>
@@ -246,7 +236,7 @@ export default function Home() {
                 asChild
                 className={cn(
                   "rounded-full px-6",
-                  `bg-[${BRAND_DARK}] text-white hover:bg-[${BRAND_DARK}]/90`
+                  "bg-[#1F2A44] text-white hover:bg-[#1F2A44]/90"
                 )}
               >
                 <Link href="/devis">Obtenir une proposition</Link>
@@ -305,7 +295,7 @@ export default function Home() {
               asChild
               className={cn(
                 "rounded-full px-6",
-                `bg-[${BRAND_DARK}] text-white hover:bg-[${BRAND_DARK}]/90`
+                "bg-[#1F2A44] text-white hover:bg-[#1F2A44]/90"
               )}
             >
               <Link href="/zones">Voir toutes les zones d’intervention</Link>
