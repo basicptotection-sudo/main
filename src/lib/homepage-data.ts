@@ -69,19 +69,19 @@ export const testimonials = [
       quote:
         "Une équipe professionnelle qui a su comprendre nos contraintes. La communication est fluide et les consignes sont parfaitement appliquées.",
       name: "Directeur Sûreté",
-      title: "Groupe Industriel – Île-de-France",
+      role: "Groupe Industriel – Île-de-France",
     },
     {
       quote:
         "Leur dispositif pour notre événement était à la fois discret et très efficace. Une vraie tranquillité d'esprit pour nos équipes et nos invités.",
       name: "Responsable Événementiel",
-      title: "Agence de luxe – Paris",
+      role: "Agence de luxe – Paris",
     },
     {
       quote:
         "La réactivité et le sérieux du suivi sont exemplaires. Les rapports sont clairs et les agents font preuve d'un grand professionnalisme sur le terrain.",
       name: "Gestionnaire de site",
-      title: "Parc Tertiaire – Yvelines",
+      role: "Parc Tertiaire – Yvelines",
     },
 ];
 

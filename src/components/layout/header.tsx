@@ -108,7 +108,7 @@ export function Header() {
           aria-label={`${siteConfig.name} — Accueil`}
           onClick={() => setIsMobileMenuOpen(false)}
         >
-          <div className="relative h-20 w-20 overflow-hidden rounded-md">
+          <div className="relative h-24 w-24 overflow-hidden rounded-md">
             <Image
               src="/images/logo-clair.png"
               alt={`Logo ${siteConfig.name}`}
