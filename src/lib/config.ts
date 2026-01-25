@@ -22,6 +22,7 @@ export const siteConfig = {
       postalCode: "78370",
       country: "France",
     },
+    mapsUrl: "https://www.google.com/maps/search/?api=1&query=5+rue+des+Frères+Lumière+78370+Plaisir",
     areaServed: ["Yvelines (78)", "Paris (75)", "Hauts-de-Seine (92)", "Seine-Saint-Denis (93)", "Val-de-Marne (94)", "Val-d'Oise (95)", "Seine-et-Marne (77)", "Essonne (91)"],
     telephone: "+33677932831",
     email: "contact@basic-protection.com",
