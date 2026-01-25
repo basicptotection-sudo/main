@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
-import { getPostBySlug, getPostFilePaths } from "@/lib/blog";
+import { getPostBySlug, getPostFilePaths, getSimilarPosts } from "@/lib/blog";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
 import { format } from "date-fns";
@@ -13,8 +13,9 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import ArticleJsonLd from "@/components/seo/article-json-ld";
 import { TableOfContents } from "@/components/blog/table-of-contents";
 import { Tag } from "@/components/blog/tag";
-import { Breadcrumbs } from "@/components/shared";
+import { AnimateOnScroll, Breadcrumbs } from "@/components/shared";
 import { useMDXComponents } from "@/mdx-components";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 
 type BlogPageProps = {
   params: { slug: string };
@@ -84,6 +85,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
     const postImage = PlaceHolderImages.find((p) => p.id === data.image);
     const dateLabel = format(new Date(data.date), "dd MMMM yyyy", { locale: fr });
     const readingTime = readingTimeFromText(content);
+    const similarPosts = getSimilarPosts(slug, data.tags);
 
     const breadcrumbItems = [
       { label: "Accueil", href: "/" },
@@ -287,6 +289,68 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               </aside>
             </div>
           </main>
+          
+          {similarPosts.length > 0 && (
+            <AnimateOnScroll>
+              <section className="border-t bg-muted/20 py-16 md:py-24">
+                <div className="container mx-auto max-w-6xl px-4">
+                  <div className="mx-auto mb-12 max-w-3xl text-center">
+                    <h2 className="font-headline text-3xl font-bold md:text-4xl">
+                      Articles similaires
+                    </h2>
+                    <p className="mt-4 text-lg text-muted-foreground">
+                      Ces lectures pourraient également vous intéresser.
+                    </p>
+                  </div>
+                  <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    {similarPosts.map((post) => {
+                      const postImage = PlaceHolderImages.find(
+                        (p) => p.id === post.frontmatter.image
+                      );
+                      const dateLabel = format(
+                        new Date(post.frontmatter.date),
+                        "dd MMMM yyyy",
+                        { locale: fr }
+                      );
+                      return (
+                        <Link
+                          href={`/blog/${post.slug}`}
+                          key={post.slug}
+                          className="group block"
+                        >
+                          <Card className="h-full overflow-hidden rounded-3xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                            <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
+                              {postImage ? (
+                                <Image
+                                  src={postImage.imageUrl}
+                                  alt={post.frontmatter.title}
+                                  fill
+                                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                                  sizes="(max-width: 768px) 100vw, 33vw"
+                                />
+                              ) : (
+                                <div className="absolute inset-0 bg-muted/30" />
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
+                            </div>
+                            <CardHeader className="p-6">
+                              <p className="text-sm text-muted-foreground">
+                                {dateLabel}
+                              </p>
+                              <CardTitle className="mt-2 leading-snug">
+                                {post.frontmatter.title}
+                              </CardTitle>
+                            </CardHeader>
+                          </Card>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                </div>
+              </section>
+            </AnimateOnScroll>
+          )}
+
         </div>
       </>
     );
