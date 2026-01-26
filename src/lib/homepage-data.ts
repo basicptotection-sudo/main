@@ -54,7 +54,7 @@ export const processSteps = [
   ];
 
 export const sectors = [
-    { icon: "Building2", name: "Sièges Sociaux & Bureaux" },
+    { icon: "Building2", name: "Sièges Sociaux & Bureaux", href: "/environnements/sieges-sociaux-bureaux" },
     { icon: "Store", name: "Luxe, Retail & Hôtellerie" },
     { icon: "HardHat", name: "Chantiers & Sites BTP" },
     { icon: "Factory", name: "Industrie & Logistique" },

@@ -2,10 +2,12 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { getLucideIcon } from "@/lib/icons";
+import Link from "next/link";
 
 type Sector = {
   icon: string;
   name: string;
+  href?: string;
 };
 
 type SectorsGridProps = {
@@ -28,17 +30,32 @@ export function SectorsGrid({ id, sectors, className }: SectorsGridProps) {
         </div>
         <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
           {sectors.map((sector) => {
-             const IconComponent = getLucideIcon(sector.icon);
-            return (
-              <Card key={sector.name} className="text-center shadow-lg hover:shadow-xl transition-shadow duration-300">
+            const IconComponent = getLucideIcon(sector.icon);
+            
+            const cardContent = (
+              <Card className="text-center h-full shadow-lg hover:shadow-xl transition-shadow duration-300 bg-background">
                 <CardHeader className="items-center pb-2">
-                  {IconComponent && <IconComponent className="w-10 h-10" />}
+                  {IconComponent && <IconComponent className="w-10 h-10 text-primary" />}
                 </CardHeader>
                 <CardContent>
                   <h3 className="font-semibold text-base">{sector.name}</h3>
                 </CardContent>
               </Card>
-            )
+            );
+
+            if (sector.href) {
+              return (
+                <Link href={sector.href} key={sector.name} className="block h-full">
+                  {cardContent}
+                </Link>
+              );
+            }
+
+            return (
+                 <div key={sector.name} className="block h-full">
+                    {cardContent}
+                </div>
+            );
           })}
         </div>
       </div>
