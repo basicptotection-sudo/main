@@ -40,7 +40,6 @@ export default function SiegesSociauxPage() {
 
     const breadcrumbItems = [
         { label: 'Accueil', href: '/' },
-        { label: 'Environnements', href: '#' },
         { label: 'Sièges Sociaux & Bureaux', href: '/environnements/sieges-sociaux-bureaux' },
     ];
 
@@ -278,4 +277,4 @@ export default function SiegesSociauxPage() {
             </AnimateOnScroll>
 
         </div>
-    );
+    
