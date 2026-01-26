@@ -11,7 +11,7 @@ import {
 } from '@/components/shared';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { servicesData } from '@/lib/services-data';
+import { servicesData, type Service } from '@/lib/services-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { siteConfig } from '@/lib/config';
 import { getLucideIcon } from '@/lib/icons';
@@ -74,13 +74,14 @@ export default function SiegesSociauxPage() {
         { icon: 'ShieldCheck', title: 'Sécurité renforcée', description: 'Agents expérimentés, coordination avec systèmes de contrôle d’accès, et intervention en renfort sur sites sensibles.' },
     ];
 
-    const services = ['agent-securite-qualifie', 'agent-rondier', 'agent-incendie-ssiap', 'audit-conseil-surete'].map(
-        slug => servicesData.find(s => s.slug === slug)!
-    ).filter(Boolean).map(service => ({
-        icon: service.icon,
-        title: service.title,
-        description: service.shortDescription,
-        href: `/services/${service.slug}`,
+    const services = ['agent-securite-qualifie', 'agent-rondier', 'agent-incendie-ssiap', 'audit-conseil-surete']
+        .map(slug => servicesData.find(s => s.slug === slug))
+        .filter((s): s is Service => !!s)
+        .map(service => ({
+            icon: service.icon,
+            title: service.title,
+            description: service.shortDescription,
+            href: `/services/${service.slug}`,
     }));
 
     const useCases = [
@@ -211,6 +212,26 @@ export default function SiegesSociauxPage() {
                     </div>
                 </section>
             </AnimateOnScroll>
+            
+            <AnimateOnScroll>
+                <section className="py-16 md:py-24">
+                    <div className="container mx-auto px-4 max-w-6xl">
+                        <SectionHeader title="Exemples de cas d’usage concrets" />
+                        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                            {useCases.map(item => (
+                                <Card key={item.title} className="bg-background">
+                                    <CardHeader>
+                                        <CardTitle>{item.title}</CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-muted-foreground">{item.description}</p>
+                                    </CardContent>
+                                </Card>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            </AnimateOnScroll>
 
             <AnimateOnScroll>
                 <ProcessSteps {...methode} />
@@ -258,4 +279,3 @@ export default function SiegesSociauxPage() {
 
         </div>
     );
-}
