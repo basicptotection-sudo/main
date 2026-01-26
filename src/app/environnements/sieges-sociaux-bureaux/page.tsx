@@ -277,4 +277,5 @@ export default function SiegesSociauxPage() {
             </AnimateOnScroll>
 
         </div>
-    
+    );
+}
