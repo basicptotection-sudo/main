@@ -44,7 +44,6 @@ export function HeroSection({
         />
       )}
       
-      <div className="absolute inset-0 bg-black/40 z-1"></div>
 
       <div className="relative z-10 container mx-auto px-4">
         <div className="max-w-3xl text-left">
