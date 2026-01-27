@@ -28,8 +28,7 @@ export function Footer() {
 
   const legalLinks = [
     { href: "/mentions-legales", label: "Mentions légales" },
-    { href: "/politique-confidentialite", label: "Confidentialité" },
-    { href: "/cookies", label: "Cookies" },
+    { href: "/politique-de-confidentialite", label: "Confidentialité" },
   ];
 
   const addressLine = `${siteConfig.business.address.street}, ${siteConfig.business.address.postalCode} ${siteConfig.business.address.city}`;
