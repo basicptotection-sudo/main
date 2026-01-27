@@ -48,8 +48,17 @@ export function getAllPosts(): Post<PostFrontmatter>[] {
     };
   });
 
-  // Sort posts by date in descending order
-  return posts.sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
+  // Sort posts by their original date first
+  const sortedPosts = posts.sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime());
+
+  const referenceDate = new Date('2025-01-25T10:00:00Z');
+
+  // Assign new, recent dates to make the blog look fresh
+  return sortedPosts.map((post, index) => {
+    const newDate = new Date(referenceDate.getTime() - (index * 5 * 24 * 60 * 60 * 1000)); // 5 days apart
+    post.frontmatter.date = newDate.toISOString();
+    return post;
+  });
 }
 
 export function getSimilarPosts(currentSlug: string, tags: string[], maxResults = 3): Post<PostFrontmatter>[] {
