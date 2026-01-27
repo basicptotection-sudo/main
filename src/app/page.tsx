@@ -2,6 +2,10 @@
 import Link from "next/link";
 import Image from "next/image";
 
+import { getAllPosts } from "@/lib/blog";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { siteConfig } from "@/lib/config";
 import { servicesData } from "@/lib/services-data";
@@ -30,7 +34,8 @@ import {
 } from "@/lib/homepage-data";
 
 import { Button } from "@/components/ui/button";
-import { BadgeCheck, Clock, MapPin, ShieldCheck } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { BadgeCheck, Clock, MapPin, ShieldCheck, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getLucideIcon } from "@/lib/icons";
 
@@ -139,6 +144,8 @@ export default function Home() {
     name: loc.name,
     href: `/zones/${loc.slug}`,
   }));
+
+  const latestPosts = getAllPosts().slice(0, 3);
 
   const phoneHref = `tel:${(siteConfig.contact.phoneE164 ??
     siteConfig.contact.phone)
@@ -307,6 +314,61 @@ export default function Home() {
       {/* TESTIMONIALS */}
       <AnimateOnScroll>
         <Testimonials testimonials={testimonials} className="bg-card" />
+      </AnimateOnScroll>
+      
+      {/* LATEST ARTICLES */}
+      <AnimateOnScroll>
+        <section id="blog" className="py-16 md:py-24 bg-background">
+          <div className="container mx-auto px-4">
+            <SectionHeader
+              eyebrow="Analyses & Conseils"
+              title="Nos derniers articles"
+              description="Retrouvez nos dernières analyses, conseils et retours d'expérience sur la sécurité privée."
+            />
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+              {latestPosts.map((post) => {
+                const postImage = PlaceHolderImages.find(p => p.id === post.frontmatter.image);
+                const dateLabel = format(new Date(post.frontmatter.date), "dd MMMM yyyy", { locale: fr });
+
+                return (
+                  <Link href={`/blog/${post.slug}`} key={post.slug} className="group block">
+                    <Card className="h-full overflow-hidden rounded-2xl border-border bg-card transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                      <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
+                        {postImage ? (
+                          <Image
+                            src={postImage.imageUrl}
+                            alt={post.frontmatter.title}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                            sizes="(max-width: 768px) 100vw, 33vw"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 bg-muted/30" />
+                        )}
+                        <div className="absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
+                      </div>
+                      <CardHeader className="p-6">
+                        <p className="text-sm text-muted-foreground">{dateLabel}</p>
+                        <CardTitle className="mt-2 leading-snug text-lg">{post.frontmatter.title}</CardTitle>
+                      </CardHeader>
+                       <CardContent>
+                        <div className="mt-4 flex items-center text-sm font-medium text-primary">
+                          Lire l'article
+                          <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
+            </div>
+            <div className="mt-12 text-center">
+              <Button asChild variant="outline">
+                <Link href="/blog">Voir tous les articles</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
       </AnimateOnScroll>
 
       {/* FAQ */}
