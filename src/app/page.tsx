@@ -226,7 +226,7 @@ export default function Home() {
 
       {/* TRUST / ABOUT */}
       <AnimateOnScroll>
-        <section id="about" className="py-16 md:py-24">
+        <section id="about" className="py-16 md:py-24 bg-card">
           <div className="container mx-auto px-4">
             <SectionHeader
               eyebrow="BASIC PROTECTION"

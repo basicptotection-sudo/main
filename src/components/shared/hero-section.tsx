@@ -32,7 +32,7 @@ export function HeroSection({
   breadcrumbs,
 }: HeroSectionProps) {
   return (
-    <section className="relative w-full h-[75vh] md:h-[70vh] flex items-center text-white">
+    <section className="relative w-full h-[80vh] md:h-[75vh] flex items-center text-white">
       {imageUrl && (
         <Image
           src={imageUrl}
