@@ -9,23 +9,25 @@ import { getAllPosts } from '@/lib/blog';
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = ['', '/a-propos', '/devis', '/merci', '/services', '/zones', '/contact', '/blog'];
 
+  const now = new Date();
+
   const staticEntries: MetadataRoute.Sitemap = staticRoutes.map((route) => ({
     url: `${siteConfig.url}${route}`,
-    lastModified: new Date('2025-01-25').toISOString(),
+    lastModified: now.toISOString(),
     changeFrequency: 'monthly',
     priority: route === '' ? 1 : 0.8,
   }));
 
   const servicesEntries: MetadataRoute.Sitemap = servicesData.map(service => ({
     url: `${siteConfig.url}/services/${service.slug}`,
-    lastModified: new Date('2025-01-25').toISOString(),
+    lastModified: now.toISOString(),
     changeFrequency: 'weekly',
     priority: 0.9
   }));
 
   const locationsEntries: MetadataRoute.Sitemap = locationsData.map(location => ({
     url: `${siteConfig.url}/zones/${location.slug}`,
-    lastModified: new Date('2025-01-25').toISOString(),
+    lastModified: now.toISOString(),
     changeFrequency: 'weekly',
     priority: 0.9
   }));
@@ -40,7 +42,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const tagPages = [...new Set(getAllPosts().flatMap(p => p.frontmatter.tags))];
   const tagEntries: MetadataRoute.Sitemap = tagPages.map(tag => ({
     url: `${siteConfig.url}/blog/tags/${tag.toLowerCase()}`,
-    lastModified: new Date('2025-01-25').toISOString(),
+    lastModified: now.toISOString(),
     changeFrequency: 'weekly',
     priority: 0.6,
   }));
