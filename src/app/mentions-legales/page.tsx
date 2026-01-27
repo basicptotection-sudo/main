@@ -50,7 +50,7 @@ export default function MentionsLegalesPage() {
           <p>Le site est hébergé par Google Firebase (App Hosting), service de Google Ireland Limited, dont le siège social est situé à Gordon House, Barrow Street, Dublin 4, Irlande.</p>
 
           <h2>Création du site</h2>
-          <p>Le site a été créé par Amar Hachour. Contact : <a href="mailto:vsw.contact@gmail.com">vsw.contact@gmail.com</a></p>
+          <p>Le site a été créé par Amar Hachour.</p>
 
           <h2>Propriété intellectuelle</h2>
           <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.</p>
