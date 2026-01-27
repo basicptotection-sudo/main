@@ -7,6 +7,7 @@ import { Footer } from '@/components/layout/footer';
 import JsonLd from '@/components/seo/json-ld';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { ThemeProvider } from '@/components/theme-provider';
+import { CookieConsent } from '@/components/shared';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
@@ -87,6 +88,7 @@ export default function RootLayout({
             <main className="flex-grow">{children}</main>
             <Footer />
             <Toaster />
+            <CookieConsent />
           </FirebaseClientProvider>
         </ThemeProvider>
       </body>
