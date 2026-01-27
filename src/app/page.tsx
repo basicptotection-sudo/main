@@ -377,7 +377,7 @@ export default function Home() {
           title="Questions fréquentes"
           description="Délais, modalités, périmètre, encadrement : les réponses essentielles avant de démarrer."
           items={faqItems}
-          className="bg-background"
+          className="bg-card"
         />
       </AnimateOnScroll>
 
@@ -387,7 +387,7 @@ export default function Home() {
           title="Prêt à définir votre stratégie de sûreté ?"
           description="Contactez nos experts pour une analyse confidentielle de vos besoins. Recevez une proposition sur-mesure et un devis structuré."
           cta={{ label: "Obtenir votre devis", href: "/devis" }}
-          className="bg-card"
+          className="bg-background"
         />
       </AnimateOnScroll>
 
