@@ -37,7 +37,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ShieldCheck, ArrowRight } from "lucide-react";
+import { ShieldCheck, ArrowRight, BadgeCheck, Clock, MapPin } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getLucideIcon } from "@/lib/icons";
 
@@ -101,35 +101,28 @@ function Stat({
   Icon,
   label,
   value,
-  variant = "default",
 }: {
   Icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: string;
-  variant?: "default" | "onBlack";
 }) {
   return (
-    <div className="flex items-center gap-4 rounded-2xl border bg-card px-5 py-4 shadow-sm">
+    <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white backdrop-blur-sm">
       <div
-        className={cn(
-          "flex h-10 w-10 items-center justify-center rounded-xl",
-          variant === "onBlack" ? "bg-[#2F8FD8]/15" : "bg-[#1F2A44]/10"
-        )}
+        className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2F8FD8]/15"
       >
         <Icon
-          className={cn(
-            "h-5 w-5",
-            variant === "onBlack" ? "text-[#2F8FD8]" : "text-[#1F2A44]"
-          )}
+          className="h-5 w-5 text-[#2F8FD8]"
         />
       </div>
       <div className="min-w-0">
         <div className="text-xl font-bold leading-none">{value}</div>
-        <div className="mt-1 text-sm text-muted-foreground">{label}</div>
+        <div className="mt-1 text-sm text-white/80">{label}</div>
       </div>
     </div>
   );
 }
+
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find((p) => p.id === "hero");
@@ -214,35 +207,25 @@ export default function Home() {
       {/* JSON-LD */}
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
       />
       <script
         type="application/ld+json"
-        // eslint-disable-next-line react/no-danger
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
       <HeroSection
-        title={
-          <>
-            Sécurité privée,
-            <span className="font-light text-[#2F8FD8]"> discrète</span> et{" "}
-            <span className="font-light text-[#2F8FD8]">maîtrisée</span>.
-          </>
-        }
-        description="Surveillance de sites, événementiel, SSIAP, cynophile et protection rapprochée : des dispositifs sur-mesure, exécutés avec rigueur."
+        title="Votre sécurité est notre mission."
+        description="Nous concevons des dispositifs de sécurité privée sur-mesure pour protéger vos actifs, vos équipes et votre réputation. Rigueur, discrétion et pilotage pour une tranquillité d'esprit totale."
         cta1={{
-          label: "Demander un devis",
+          label: "Obtenir une proposition",
           href: "/devis",
           className: "bg-[#2F8FD8] hover:bg-[#2F8FD8]/90",
         }}
         cta2={{
-          label: "Appeler maintenant",
-          href: phoneHref,
+          label: "Nos services",
+          href: "#services",
           variant: "outline",
-          className:
-            "bg-white text-[#1F2A44] hover:bg-white/90 hover:text-[#1F2A44]",
         }}
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description ?? "Sécurité privée en Île-de-France"}
@@ -255,38 +238,31 @@ export default function Home() {
             </span>
           </div>
         }
-      />
-
-      <div className="relative -mt-16 z-10">
-        <div className="container mx-auto px-4">
-          <div className="mx-auto grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        stats={
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Stat
-              variant="onBlack"
               Icon={StatShieldCheck}
               value="24/7"
               label="Disponibilité & astreinte"
             />
             <Stat
-              variant="onBlack"
               Icon={StatBadgeCheck}
               value="Encadré"
               label="Supervision & reporting"
             />
             <Stat
-              variant="onBlack"
               Icon={StatClock}
               value="< 24h"
               label="Déploiement possible"
             />
             <Stat
-              variant="onBlack"
               Icon={StatMapPin}
               value="IDF"
               label="Couverture régionale"
             />
           </div>
-        </div>
-      </div>
+        }
+      />
 
       {/* TRUST / ABOUT */}
       <AnimateOnScroll>

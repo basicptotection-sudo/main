@@ -38,6 +38,9 @@ type HeroSectionProps = {
 
   /** Breadcrumbs / badge (comme sur ta homepage) */
   breadcrumbs?: React.ReactNode;
+  
+  /** Stats bar to embed at the bottom */
+  stats?: React.ReactNode;
 
   /** 2-4 points de preuve (conversion) */
   highlights?: HeroHighlight[];
@@ -56,13 +59,14 @@ export function HeroSection({
   imageHint,
   kicker,
   breadcrumbs,
+  stats,
   highlights,
   align = "left",
 }: HeroSectionProps) {
   return (
     <section className="relative w-full overflow-hidden text-white">
       {/* Hauteur : stable, premium, et responsive */}
-      <div className="relative h-[78vh] min-h-[520px] md:h-[72vh] md:min-h-[560px]">
+      <div className="relative flex flex-col h-[85vh] min-h-[680px] md:h-[80vh] md:min-h-[720px]">
         {/* Background image */}
         {imageUrl ? (
           <Image
@@ -80,12 +84,12 @@ export function HeroSection({
         )}
 
         {/* Overlays (lisibilité + style) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/15" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/15" />
-        <div className="absolute -left-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[#2F8FD8]/20 blur-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
+        <div className="absolute -left-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[#2F8FD8]/15 blur-3xl" />
 
         {/* Content */}
-        <div className="relative z-10 flex h-full items-center">
+        <div className="relative z-10 flex flex-1 flex-col justify-center">
           <div className="container mx-auto px-4">
             <div
               className={cn(
@@ -172,21 +176,25 @@ export function HeroSection({
                   className={cn(
                     buttonVariants({ size: "lg", variant: cta2.variant }),
                     "font-bold rounded-full",
-                    "bg-white/95 text-[#111827] hover:bg-white",
+                    "bg-white/15 border-white/20 text-white backdrop-blur hover:bg-white/25",
                     cta2.className
                   )}
                 >
                   {cta2.label}
                 </Link>
               </div>
-
-              {/* Microcopy sous CTA (confiance) */}
-              <p className="mt-4 text-sm text-white/75">
-                Devis structuré • Mise en place possible sous 24h • Couverture Île-de-France
-              </p>
             </div>
           </div>
         </div>
+        
+        {/* Stats Bar at the bottom */}
+        {stats ? (
+            <div className="relative mt-auto pb-10 md:pb-16 z-10">
+              <div className="container mx-auto px-4">
+                {stats}
+              </div>
+            </div>
+          ) : null}
       </div>
     </section>
   );
