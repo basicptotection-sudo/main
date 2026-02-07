@@ -362,8 +362,24 @@ export default function ServicePage({ params }: ServicePageProps) {
                       <div key={sec.id}>
                           <h2 className="!text-3xl !font-bold !text-primary">{sec.title}</h2>
                           {sec.intro && <p className="lead !my-4 text-muted-foreground">{sec.intro}</p>}
-                          {sec.paragraphs?.map((p, i) => <p key={i}>{p}</p>)}
-                          {sec.bullets && <ul className="mt-6 space-y-3">{sec.bullets.map((b,i) => <li key={i}>{b}</li>)}</ul>}
+                          
+                          <div className="not-prose mt-8 grid md:grid-cols-2 gap-x-12 items-start">
+                            <div className="text-base space-y-6">
+                                {sec.paragraphs?.map((p, i) => <p key={i} className="text-muted-foreground leading-relaxed">{p}</p>)}
+                            </div>
+                            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-xl my-6 md:my-0">
+                                <Image
+                                    src={gallery.portrait.imageUrl}
+                                    alt="Agent de sécurité qualifié en posture professionnelle et discrète dans un environnement corporate."
+                                    fill
+                                    className="object-cover"
+                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                    data-ai-hint={gallery.portrait.imageHint}
+                                />
+                            </div>
+                          </div>
+
+                          {sec.bullets && <ul className="mt-8 space-y-3">{sec.bullets.map((b,i) => <li key={i}>{b}</li>)}</ul>}
                       </div>
                   ))}
                 </div>
