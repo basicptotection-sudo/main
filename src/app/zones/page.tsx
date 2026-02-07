@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import Link from "next/link";
 import React from "react";
@@ -7,7 +8,6 @@ import { siteConfig } from "@/lib/config";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 import { Breadcrumbs, AnimateOnScroll } from "@/components/shared";
-import { CTASection } from "@/components/shared/cta-section";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -210,15 +210,6 @@ export default function ZonesHubPage() {
             </Link>
           </div>
         </section>
-      </AnimateOnScroll>
-
-      <AnimateOnScroll>
-        <CTASection
-          id="contact"
-          title="Expliquez votre besoin — on dimensionne le dispositif"
-          description="Lieu, horaires, flux, accès, niveau de risque : on revient vers vous avec une proposition claire."
-          cta={{ label: "Demander un devis", href: "/devis" }}
-        />
       </AnimateOnScroll>
 
       <section className="container mx-auto max-w-6xl px-4 pb-16 md:pb-20">
