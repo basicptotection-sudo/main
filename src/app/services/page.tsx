@@ -1,19 +1,11 @@
+
 import type { Metadata } from "next";
 import Link from "next/link";
 
 import { siteConfig } from "@/lib/config";
 import { servicesData } from "@/lib/services-data";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 
-// ✅ Imports directs (exports nommés) = pas de 404 fantôme + pas d'erreur default export
-import {
-  HeroSection,
-  AnimateOnScroll,
-  Breadcrumbs,
-  ServicesGrid,
-  CTASection,
-} from "@/components/shared";
-
+import { AnimateOnScroll, Breadcrumbs, ServicesGrid, CTASection } from "@/components/shared";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
@@ -52,10 +44,6 @@ export const metadata: Metadata = {
 };
 
 export default function ServicesHubPage() {
-  const heroImage =
-    PlaceHolderImages.find((p) => p.id === "services-hub") ??
-    PlaceHolderImages.find((p) => p.id === "hero");
-
   const breadcrumbItems = [
     { label: "Accueil", href: "/" },
     { label: "Services", href: "/services" },
@@ -93,7 +81,6 @@ export default function ServicesHubPage() {
       href: `/services/${service.slug}`,
     }));
 
-  // ✅ JSON-LD : URLs absolues
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -126,20 +113,37 @@ export default function ServicesHubPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <HeroSection
-        title="Des services de sécurité sur-mesure"
-        description="Des prestations terrain aux dispositifs premium : une méthode claire, des agents qualifiés et un pilotage rigoureux pour sécuriser durablement vos enjeux."
-        cta1={{ label: "Demander un devis", href: "/devis" }}
-        cta2={{ label: "Appeler un expert", href: phoneHref, variant: "secondary" }}
-        imageUrl={heroImage?.imageUrl}
-        imageAlt={heroImage?.description ?? "Services de sécurité privée — Basic Protection Privée"}
-        imageHint={heroImage?.imageHint}
-      />
+      <section className="relative overflow-hidden border-b border-border">
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
+          <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-muted/40 blur-3xl" />
+        </div>
+        
+        <div className="container mx-auto max-w-6xl px-4 py-14 md:py-20">
+            <Breadcrumbs items={breadcrumbItems} />
+            
+            <h1 className="mt-6 font-headline text-4xl font-bold tracking-tight text-primary md:text-5xl">
+                Des services de sécurité sur-mesure
+            </h1>
+
+            <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
+                Des prestations terrain aux dispositifs premium : une méthode claire, des agents qualifiés et un pilotage rigoureux pour sécuriser durablement vos enjeux.
+            </p>
+
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <Button asChild size="lg">
+                    <Link href="/devis">Demander un devis</Link>
+                </Button>
+                <Button asChild size="lg" variant="outline">
+                    <a href={phoneHref}>Appeler un expert</a>
+                </Button>
+            </div>
+        </div>
+      </section>
 
       <AnimateOnScroll>
         <section className="container mx-auto max-w-5xl px-4 py-16 md:py-24">
-          <Breadcrumbs items={breadcrumbItems} centered />
-          <div className="mx-auto max-w-3xl text-center mt-4">
+          <div className="mx-auto max-w-3xl text-center">
             <Badge variant="secondary" className="mb-4">
               Cadrage • Exécution • Suivi
             </Badge>
@@ -154,7 +158,6 @@ export default function ServicesHubPage() {
         </section>
       </AnimateOnScroll>
 
-      {/* SERVICES — Terrain */}
       <AnimateOnScroll>
         <ServicesGrid
           id="services-terrain"
@@ -165,19 +168,17 @@ export default function ServicesHubPage() {
         />
       </AnimateOnScroll>
 
-      {/* SERVICES — Premium */}
       <AnimateOnScroll>
         <ServicesGrid
           id="services-premium"
           title="Services premium"
           description="Dispositifs discrets et sur-mesure pour les contextes les plus exigeants : événementiel de prestige et conseil stratégique en sûreté."
           services={premiumServices}
-          gridClassName="lg:grid-cols-3"
+          gridClassName="lg:grid-cols-2"
           className="bg-card"
         />
       </AnimateOnScroll>
 
-      {/* CTA zones — conversion */}
       <AnimateOnScroll>
         <CTASection
           title="Couverture complète en Île-de-France"
@@ -189,7 +190,6 @@ export default function ServicesHubPage() {
         />
       </AnimateOnScroll>
 
-      {/* Final CTA */}
       <AnimateOnScroll>
         <CTASection
           title="Prêt à sécuriser votre activité ?"
