@@ -1,12 +1,10 @@
-
 "use client";
 
-import { useMemo, useState } from "react";
+import React, { useDeferredValue, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 import { Breadcrumbs } from "@/components/shared";
-
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -16,6 +14,7 @@ import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { ArrowRight, Search, Sparkles, TrendingUp } from "lucide-react";
+
 import type { Post, PostFrontmatter } from "@/lib/blog";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
@@ -27,7 +26,6 @@ function safeTags(tags: any): string[] {
 }
 
 function readingTimeFrom(text?: string) {
-  // fallback simple : 200 mots/min.
   if (!text) return null;
   const words = text.trim().split(/\s+/).filter(Boolean).length;
   if (!words) return null;
@@ -36,78 +34,76 @@ function readingTimeFrom(text?: string) {
 }
 
 function getPostCover(post: Post<PostFrontmatter>) {
-  // Supporte frontmatter.cover / image / hero etc.
   const fm = post?.frontmatter ?? {};
   const imageId =
     (fm as any).cover ||
-    fm.image ||
+    (fm as any).image ||
     (fm as any).hero ||
     (fm as any).thumbnail ||
     null;
-  
+
   if (!imageId) return null;
 
-  const postImage = PlaceHolderImages.find(p => p.id === imageId);
+  const postImage = PlaceHolderImages.find((p) => p.id === imageId);
   return postImage ? postImage.imageUrl : null;
 }
 
 function getPostContent(post: any) {
-  // Selon ta lib, ça peut être post.content, post.body, post.raw, etc.
   return post?.content || post?.body || post?.raw || "";
 }
 
-export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>[] }) {
+function isFeatured(post: Post<PostFrontmatter>) {
+  const tags = safeTags(post?.frontmatter?.tags).map((t) => t.toLowerCase());
+  return tags.includes("à la une") || tags.includes("a la une") || tags.includes("featured");
+}
 
+export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>[] }) {
   const breadcrumbItems = [
     { label: "Accueil", href: "/" },
     { label: "Blog", href: "/blog" },
   ];
 
   const allTags = useMemo(() => {
-    const tags = posts.flatMap((p: Post<PostFrontmatter>) => safeTags(p?.frontmatter?.tags));
+    const tags = posts.flatMap((p) => safeTags(p?.frontmatter?.tags));
     return Array.from(new Set(tags)).sort((a, b) => a.localeCompare(b, "fr"));
   }, [posts]);
 
-  // Featured = 1er article taggé "À la une" ou "Featured" sinon le plus récent
   const featured = useMemo(() => {
-    const withFlag = posts.find((p: Post<PostFrontmatter>) => {
-      const tags = safeTags(p?.frontmatter?.tags).map((t) => t.toLowerCase());
-      return tags.includes("à la une") || tags.includes("featured");
-    });
-
+    const withFlag = posts.find(isFeatured);
     if (withFlag) return withFlag;
 
-    return [...posts].sort((a: Post<PostFrontmatter>, b: Post<PostFrontmatter>) => {
-      const da = new Date(a.frontmatter.date).getTime();
-      const db = new Date(b.frontmatter.date).getTime();
-      return db - da;
-    })[0];
+    return [...posts]
+      .filter((p) => p?.slug && p?.frontmatter?.title && p?.frontmatter?.date)
+      .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())[0];
   }, [posts]);
 
   const [query, setQuery] = useState("");
+  const deferredQuery = useDeferredValue(query);
+
   const [activeTag, setActiveTag] = useState<string>("Tous");
   const [sortKey, setSortKey] = useState<SortKey>("recent");
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const list = posts.filter((p: Post<PostFrontmatter>) => p?.slug && p?.frontmatter?.title);
+    const q = deferredQuery.trim().toLowerCase();
+
+    const baseList = posts.filter((p) => p?.slug && p?.frontmatter?.title);
 
     const byTag =
       activeTag === "Tous"
-        ? list
-        : list.filter((p: Post<PostFrontmatter>) => safeTags(p.frontmatter.tags).includes(activeTag));
+        ? baseList
+        : baseList.filter((p) => safeTags(p.frontmatter.tags).includes(activeTag));
 
     const byQuery =
       !q
         ? byTag
-        : byTag.filter((p: Post<PostFrontmatter>) => {
+        : byTag.filter((p) => {
             const title = String(p.frontmatter.title ?? "").toLowerCase();
             const desc = String(p.frontmatter.description ?? "").toLowerCase();
             const tags = safeTags(p.frontmatter.tags).join(" ").toLowerCase();
             return title.includes(q) || desc.includes(q) || tags.includes(q);
           });
 
-    const sorted = [...byQuery].sort((a: Post<PostFrontmatter>, b: Post<PostFrontmatter>) => {
+    const sorted = [...byQuery].sort((a, b) => {
       if (sortKey === "title") {
         return String(a.frontmatter.title).localeCompare(String(b.frontmatter.title), "fr");
       }
@@ -116,15 +112,15 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
       return sortKey === "oldest" ? da - db : db - da;
     });
 
-    // Option : retirer le featured de la grille pour éviter doublon
+    // On évite le doublon si featured affiché
     return sorted.filter((p) => p.slug !== featured?.slug);
-  }, [posts, query, activeTag, sortKey, featured?.slug]);
+  }, [posts, deferredQuery, activeTag, sortKey, featured?.slug]);
 
   const featuredCover = featured ? getPostCover(featured) : null;
 
   return (
     <div className="bg-background text-foreground">
-      {/* HERO PREMIUM */}
+      {/* HERO */}
       <section className="relative overflow-hidden border-b border-border">
         <div className="absolute inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
@@ -134,6 +130,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
         <div className="container mx-auto max-w-6xl px-4 py-14 md:py-20">
           <div className="mx-auto max-w-3xl text-center">
             <Breadcrumbs items={breadcrumbItems} centered />
+
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-4 py-2 text-xs text-muted-foreground backdrop-blur">
               <Sparkles className="h-4 w-4" />
               Analyses & conseils — sécurité privée, gardiennage, sûreté
@@ -142,25 +139,27 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
             <h1 className="mt-6 font-headline text-4xl font-bold tracking-tight md:text-5xl">
               Notre Blog
             </h1>
+
             <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">
               Des contenus utiles, concrets et exigeants : méthodes, réglementation, retours d’expérience,
               et bonnes pratiques terrain.
             </p>
 
-            {/* SEARCH + FILTERS */}
+            {/* Search + sort */}
             <div className="mt-8 grid gap-3 md:grid-cols-[1fr_auto_auto] md:items-center">
               <div className="relative">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Rechercher un article (ex: SSIAP, rondes, événementiel…)…"
+                  placeholder="Rechercher un article (ex: rondes, contrôle d’accès, événementiel…)…"
                   className="h-11 pl-10"
                 />
               </div>
 
               <div className="flex gap-2">
                 <Button
+                  type="button"
                   variant={sortKey === "recent" ? "default" : "outline"}
                   className="h-11 rounded-xl"
                   onClick={() => setSortKey("recent")}
@@ -168,6 +167,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
                   Récent
                 </Button>
                 <Button
+                  type="button"
                   variant={sortKey === "oldest" ? "default" : "outline"}
                   className="h-11 rounded-xl"
                   onClick={() => setSortKey("oldest")}
@@ -175,6 +175,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
                   Ancien
                 </Button>
                 <Button
+                  type="button"
                   variant={sortKey === "title" ? "default" : "outline"}
                   className="h-11 rounded-xl"
                   onClick={() => setSortKey("title")}
@@ -184,6 +185,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
               </div>
 
               <Button
+                type="button"
                 variant="outline"
                 className="h-11 rounded-xl"
                 onClick={() => {
@@ -196,7 +198,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
               </Button>
             </div>
 
-            {/* TAGS */}
+            {/* Tags */}
             {allTags.length > 0 && (
               <div className="no-scrollbar mt-6 flex items-center justify-center gap-2 overflow-x-auto py-1">
                 <button
@@ -233,7 +235,12 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
         </div>
       </section>
 
-      {/* FEATURED (À LA UNE) */}
+      {/* Live region (accessibilité) */}
+      <div className="sr-only" aria-live="polite">
+        {filtered.length} résultat{filtered.length > 1 ? "s" : ""}.
+      </div>
+
+      {/* Featured */}
       {featured ? (
         <section className="container mx-auto max-w-6xl px-4 py-12 md:py-16">
           <div className="flex items-center gap-2 text-sm font-semibold">
@@ -243,7 +250,6 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
 
           <Link href={`/blog/${featured.slug}`} className="mt-4 block">
             <div className="grid gap-6 overflow-hidden rounded-3xl border border-border bg-background md:grid-cols-[1.3fr_1fr]">
-              {/* Image paysage */}
               <div className="relative aspect-[16/9] md:aspect-auto md:min-h-[320px]">
                 {featuredCover ? (
                   <Image
@@ -260,7 +266,6 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
               </div>
 
-              {/* Contenu */}
               <div className="p-6 md:p-8">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="secondary">À la une</Badge>
@@ -296,7 +301,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
         </section>
       ) : null}
 
-      {/* GRID LISTING */}
+      {/* Grid */}
       <section className="container mx-auto max-w-6xl px-4 pb-16 md:pb-24">
         <div className="flex items-end justify-between gap-4">
           <div>
@@ -315,7 +320,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
         </div>
 
         <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((post: Post<PostFrontmatter>) => {
+          {filtered.map((post) => {
             const cover = getPostCover(post);
             const tags = safeTags(post.frontmatter.tags);
             const dateLabel = format(new Date(post.frontmatter.date), "dd MMMM yyyy", { locale: fr });
@@ -323,7 +328,6 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
             return (
               <Link href={`/blog/${post.slug}`} key={post.slug} className="block group">
                 <Card className="h-full overflow-hidden rounded-3xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
-                  {/* Thumbnail */}
                   <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
                     {cover ? (
                       <Image
@@ -350,10 +354,9 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
                       {post.frontmatter.description}
                     </CardDescription>
 
-                    {/* Tags */}
                     {tags.length > 0 && (
                       <div className="mt-4 flex flex-wrap gap-2">
-                        {tags.slice(0, 4).map((tag: string) => (
+                        {tags.slice(0, 4).map((tag) => (
                           <Badge key={tag} variant="secondary">
                             {tag}
                           </Badge>
@@ -371,7 +374,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
           })}
         </div>
 
-        {/* EMPTY STATE */}
+        {/* Empty state */}
         {filtered.length === 0 && (
           <div className="mt-12 rounded-3xl border border-border bg-muted/10 p-8 text-center">
             <div className="mx-auto max-w-xl">
@@ -380,6 +383,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
                 Essaie un autre mot-clé ou retire un filtre.
               </p>
               <Button
+                type="button"
                 className="mt-5 rounded-xl"
                 variant="outline"
                 onClick={() => {
@@ -395,7 +399,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
         )}
       </section>
 
-      {/* CTA Newsletter / Conversion */}
+      {/* CTA bas */}
       <section className="border-t border-border bg-muted/10">
         <div className="container mx-auto max-w-6xl px-4 py-14 md:py-20">
           <div className="grid gap-8 rounded-3xl border border-border bg-background p-8 md:grid-cols-[1fr_auto] md:items-center">
@@ -410,7 +414,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <Input className="h-11 w-full sm:w-[280px]" placeholder="Votre email" />
-              <Button className="h-11 rounded-xl">
+              <Button className="h-11 rounded-xl" type="button">
                 S’abonner
               </Button>
             </div>

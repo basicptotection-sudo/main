@@ -1,4 +1,3 @@
-
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -6,26 +5,38 @@ import { siteConfig } from "@/lib/config";
 import { servicesData } from "@/lib/services-data";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
-import {
-  ServicesGrid,
-  AnimateOnScroll,
-  Breadcrumbs,
-  CTASection,
-  HeroSection,
-} from "@/components/shared";
+// ✅ Imports directs (exports nommés) = pas de 404 fantôme + pas d'erreur default export
+import { HeroSection } from "@/components/shared/hero-section";
+import { AnimateOnScroll } from "@/components/shared/animate-on-scroll";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
+import { ServicesGrid } from "@/components/shared/services-grid";
+import { CTASection } from "@/components/shared/cta-section";
+
 import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
-const BRAND_ACCENT = "#2F8FD8";
+function toAbsolute(path: string) {
+  const base = String(siteConfig?.url ?? "").replace(/\/$/, "");
+  if (!base) return path.startsWith("/") ? path : `/${path}`;
+  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
+function safePhoneHref() {
+  const raw = String((siteConfig.contact as any)?.phoneE164 ?? siteConfig.contact?.phone ?? "")
+    .trim()
+    .replace(/\s+/g, "");
+  return `tel:${raw}`;
+}
 
 export const metadata: Metadata = {
   title: "Services de sécurité privée en Île-de-France | Basic Protection Privée",
   description:
     "Agents de sécurité qualifiés, cynophiles, SSIAP, rondes, protection rapprochée, sécurité événementielle et audit de sûreté. Intervention en Île-de-France (Paris, 78, 92, 93, 94, 95, 77, 91).",
-  alternates: { canonical: `${siteConfig.url}/services` },
+  alternates: { canonical: toAbsolute("/services") },
   openGraph: {
     type: "website",
-    url: `${siteConfig.url}/services`,
+    url: toAbsolute("/services"),
     title: "Services de sécurité privée en Île-de-France | Basic Protection Privée",
     description:
       "Prestations terrain et premium : gardiennage, SSIAP, cynophile, rondes, événementiel, audit & protection rapprochée. Dispositifs sur mesure, pilotage rigoureux.",
@@ -49,10 +60,23 @@ export default function ServicesHubPage() {
     { label: "Services", href: "/services" },
   ];
 
-  const phoneHref = `tel:${(siteConfig.contact as any).phoneE164 ?? siteConfig.contact.phone.replace(/\s/g, "")}`;
+  const phoneHref = safePhoneHref();
+
+  const terrainSlugs = new Set([
+    "agent-securite-qualifie",
+    "agent-cynophile",
+    "agent-incendie-ssiap",
+    "agent-rondier",
+  ]);
+
+  const premiumSlugs = new Set([
+    "protection-rapprochee",
+    "securite-evenementielle",
+    "audit-conseil-surete",
+  ]);
 
   const terrainServices = servicesData
-    .filter((s) => ["agent-securite-qualifie", "agent-cynophile", "agent-incendie-ssiap", "agent-rondier"].includes(s.slug))
+    .filter((s) => terrainSlugs.has(s.slug))
     .map((service) => ({
       icon: service.icon,
       title: service.title,
@@ -61,7 +85,7 @@ export default function ServicesHubPage() {
     }));
 
   const premiumServices = servicesData
-    .filter((s) => ["protection-rapprochee", "securite-evenementielle", "audit-conseil-surete"].includes(s.slug))
+    .filter((s) => premiumSlugs.has(s.slug))
     .map((service) => ({
       icon: service.icon,
       title: service.title,
@@ -69,7 +93,7 @@ export default function ServicesHubPage() {
       href: `/services/${service.slug}`,
     }));
 
-  // --- JSON-LD (SEO) ---
+  // ✅ JSON-LD : URLs absolues
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -79,7 +103,7 @@ export default function ServicesHubPage() {
           "@type": "ListItem",
           position: idx + 1,
           name: it.label,
-          item: `${siteConfig.url}${it.href}`,
+          item: toAbsolute(it.href),
         })),
       },
       {
@@ -88,7 +112,7 @@ export default function ServicesHubPage() {
         itemListElement: servicesData.map((s, idx) => ({
           "@type": "ListItem",
           position: idx + 1,
-          url: `${siteConfig.url}/services/${s.slug}`,
+          url: toAbsolute(`/services/${s.slug}`),
           name: s.title,
         })),
       },
@@ -97,114 +121,128 @@ export default function ServicesHubPage() {
 
   return (
     <div className="bg-background text-foreground">
-      {/* JSON-LD */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       <HeroSection
-        title="Solutions de sécurité sur mesure"
-        description="Du gardiennage de site à la protection rapprochée, nous déployons des équipes qualifiées, une méthode claire et un pilotage rigoureux pour assurer votre tranquillité."
+        title="Services de sécurité sur mesure"
+        description="Des prestations terrain aux dispositifs premium : une méthode claire, des agents qualifiés et un pilotage rigoureux pour sécuriser durablement vos enjeux."
         cta1={{ label: "Demander un devis", href: "/devis" }}
         cta2={{ label: "Appeler un expert", href: phoneHref, variant: "secondary" }}
         imageUrl={heroImage?.imageUrl}
-        imageAlt={heroImage?.description ?? "Agent de sécurité — Basic Protection Privée"}
+        imageAlt={heroImage?.description ?? "Services de sécurité privée — Basic Protection Privée"}
         imageHint={heroImage?.imageHint}
         breadcrumbs={<Breadcrumbs items={breadcrumbItems} className="py-0 mb-4" />}
       />
 
-      {/* Introduction & Value Props */}
+      {/* INTRO — épurée & orientée décision */}
       <AnimateOnScroll>
         <section className="container mx-auto max-w-5xl px-4 py-16 md:py-24">
-          <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
-              Une offre complète, deux pôles d'expertise
+          <div className="mx-auto max-w-3xl text-center">
+            <Badge variant="secondary" className="mb-4">
+              Cadrage • Exécution • Suivi
+            </Badge>
+
+            <h2 className="text-3xl md:text-4xl font-headline font-bold tracking-tight text-primary">
+              Une offre complète, structurée en 2 pôles
             </h2>
+
             <p className="mt-4 text-lg text-muted-foreground">
-              Nous distinguons les prestations <strong>opérationnelles</strong> du quotidien et les dispositifs <strong>premium</strong> pour les besoins les plus exigeants. Chaque mission est cadrée, pilotée et exécutée avec la même rigueur.
+              Nous séparons les prestations <strong>opérationnelles</strong> (sécurisation quotidienne) des dispositifs{" "}
+              <strong>premium</strong> (exigence, discrétion, environnements sensibles). Même standard : cadrage, consignes,
+              supervision et reporting.
             </p>
           </div>
-          <div className="mt-12 grid gap-8 md:grid-cols-3">
-              <Card className="border-0 bg-muted/50 text-center">
-                <CardHeader>
-                  <CardTitle className="font-headline text-xl">Méthode</CardTitle>
-                  <CardDescription>
-                    Cadrage, déploiement, supervision : un dispositif piloté, lisible et stable.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-              <Card className="border-0 bg-muted/50 text-center">
-                 <CardHeader>
-                  <CardTitle className="font-headline text-xl">Encadrement</CardTitle>
-                  <CardDescription>
-                    Agents sélectionnés, consignes précises, contrôles qualité et traçabilité.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-              <Card className="border-0 bg-muted/50 text-center">
-                 <CardHeader>
-                  <CardTitle className="font-headline text-xl">Réactivité</CardTitle>
-                  <CardDescription>
-                    Une structure à taille humaine pour une mise en place rapide et un contact direct.
-                  </CardDescription>
-                </CardHeader>
-              </Card>
-            </div>
+
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            <Card className="border-0 bg-muted/40 text-center rounded-2xl">
+              <CardHeader>
+                <CardTitle className="font-headline text-xl">Cadrage</CardTitle>
+                <CardDescription>Site, flux, accès, horaires : on dimensionne avant de déployer.</CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-0 bg-muted/40 text-center rounded-2xl">
+              <CardHeader>
+                <CardTitle className="font-headline text-xl">Encadrement</CardTitle>
+                <CardDescription>Agents sélectionnés, consignes claires, contrôles qualité.</CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card className="border-0 bg-muted/40 text-center rounded-2xl">
+              <CardHeader>
+                <CardTitle className="font-headline text-xl">Traçabilité</CardTitle>
+                <CardDescription>Main courante / rapports / points de suivi : une mission lisible.</CardDescription>
+              </CardHeader>
+            </Card>
+          </div>
+
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button asChild size="lg" className="rounded-xl">
+              <Link href="/devis">Obtenir un devis structuré</Link>
+            </Button>
+            <Button asChild variant="ghost" size="lg" className="rounded-xl">
+              <a href={phoneHref}>Parler à un responsable</a>
+            </Button>
+          </div>
         </section>
       </AnimateOnScroll>
-      
-      {/* SERVICES : Terrain */}
+
+      {/* SERVICES — Terrain */}
       <AnimateOnScroll>
         <ServicesGrid
           id="services-terrain"
-          title="Services Opérationnels"
-          description="Les fondamentaux de la sécurité de site : surveillance, contrôle d’accès, rondes et sécurité incendie. Des agents qualifiés, encadrés et pilotés pour une protection fiable au quotidien."
+          title="Services opérationnels"
+          description="Surveillance, contrôle d’accès, rondes, SSIAP : les fondamentaux exécutés avec rigueur et supervision."
           services={terrainServices}
           className="bg-muted/30"
         />
       </AnimateOnScroll>
 
-      {/* SERVICES : Premium */}
+      {/* SERVICES — Premium */}
       <AnimateOnScroll>
         <ServicesGrid
           id="services-premium"
-          title="Services Premium"
-          description="Dispositifs discrets et sur-mesure pour les environnements les plus exigeants : protection rapprochée, sécurité d'événements de prestige, et missions d'audit ou de conseil en sûreté."
+          title="Services premium"
+          description="Dispositifs discrets et sur-mesure : protection rapprochée, événementiel, audit & conseil en sûreté."
           services={premiumServices}
           gridClassName="lg:grid-cols-3"
           className="bg-card"
         />
       </AnimateOnScroll>
 
-      {/* CTA Zones */}
+      {/* CTA zones — conversion */}
       <AnimateOnScroll>
         <CTASection
-          title="Une couverture complète de l'Île-de-France"
-          description="Basés dans les Yvelines (78), nos équipes interviennent avec réactivité sur Paris et tous les départements franciliens. Découvrez nos zones et villes d'intervention prioritaires."
-          cta={{ label: "Explorer nos zones d'intervention", href: "/zones" }}
+          title="Couverture complète en Île-de-France"
+          description="Basés dans les Yvelines (78), nous intervenons rapidement sur Paris et tous les départements franciliens, selon vos horaires et contraintes."
+          cta={{ label: "Voir nos zones d’intervention", href: "/zones" }}
+          secondaryCta={{ label: "Demander un devis", href: "/devis" }}
+          highlights={["Réactivité Île-de-France", "Agents qualifiés", "Discrétion & méthode"]}
           className="bg-muted/30"
         />
       </AnimateOnScroll>
 
-      {/* Final CTA */}
+      {/* Final CTA — minimal */}
       <AnimateOnScroll>
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4 text-center max-w-3xl">
-             <h2 className="font-headline text-3xl font-bold text-primary">Prêt à sécuriser votre activité ?</h2>
-             <p className="mt-4 text-lg text-muted-foreground">
-               Décrivez votre besoin, nous revenons vers vous rapidement avec une proposition claire et une approche sur-mesure.
-             </p>
-              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Button asChild size="lg">
-                  <Link href="/devis">Obtenir un devis</Link>
-                </Button>
-                 <Button asChild variant="ghost" size="lg">
-                  <a href={phoneHref}>
-                    Parler à un expert
-                  </a>
-                </Button>
-              </div>
+            <h2 className="font-headline text-3xl font-bold text-primary">
+              Prêt à sécuriser votre activité ?
+            </h2>
+            <p className="mt-4 text-lg text-muted-foreground">
+              Dites-nous le lieu, les horaires, les accès et vos contraintes : réponse rapide avec une proposition claire.
+            </p>
+            <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Button asChild size="lg" className="rounded-xl">
+                <Link href="/devis">Obtenir un devis</Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="rounded-xl">
+                <a href={phoneHref}>Appeler maintenant</a>
+              </Button>
+            </div>
           </div>
         </section>
       </AnimateOnScroll>

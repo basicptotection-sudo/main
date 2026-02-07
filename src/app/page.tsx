@@ -1,3 +1,5 @@
+import type React from "react";
+import type { Metadata } from "next";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -35,9 +37,27 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { BadgeCheck, Clock, MapPin, ShieldCheck, ArrowRight } from "lucide-react";
+import { ShieldCheck, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getLucideIcon } from "@/lib/icons";
+
+export const metadata: Metadata = {
+  title:
+    "Basic Protection – Sécurité privée en Île-de-France (gardiennage, SSIAP, cynophile)",
+  description:
+    "Surveillance de sites, rondes, SSIAP, cynophile et sécurité événementielle en Île-de-France. Mise en place rapide, encadrement strict, devis structuré.",
+  alternates: {
+    canonical: siteConfig.url,
+  },
+  openGraph: {
+    title: "Basic Protection – Sécurité privée en Île-de-France",
+    description:
+      "Gardiennage, SSIAP, cynophile, événementiel : dispositifs sur-mesure, encadrés et déployés rapidement en IDF.",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    type: "website",
+  },
+};
 
 function SectionHeader({
   eyebrow,
@@ -93,10 +113,15 @@ function Stat({
       <div
         className={cn(
           "flex h-10 w-10 items-center justify-center rounded-xl",
-          variant === 'onBlack' ? 'bg-[#2F8FD8]/15' : 'bg-[#1F2A44]/10'
+          variant === "onBlack" ? "bg-[#2F8FD8]/15" : "bg-[#1F2A44]/10"
         )}
       >
-        <Icon className={cn("h-5 w-5", variant === 'onBlack' ? 'text-[#2F8FD8]' : 'text-[#1F2A44]')} />
+        <Icon
+          className={cn(
+            "h-5 w-5",
+            variant === "onBlack" ? "text-[#2F8FD8]" : "text-[#1F2A44]"
+          )}
+        />
       </div>
       <div className="min-w-0">
         <div className="text-xl font-bold leading-none">{value}</div>
@@ -147,8 +172,7 @@ export default function Home() {
 
   const latestPosts = getAllPosts().slice(0, 3);
 
-  const phoneHref = `tel:${(siteConfig.contact.phoneE164 ??
-    siteConfig.contact.phone)
+  const phoneHref = `tel:${(siteConfig.contact.phoneE164 ?? siteConfig.contact.phone)
     .replace(/\s/g, "")
     .trim()}`;
 
@@ -157,21 +181,54 @@ export default function Home() {
   const StatClock = getLucideIcon("Clock");
   const StatMapPin = getLucideIcon("MapPin");
 
+  const localBusinessJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    telephone: siteConfig.contact.phone,
+    areaServed: "Île-de-France",
+    address: {
+      "@type": "PostalAddress",
+      addressRegion: "Île-de-France",
+      addressCountry: "FR",
+    },
+    sameAs: (siteConfig as any)?.socials?.filter(Boolean) ?? [],
+  };
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: (faqItems ?? []).map((f: any) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: f.answer,
+      },
+    })),
+  };
+
   return (
     <div className="flex min-h-screen flex-col overflow-hidden">
+      {/* JSON-LD */}
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+
       <HeroSection
         title={
           <>
             Sécurité privée,
-            <span className="font-light text-[#2F8FD8]">
-              {" "}
-              discrète
-            </span>{" "}
-            et{" "}
-            <span className="font-light text-[#2F8FD8]">
-              maîtrisée
-            </span>
-            .
+            <span className="font-light text-[#2F8FD8]"> discrète</span> et{" "}
+            <span className="font-light text-[#2F8FD8]">maîtrisée</span>.
           </>
         }
         description="Surveillance de sites, événementiel, SSIAP, cynophile et protection rapprochée : des dispositifs sur-mesure, exécutés avec rigueur."
@@ -184,7 +241,8 @@ export default function Home() {
           label: "Appeler maintenant",
           href: phoneHref,
           variant: "outline",
-          className: "bg-white text-[#1F2A44] hover:bg-white/90 hover:text-[#1F2A44]",
+          className:
+            "bg-white text-[#1F2A44] hover:bg-white/90 hover:text-[#1F2A44]",
         }}
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description ?? "Sécurité privée en Île-de-France"}
@@ -198,22 +256,28 @@ export default function Home() {
           </div>
         }
       />
+
       <div className="relative -mt-16 z-10">
         <div className="container mx-auto px-4">
           <div className="mx-auto grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Stat
               variant="onBlack"
               Icon={StatShieldCheck}
-              value="500+"
-              label="Missions sécurisées"
+              value="24/7"
+              label="Disponibilité & astreinte"
             />
             <Stat
               variant="onBlack"
               Icon={StatBadgeCheck}
-              value="98%"
-              label="Satisfaction client"
+              value="Encadré"
+              label="Supervision & reporting"
             />
-            <Stat variant="onBlack" Icon={StatClock} value="< 24h" label="Mise en place" />
+            <Stat
+              variant="onBlack"
+              Icon={StatClock}
+              value="< 24h"
+              label="Déploiement possible"
+            />
             <Stat
               variant="onBlack"
               Icon={StatMapPin}
@@ -226,7 +290,7 @@ export default function Home() {
 
       {/* TRUST / ABOUT */}
       <AnimateOnScroll>
-        <section id="about" className="py-16 md:py-24 bg-card">
+        <section id="about" className="bg-card py-16 md:py-24">
           <div className="container mx-auto px-4">
             <SectionHeader
               eyebrow="BASIC PROTECTION"
@@ -315,23 +379,34 @@ export default function Home() {
       <AnimateOnScroll>
         <Testimonials testimonials={testimonials} className="bg-card" />
       </AnimateOnScroll>
-      
+
       {/* LATEST ARTICLES */}
       <AnimateOnScroll>
-        <section id="blog" className="py-16 md:py-24 bg-background">
+        <section id="blog" className="bg-background py-16 md:py-24">
           <div className="container mx-auto px-4">
             <SectionHeader
               eyebrow="Analyses & Conseils"
               title="Nos derniers articles"
               description="Retrouvez nos dernières analyses, conseils et retours d'expérience sur la sécurité privée."
             />
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+
+            <div className="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {latestPosts.map((post) => {
-                const postImage = PlaceHolderImages.find(p => p.id === post.frontmatter.image);
-                const dateLabel = format(new Date(post.frontmatter.date), "dd MMMM yyyy", { locale: fr });
+                const postImage = PlaceHolderImages.find(
+                  (p) => p.id === post.frontmatter.image
+                );
+                const dateLabel = format(
+                  new Date(post.frontmatter.date),
+                  "dd MMMM yyyy",
+                  { locale: fr }
+                );
 
                 return (
-                  <Link href={`/blog/${post.slug}`} key={post.slug} className="group block">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    key={post.slug}
+                    className="group block"
+                  >
                     <Card className="h-full overflow-hidden rounded-2xl border-border bg-card transition-all hover:-translate-y-0.5 hover:shadow-lg">
                       <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
                         {postImage ? (
@@ -347,11 +422,17 @@ export default function Home() {
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
                       </div>
+
                       <CardHeader className="p-6">
-                        <p className="text-sm text-muted-foreground">{dateLabel}</p>
-                        <CardTitle className="mt-2 leading-snug text-lg">{post.frontmatter.title}</CardTitle>
+                        <p className="text-sm text-muted-foreground">
+                          {dateLabel}
+                        </p>
+                        <CardTitle className="mt-2 text-lg leading-snug">
+                          {post.frontmatter.title}
+                        </CardTitle>
                       </CardHeader>
-                       <CardContent>
+
+                      <CardContent>
                         <div className="mt-4 flex items-center text-sm font-medium text-primary">
                           Lire l'article
                           <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -362,6 +443,7 @@ export default function Home() {
                 );
               })}
             </div>
+
             <div className="mt-12 text-center">
               <Button asChild variant="outline">
                 <Link href="/blog">Voir tous les articles</Link>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { siteConfig } from "@/lib/config";
 import { getPostBySlug, getPostFilePaths, getSimilarPosts } from "@/lib/blog";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
@@ -21,6 +22,12 @@ type BlogPageProps = {
   params: { slug: string };
 };
 
+function toAbsolute(path: string) {
+  const base = (siteConfig?.url || "").replace(/\/$/, "");
+  if (!base) return path.startsWith("/") ? path : `/${path}`;
+  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+}
+
 export async function generateStaticParams() {
   return getPostFilePaths().map((path) => ({
     slug: path.replace(/\.mdx$/, ""),
@@ -38,38 +45,37 @@ function canonicalFor(slug: string) {
   return `/blog/${slug}`;
 }
 
-export async function generateMetadata({
-  params,
-}: BlogPageProps): Promise<Metadata> {
+export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
   try {
-    const { data, content } = getPostBySlug(params.slug);
+    const { data } = getPostBySlug(params.slug);
 
     const title = data.title;
-    const description = data.description;
-    const canonical = canonicalFor(params.slug);
+    const description = data.description || "";
+    const canonicalPath = canonicalFor(params.slug);
+    const canonicalAbs = toAbsolute(canonicalPath);
 
     const postImage = PlaceHolderImages.find((p) => p.id === data.image);
-    const ogImage = postImage?.imageUrl;
+    const ogImageAbs = postImage?.imageUrl
+      ? (postImage.imageUrl.startsWith("http") ? postImage.imageUrl : toAbsolute(postImage.imageUrl))
+      : undefined;
 
     return {
       title,
       description,
-      alternates: { canonical },
+      alternates: { canonical: canonicalAbs },
       openGraph: {
         type: "article",
         title,
         description,
-        url: canonical,
-        images: ogImage ? [{ url: ogImage }] : undefined,
+        url: canonicalAbs,
+        images: ogImageAbs ? [{ url: ogImageAbs }] : undefined,
       },
       twitter: {
-        card: ogImage ? "summary_large_image" : "summary",
+        card: ogImageAbs ? "summary_large_image" : "summary",
         title,
         description,
-        images: ogImage ? [ogImage] : undefined,
+        images: ogImageAbs ? [ogImageAbs] : undefined,
       },
-      // Optionnel : keywords si tu as data.keywords
-      // keywords: data.keywords,
     };
   } catch {
     return {};
@@ -98,12 +104,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         <ArticleJsonLd post={data} slug={slug} />
 
         <div className="bg-background text-foreground">
-          {/* HERO éditorial */}
+          {/* HERO */}
           <header className="relative overflow-hidden border-b border-border">
             <div className="absolute inset-0 -z-10">
-              {/* fond doux */}
               <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
-              {/* halo */}
               <div className="absolute -top-28 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-muted/40 blur-3xl" />
             </div>
 
@@ -111,11 +115,11 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               <Breadcrumbs items={breadcrumbItems} className="p-0 mb-6" />
 
               <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
-                {/* Bloc titre */}
                 <div>
                   <div className="flex flex-wrap gap-2">
-                    {Array.isArray(data.tags) &&
-                      data.tags.map((tag) => <Tag key={tag} tag={tag} />)}
+                    {Array.isArray(data.tags) && data.tags.map((tag: string) => (
+                      <Tag key={tag} tag={tag} />
+                    ))}
                   </div>
 
                   <h1 className="mt-4 font-headline text-4xl font-bold tracking-tight md:text-5xl">
@@ -130,10 +134,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
                   <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                     <span>
-                      Par{" "}
-                      <span className="font-medium text-foreground">
-                        {data.author}
-                      </span>
+                      Par <span className="font-medium text-foreground">{data.author}</span>
                     </span>
                     <span className="opacity-40">•</span>
                     <span>{dateLabel}</span>
@@ -146,12 +147,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                   </div>
                 </div>
 
-                {/* Carte infos (desktop) */}
                 <div className="rounded-3xl border border-border bg-background/70 p-6 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                   <div className="text-sm font-semibold">En bref</div>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    Vous avez un besoin concret (site, horaires, contraintes) ? On peut
-                    cadrer une solution rapidement.
+                    Vous avez un besoin concret (site, horaires, contraintes) ? On peut cadrer une solution rapidement.
                   </p>
 
                   <div className="mt-4 flex flex-col gap-2">
@@ -178,7 +177,6 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 </div>
               </div>
 
-              {/* Image principale (paysage) */}
               {postImage ? (
                 <div className="mt-10">
                   <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border border-border bg-muted/20">
@@ -197,18 +195,12 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             </div>
           </header>
 
-          {/* CORPS : article + TOC */}
+          {/* BODY */}
           <main className="container mx-auto max-w-6xl px-4 py-10 md:py-14">
             <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
-              {/* Article */}
               <article className="min-w-0">
-                {/* Barre haute discrète */}
                 <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-                  <div className="text-sm text-muted-foreground">
-                    {/* Tu peux remplacer par une catégorie si tu l’ajoutes */}
-                    Lecture & analyse
-                  </div>
-
+                  <div className="text-sm text-muted-foreground">Lecture & analyse</div>
                   <div className="flex items-center gap-2">
                     <Link
                       href="/blog"
@@ -219,12 +211,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                   </div>
                 </div>
 
-                {/* Prose premium */}
                 <div className="prose prose-lg dark:prose-invert max-w-none">
                   <MDXRemote source={content} components={useMDXComponents({})} />
                 </div>
 
-                {/* Bas d’article : tags + CTA */}
                 <div className="mt-10 rounded-3xl border border-border bg-muted/10 p-6">
                   <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
@@ -252,7 +242,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
                   {Array.isArray(data.tags) && data.tags.length > 0 ? (
                     <div className="mt-5 flex flex-wrap gap-2">
-                      {data.tags.map((tag) => (
+                      {data.tags.map((tag: string) => (
                         <Tag key={tag} tag={tag} />
                       ))}
                     </div>
@@ -260,7 +250,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 </div>
               </article>
 
-              {/* Sidebar : TOC sticky + mini-carte */}
+              {/* TOC */}
               <aside className="hidden lg:block">
                 <div className="sticky top-24 space-y-4">
                   <div className="rounded-3xl border border-border bg-background p-5">
@@ -289,7 +279,8 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               </aside>
             </div>
           </main>
-          
+
+          {/* Similar posts */}
           {similarPosts.length > 0 && (
             <AnimateOnScroll>
               <section className="border-t bg-muted/20 py-16 md:py-24">
@@ -302,27 +293,19 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                       Ces lectures pourraient également vous intéresser.
                     </p>
                   </div>
+
                   <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
                     {similarPosts.map((post) => {
-                      const postImage = PlaceHolderImages.find(
-                        (p) => p.id === post.frontmatter.image
-                      );
-                      const dateLabel = format(
-                        new Date(post.frontmatter.date),
-                        "dd MMMM yyyy",
-                        { locale: fr }
-                      );
+                      const img = PlaceHolderImages.find((p) => p.id === post.frontmatter.image);
+                      const d = format(new Date(post.frontmatter.date), "dd MMMM yyyy", { locale: fr });
+
                       return (
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          key={post.slug}
-                          className="group block"
-                        >
+                        <Link href={`/blog/${post.slug}`} key={post.slug} className="group block">
                           <Card className="h-full overflow-hidden rounded-3xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
                             <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
-                              {postImage ? (
+                              {img ? (
                                 <Image
-                                  src={postImage.imageUrl}
+                                  src={img.imageUrl}
                                   alt={post.frontmatter.title}
                                   fill
                                   className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
@@ -334,9 +317,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                               <div className="absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
                             </div>
                             <CardHeader className="p-6">
-                              <p className="text-sm text-muted-foreground">
-                                {dateLabel}
-                              </p>
+                              <p className="text-sm text-muted-foreground">{d}</p>
                               <CardTitle className="mt-2 leading-snug">
                                 {post.frontmatter.title}
                               </CardTitle>
@@ -350,7 +331,6 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               </section>
             </AnimateOnScroll>
           )}
-
         </div>
       </>
     );

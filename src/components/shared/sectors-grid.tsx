@@ -1,8 +1,8 @@
+import type React from "react";
+import Link from "next/link";
 
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { getLucideIcon } from "@/lib/icons";
-import Link from "next/link";
 
 type Sector = {
   icon: string;
@@ -14,50 +14,89 @@ type SectorsGridProps = {
   id?: string;
   sectors: Sector[];
   className?: string;
+
+  /** Optionnels */
+  title?: string;
+  description?: string;
+  variant?: "cards" | "minimal";
 };
 
-export function SectorsGrid({ id, sectors, className }: SectorsGridProps) {
+function makeKey(sector: Sector, index: number) {
+  return `${sector.icon}-${sector.name}-${sector.href ?? "nohref"}-${index}`;
+}
+
+export function SectorsGrid({
+  id,
+  sectors,
+  className,
+  title = "Nos secteurs d’intervention",
+  description = "Nous mettons notre expertise au service d’une grande variété de secteurs professionnels.",
+  variant = "cards",
+}: SectorsGridProps) {
   return (
     <section id={id} className={cn("py-16 md:py-24", className)}>
       <div className="container mx-auto max-w-6xl px-4">
-        <div className="text-center max-w-3xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
-            Nos Secteurs d'Intervention
+        <header className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-headline font-bold tracking-tight text-primary md:text-4xl">
+            {title}
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground">
-            Nous mettons notre expertise au service d'une grande variété de secteurs professionnels.
+          <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
+            {description}
           </p>
-        </div>
-        <div className="mt-12 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-8">
-          {sectors.map((sector) => {
-            const IconComponent = getLucideIcon(sector.icon);
-            
-            const cardContent = (
-              <Card className="text-center h-full shadow-lg hover:shadow-xl transition-shadow duration-300 bg-background">
-                <CardHeader className="items-center pb-2">
-                  {IconComponent && <IconComponent className="w-10 h-10 text-primary" />}
-                </CardHeader>
-                <CardContent>
-                  <h3 className="font-semibold text-base">{sector.name}</h3>
-                </CardContent>
-              </Card>
-            );
+        </header>
 
-            if (sector.href) {
-              return (
-                <Link href={sector.href} key={sector.name} className="block h-full">
-                  {cardContent}
-                </Link>
-              );
-            }
+        <ul className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-8 lg:grid-cols-4">
+          {sectors.map((sector, index) => {
+            const Icon = getLucideIcon(sector.icon);
+            const isLink = !!sector.href && sector.href !== "#";
+            const key = makeKey(sector, index);
+
+            const Inner = (
+              <div
+                className={cn(
+                  "group h-full rounded-2xl border bg-card p-5 shadow-sm transition-all",
+                  "hover:-translate-y-0.5 hover:shadow-md",
+                  "focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2F8FD8]/60",
+                  variant === "minimal" && "p-4 shadow-none hover:shadow-none"
+                )}
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div
+                    className={cn(
+                      "mb-4 flex h-12 w-12 items-center justify-center rounded-2xl",
+                      "bg-[#2F8FD8]/12 ring-1 ring-[#2F8FD8]/15"
+                    )}
+                  >
+                    {Icon ? <Icon className="h-6 w-6 text-[#2F8FD8]" /> : null}
+                  </div>
+
+                  <h3 className="text-sm font-semibold text-primary md:text-base">
+                    {sector.name}
+                  </h3>
+
+                  {/* Microcopy discret (optionnel) : améliore le CTR */}
+                  {isLink ? (
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Découvrir nos solutions
+                    </p>
+                  ) : null}
+                </div>
+              </div>
+            );
 
             return (
-                 <div key={sector.name} className="block h-full">
-                    {cardContent}
-                </div>
+              <li key={key} className="h-full">
+                {isLink ? (
+                  <Link href={sector.href!} className="block h-full">
+                    {Inner}
+                  </Link>
+                ) : (
+                  <div className="h-full">{Inner}</div>
+                )}
+              </li>
             );
           })}
-        </div>
+        </ul>
       </div>
     </section>
   );
