@@ -26,6 +26,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ServicePageNavigation } from "@/components/services/service-page-navigation";
+import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 type ServicePageProps = {
   params: { slug: string };
@@ -303,49 +305,32 @@ export default function ServicePage({ params }: ServicePageProps) {
 
       <ServicePageNavigation items={miniNav} />
 
-      {/* OVERVIEW */}
       <AnimateOnScroll>
-        <section id="overview" className="py-16 md:py-24">
+        <section id="overview" className="py-16 md:py-24 bg-background">
           <div className="container mx-auto max-w-6xl px-4">
-            <div className="mx-auto max-w-3xl text-center">
-              <Badge variant="secondary" className="mb-4">
-                Cadrage • Exécution • Suivi
-              </Badge>
-
-              <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                Vue d&apos;ensemble
-              </p>
-              <h2 className="mt-2 font-headline text-3xl font-bold tracking-tight text-primary md:text-4xl">
-                {blocks.whenTitle}
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground">{blocks.when}</p>
+            <div className="grid md:grid-cols-2 gap-10 items-center">
+              <div className="prose prose-lg dark:prose-invert max-w-none">
+                <h2 className="!text-3xl !font-bold !text-primary">{blocks.whenTitle}</h2>
+                <p className="text-muted-foreground">{blocks.when}</p>
+              </div>
+              <div>
+                <Card className="bg-card rounded-2xl">
+                  <CardHeader>
+                    <CardTitle>{blocks.scopeTitle}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{blocks.scope}</p>
+                    <Separator className="my-4"/>
+                    <div className="text-sm text-muted-foreground">
+                        <p className="font-semibold text-foreground">Engagement de qualité</p>
+                        <p>Agents qualifiés, consignes précises, supervision et reporting : un dispositif lisible et stable, mission après mission.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
             </div>
-
-            <div className="mt-12 grid gap-8 md:grid-cols-2">
-              <Card className="bg-muted/30 rounded-2xl">
-                <CardHeader>
-                  <CardTitle>{blocks.scopeTitle}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{blocks.scope}</p>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-muted/30 rounded-2xl">
-                <CardHeader>
-                  <CardTitle>Engagement de qualité</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    Agents qualifiés, consignes précises, supervision et reporting : un dispositif lisible et stable,
-                    mission après mission.
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-
-            <div className="mt-12 text-center">
-              <Button asChild size="lg">
+            <div className="mt-16 text-center">
+              <Button asChild size="lg" className="rounded-full px-10">
                 <Link href="/devis">Obtenir une proposition sur-mesure</Link>
               </Button>
             </div>
@@ -353,10 +338,9 @@ export default function ServicePage({ params }: ServicePageProps) {
         </section>
       </AnimateOnScroll>
 
-      {/* TRUST / WHY US */}
       {service.whyUs?.length ? (
         <AnimateOnScroll>
-          <section className="border-y bg-card py-16 md:py-24">
+          <section id="why-us" className="border-y bg-card py-16 md:py-24">
             <div className="container mx-auto max-w-6xl px-4">
               <div className="mx-auto max-w-3xl text-center">
                 <h2 className="font-headline text-3xl font-bold md:text-4xl">
@@ -374,121 +358,54 @@ export default function ServicePage({ params }: ServicePageProps) {
           </section>
         </AnimateOnScroll>
       ) : null}
-
-      {/* DETAILS */}
+      
       {longSections.length > 0 && (
         <AnimateOnScroll>
-          <section id="details" className="py-16 md:py-24">
-            <div className="container mx-auto max-w-4xl px-4">
-              <div className="mx-auto max-w-3xl text-center">
-                <h2 className="font-headline text-3xl font-bold md:text-4xl">
-                  Notre approche en détail
-                </h2>
-                <p className="mt-4 text-lg text-muted-foreground">
-                  Méthode, cadrage, consignes et supervision : ce qui fait la différence sur le terrain.
-                </p>
-              </div>
-
-              <div className="mt-16 space-y-12 prose prose-lg dark:prose-invert max-w-none">
-                {longSections.map((sec, index) => (
-                  <React.Fragment key={sec.id}>
-                    <div className="mx-auto">
-                      <h3 className="!mb-2 text-2xl font-semibold tracking-tight text-primary">
-                        {sec.title}
-                      </h3>
-
-                      {sec.intro ? (
-                        <p className="lead !my-4 text-muted-foreground">{sec.intro}</p>
-                      ) : null}
-
-                      {sec.paragraphs?.length ? (
-                        <div className="space-y-4 text-foreground/80">
-                          {sec.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
-                        </div>
-                      ) : null}
-
-                      {sec.bullets?.length ? (
-                        <ul className="mt-6 space-y-3">
-                          {sec.bullets.map((b, i) => <li key={i}>{b}</li>)}
-                        </ul>
-                      ) : null}
-
-                      {sec.note ? (
-                        <div className="my-6 rounded-2xl border bg-card p-5 not-prose">
-                          <p className="text-sm font-semibold text-card-foreground">À retenir</p>
-                          <p className="mt-1 text-sm text-muted-foreground">{sec.note}</p>
-                        </div>
-                      ) : null}
-
-                      {sec.internalLinks?.length ? (
-                        <div className="mt-6 flex flex-wrap gap-2 not-prose">
-                          {sec.internalLinks.map((l) => (
-                            <Button asChild variant="secondary" size="sm" key={l.href}>
-                              <Link href={l.href}>{l.label}</Link>
-                            </Button>
-                          ))}
-                        </div>
-                      ) : null}
-                    </div>
-
-                    {index === 1 && longSections.length > 2 && (
-                      <div className="relative my-12 overflow-hidden rounded-2xl">
-                        <div className="relative aspect-video w-full">
-                          <Image
-                            src={gallery.landscape1.imageUrl}
-                            alt={gallery.landscape1.description ?? `${service.title} illustration`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 800px"
-                          />
-                        </div>
+          <section id="details" className="py-16 md:py-24 bg-background">
+            <div className="container mx-auto px-4 max-w-6xl">
+              <div className="grid lg:grid-cols-[2fr_1fr] gap-12 items-start">
+                <div className="prose prose-lg dark:prose-invert max-w-none">
+                  {longSections.map(sec => (
+                      <div key={sec.id}>
+                          <h2 className="!text-3xl !font-bold !text-primary">{sec.title}</h2>
+                          {sec.intro && <p className="lead !my-4 text-muted-foreground">{sec.intro}</p>}
+                          {sec.paragraphs?.map((p, i) => <p key={i}>{p}</p>)}
+                          {sec.bullets && <ul className="mt-6 space-y-3">{sec.bullets.map((b,i) => <li key={i}>{b}</li>)}</ul>}
                       </div>
-                    )}
-
-                    {index === 3 && longSections.length > 4 && (
-                      <div className="my-12 grid grid-cols-1 items-center gap-8 md:grid-cols-3">
-                        <div className="relative order-last overflow-hidden rounded-2xl md:order-first md:col-span-1">
-                          <div className="relative aspect-[3/4] w-full">
-                            <Image
-                              src={gallery.portrait.imageUrl}
-                              alt={gallery.portrait.description ?? `${service.title} en situation`}
-                              fill
-                              className="object-cover"
-                              sizes="(max-width: 768px) 100vw, 33vw"
-                            />
-                          </div>
-                        </div>
-                        <div className="md:col-span-2">
-                          <blockquote className="border-l-4 border-primary pl-6 text-xl italic text-muted-foreground">
-                            &quot;La qualité d&apos;un dispositif de sécurité se mesure à la clarté des consignes, au
-                            niveau d’encadrement et à la supervision — pas au bruit.&quot;
-                          </blockquote>
-                        </div>
-                      </div>
-                    )}
-
-                    {index === 5 && longSections.length > 6 && (
-                      <div className="relative my-12 overflow-hidden rounded-2xl">
-                        <div className="relative aspect-video w-full">
-                          <Image
-                            src={gallery.landscape2.imageUrl}
-                            alt={gallery.landscape2.description ?? `${service.title} en action`}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 800px"
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </React.Fragment>
-                ))}
+                  ))}
+                </div>
+                <aside className="lg:sticky top-28 h-fit">
+                    <Card className="rounded-2xl bg-card">
+                        <CardHeader>
+                            <CardTitle>Points Clés</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {longSections[0]?.note && (
+                                <div className="text-sm text-muted-foreground italic mb-6 border-l-2 border-primary pl-4">
+                                    {longSections[0].note}
+                                </div>
+                            )}
+                            {longSections[0]?.internalLinks && (
+                                <>
+                                    <h4 className="font-semibold mb-3 text-foreground">Services Connexes</h4>
+                                    <div className="flex flex-col gap-1">
+                                        {longSections[0].internalLinks.map(link => (
+                                            <Button asChild variant="ghost" className="justify-start -ml-2" key={link.href}>
+                                                <Link href={link.href}>{link.label}</Link>
+                                            </Button>
+                                        ))}
+                                    </div>
+                                </>
+                            )}
+                        </CardContent>
+                    </Card>
+                </aside>
               </div>
             </div>
           </section>
         </AnimateOnScroll>
       )}
 
-      {/* BENEFITS */}
       {service.benefits?.length ? (
         <AnimateOnScroll>
           <BenefitsSection
@@ -501,7 +418,6 @@ export default function ServicePage({ params }: ServicePageProps) {
         </AnimateOnScroll>
       ) : null}
 
-      {/* METHOD */}
       {service.method?.steps?.length ? (
         <AnimateOnScroll>
           <ProcessSteps
@@ -512,18 +428,17 @@ export default function ServicePage({ params }: ServicePageProps) {
               "Du cadrage à l’exécution : un dispositif pensé, déployé, puis supervisé."
             }
             steps={[...service.method.steps]}
+            className="bg-background"
           />
         </AnimateOnScroll>
       ) : null}
 
-      {/* SECTORS */}
       {service.sectors?.length ? (
         <AnimateOnScroll>
           <SectorsGrid id="sectors" sectors={[...service.sectors]} className="bg-card" />
         </AnimateOnScroll>
       ) : null}
 
-      {/* FAQ */}
       {faqItems.length ? (
         <AnimateOnScroll>
           <FAQAccordion
@@ -531,11 +446,11 @@ export default function ServicePage({ params }: ServicePageProps) {
             title="Questions fréquentes"
             description={`Les réponses à vos questions sur ${service.title.toLowerCase()}.`}
             items={faqItems}
+            className="bg-background"
           />
         </AnimateOnScroll>
       ) : null}
 
-      {/* RELATED */}
       {related.length ? (
         <AnimateOnScroll>
           <section className="bg-card py-16 md:py-24">
@@ -552,7 +467,7 @@ export default function ServicePage({ params }: ServicePageProps) {
               <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {related.map((s) => (
                   <Link key={s.slug} href={`/services/${s.slug}`} className="block h-full">
-                    <Card className="h-full transition hover:shadow-lg rounded-2xl">
+                    <Card className="h-full transition hover:shadow-lg rounded-2xl bg-background">
                       <CardHeader>
                         <CardTitle className="text-base">{s.title}</CardTitle>
                       </CardHeader>
@@ -574,6 +489,7 @@ export default function ServicePage({ params }: ServicePageProps) {
           title="Obtenez une proposition claire et adaptée"
           description="Décrivez votre site, vos horaires et vos contraintes : nous revenons vers vous avec une proposition structurée."
           cta={{ label: "Demander un devis", href: "/devis" }}
+          className="bg-background"
         />
       </AnimateOnScroll>
     </div>
