@@ -82,50 +82,54 @@ export default function EnvironmentPage({ params }: PageProps) {
       </AnimateOnScroll>
 
       {/* Issues Section */}
-      <AnimateOnScroll>
-        <section className="py-16 md:py-24 bg-muted/20">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">Les enjeux spécifiques des sièges sociaux et bureaux</h2>
+      {env.issues.length > 0 && (
+        <AnimateOnScroll>
+          <section className="py-16 md:py-24 bg-muted/20">
+            <div className="container mx-auto px-4 max-w-6xl">
+              <div className="text-center max-w-3xl mx-auto mb-12">
+                  <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">{env.issuesTitle ?? "Les enjeux spécifiques"}</h2>
+              </div>
+              <TrustElements elements={env.issues.map(issue => ({...issue}))} />
             </div>
-            <TrustElements elements={env.issues.map(issue => ({...issue}))} />
-          </div>
-        </section>
-      </AnimateOnScroll>
+          </section>
+        </AnimateOnScroll>
+      )}
 
       {/* Missions Section */}
-      <AnimateOnScroll>
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-                <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">Typologie des missions en environnement tertiaire</h2>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
-              {env.missions.map((mission) => {
-                const Icon = getLucideIcon(mission.icon);
-                return (
-                  <div key={mission.title} className="flex items-start gap-4">
-                    <div className="bg-primary/10 rounded-lg p-3">
-                      <Icon className="w-6 h-6 text-primary" />
+      {env.missions.length > 0 && (
+        <AnimateOnScroll>
+          <section className="py-16 md:py-24">
+            <div className="container mx-auto px-4 max-w-4xl">
+              <div className="text-center max-w-3xl mx-auto mb-12">
+                  <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">{env.missionsTitle ?? "Typologie des missions"}</h2>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+                {env.missions.map((mission) => {
+                  const Icon = getLucideIcon(mission.icon);
+                  return (
+                    <div key={mission.title} className="flex items-start gap-4">
+                      <div className="bg-primary/10 rounded-lg p-3">
+                        <Icon className="w-6 h-6 text-primary" />
+                      </div>
+                      <div>
+                        <h3 className="font-bold text-lg text-primary">{mission.title}</h3>
+                        <p className="text-muted-foreground mt-1">{mission.description}</p>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-bold text-lg text-primary">{mission.title}</h3>
-                      <p className="text-muted-foreground mt-1">{mission.description}</p>
-                    </div>
-                  </div>
-                )
-              })}
+                  )
+                })}
+              </div>
             </div>
-          </div>
-        </section>
-      </AnimateOnScroll>
+          </section>
+        </AnimateOnScroll>
+      )}
       
       {/* Related Services */}
       {services.length > 0 && (
         <AnimateOnScroll>
           <ServicesGrid
             title="Des services de sécurité adaptés"
-            description="Chaque environnement tertiaire est différent. C’est pourquoi nous combinons plusieurs expertises."
+            description="Chaque environnement est différent. C’est pourquoi nous combinons plusieurs expertises."
             services={services}
             className="bg-muted/20"
           />
@@ -175,7 +179,7 @@ export default function EnvironmentPage({ params }: PageProps) {
           <section className="py-16 md:py-24">
             <div className="container mx-auto px-4 max-w-6xl">
               <div className="text-center max-w-3xl mx-auto mb-12">
-                  <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">Pourquoi nous confier la sécurité de vos bureaux ?</h2>
+                  <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">Pourquoi nous confier la sécurité de vos sites ?</h2>
               </div>
               <TrustElements elements={env.whyUs.map(item => ({...item}))} />
             </div>

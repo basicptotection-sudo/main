@@ -14,11 +14,13 @@ export type Environment = {
       title: string;
       paragraph: string;
     },
+    issuesTitle?: string;
     issues: {
         icon: string;
         title: string;
         description: string;
     }[],
+    missionsTitle?: string;
     missions: {
         icon: string;
         title: string;
@@ -78,6 +80,7 @@ export const environmentsData: Environment[] = [
             title: "Une sécurité pensée, maîtrisée et pilotée.",
             paragraph: "La sécurité d’un siège social ou d’un immeuble de bureaux ne se limite pas à une simple présence. Elle engage l’image de l’entreprise, la protection des collaborateurs, la continuité d’activité et la confidentialité des données. Entre flux quotidiens, visiteurs, prestataires et exigences de discrétion, les environnements tertiaires nécessitent une approche structurée, fluide et professionnelle."
         },
+        issuesTitle: "Les enjeux spécifiques des sièges sociaux et bureaux",
         issues: [
             {
                 icon: 'Award',
@@ -100,6 +103,7 @@ export const environmentsData: Environment[] = [
                 description: 'Intrusion, conflit ou incident peuvent perturber l’activité. Le dispositif doit prévenir, absorber et gérer sans désorganiser le site.',
             }
         ],
+        missionsTitle: "Typologie des missions en environnement tertiaire",
         missions: [
             { icon: 'Fingerprint', title: 'Contrôle d’accès', description: 'Accueil et orientation, vérification des autorisations, gestion des badges et registres, filtrage discret et efficace.' },
             { icon: 'Radio', title: 'Surveillance et rondes', description: 'Rondes intérieures/extérieures, vérification des zones sensibles, prévention des risques et surveillance en horaires décalés.' },
@@ -132,13 +136,26 @@ export const environmentsData: Environment[] = [
             title: "Une sécurité à l'image de votre marque.",
             paragraph: "Dans les secteurs du luxe, du retail et de l'hôtellerie, l'agent de sécurité est un ambassadeur. Nos dispositifs sont conçus pour protéger vos actifs et vos clients tout en sublimant leur expérience."
         },
-        issues: [],
-        missions: [],
-        relatedServices: ['agent-securite-qualifie', 'securite-evenementielle'],
-        useCases: [],
+        issuesTitle: "Enjeux du secteur Luxe & Retail",
+        issues: [
+            { icon: 'Gem', title: 'Prévention des pertes', description: 'Protéger des produits de haute valeur contre le vol à l\'étalage et les tentatives de braquage.' },
+            { icon: 'Users', title: 'Expérience client', description: 'Assurer une sécurité visible mais non intrusive, avec une posture d\'accueil et de service irréprochable.' },
+        ],
+        missionsTitle: "Nos missions en environnement premium",
+        missions: [
+             { icon: 'Eye', title: 'Accueil & Filtrage', description: 'Contrôle discret des entrées, orientation des clients et gestion des accès aux zones privées.' },
+             { icon: 'Shield', title: 'Présence dissuasive', description: 'Une présence élégante et vigilante pour décourager les actes malveillants sans nuire à l\'atmosphère du lieu.' },
+        ],
+        relatedServices: ['agent-securite-qualifie', 'securite-evenementielle', 'audit-conseil-surete'],
+        useCases: [
+            { title: 'Boutique de luxe (Paris 8)', description: 'Agent en costume assurant l\'accueil, le contrôle des flux et la coordination avec les équipes de vente.' },
+            { title: 'Grand hôtel parisien', description: 'Dispositif 24/7 pour la surveillance du lobby, des accès et la gestion des incidents avec une clientèle internationale.' },
+        ],
         method: commonMethod,
         whyUs: commonWhyUs,
-        faq: []
+        faq: [
+            { question: "Vos agents sont-ils formés aux codes du luxe ?", answer: "Oui, nos agents affectés à ces missions sont sélectionnés pour leur excellente présentation, leur discrétion et leur capacité à interagir avec une clientèle exigeante." },
+        ]
     },
     {
         slug: 'chantiers-sites-btp',
@@ -153,13 +170,26 @@ export const environmentsData: Environment[] = [
             title: "Votre chantier, notre vigilance.",
             paragraph: "Un chantier est une cible de choix pour les vols et dégradations. Nous mettons en place des dispositifs dissuasifs et efficaces pour sécuriser votre site de jour comme de nuit."
         },
-        issues: [],
-        missions: [],
+        issuesTitle: "Problématiques des sites BTP",
+        issues: [
+            { icon: 'Construction', title: 'Vol de matériaux et d\'engins', description: 'Le cuivre, les outils et les engins de chantier sont des cibles de choix, causant des pertes financières et des retards.' },
+            { icon: 'Ban', title: 'Intrusions et vandalisme', description: 'Les sites non sécurisés la nuit ou le week-end sont vulnérables aux dégradations et aux occupations illégales.' },
+        ],
+        missionsTitle: "Nos interventions sur chantiers",
+        missions: [
+            { icon: 'Gate', title: 'Contrôle des accès', description: 'Filtrage des entrées/sorties de véhicules et de personnel pour limiter l\'accès aux seules personnes autorisées.' },
+            { icon: 'Dog', title: 'Rondes cynophiles nocturnes', description: 'Le binôme homme-chien est la solution la plus dissuasive pour surveiller de grands périmètres la nuit.' },
+        ],
         relatedServices: ['agent-securite-qualifie', 'agent-cynophile', 'agent-rondier'],
-        useCases: [],
+        useCases: [
+            { title: 'Chantier du Grand Paris', description: 'Surveillance 24/7 avec agents postés aux accès et rondes cynophiles la nuit pour protéger un site stratégique.' },
+            { title: 'Promotion immobilière', description: 'Rondes de surveillance à horaires variables pour plusieurs pavillons en construction afin de prévenir les vols et dégradations.' },
+        ],
         method: commonMethod,
         whyUs: commonWhyUs,
-        faq: []
+        faq: [
+             { question: "Un agent cynophile est-il indispensable pour un chantier ?", answer: "C'est la solution la plus efficace en termes de dissuasion et de détection sur de grandes surfaces. Pour les chantiers plus petits ou en milieu urbain dense, un agent posté ou des rondes peuvent suffire." },
+        ]
     },
     {
         slug: 'industrie-logistique',
@@ -174,13 +204,26 @@ export const environmentsData: Environment[] = [
             title: "Sécuriser le cœur de votre activité.",
             paragraph: "Les sites industriels et logistiques sont des zones névralgiques. Nous assurons la fluidité et la sécurité de vos opérations grâce à des procédures de contrôle strictes et une surveillance adaptée."
         },
-        issues: [],
-        missions: [],
+        issuesTitle: "Enjeux des sites industriels et logistiques",
+        issues: [
+            { icon: 'Truck', title: 'Contrôle des flux', description: 'Maîtriser les entrées et sorties de camions, de marchandises et de personnel est crucial pour prévenir les vols internes et externes.' },
+            { icon: 'Warehouse', title: 'Protection des stocks', description: 'Les entrepôts abritent des valeurs importantes et doivent être protégés contre les intrusions, notamment la nuit.' },
+        ],
+        missionsTitle: "Nos missions pour l'industrie et la logistique",
+        missions: [
+            { icon: 'ClipboardCheck', title: 'Contrôle d\'accès et des chargements', description: 'Vérification des bons de livraison, contrôle des scellés et enregistrement des mouvements de véhicules.' },
+            { icon: 'Radio', title: 'Rondes de surveillance périmétrique', description: 'Rondes véhiculées ou à pied pour surveiller de vastes sites, avec une attention particulière pour les clôtures et les zones de stockage extérieures.' },
+        ],
         relatedServices: ['agent-securite-qualifie', 'agent-cynophile', 'agent-rondier'],
-        useCases: [],
+        useCases: [
+            { title: 'Plateforme logistique (93)', description: 'Poste de garde 24/7 pour le contrôle des accès camions et personnel, complété par des rondes cynophiles nocturnes.' },
+            { title: 'Site industriel sensible (77)', description: 'Dispositif de contrôle d\'accès strict avec agents formés aux procédures spécifiques du site et au respect des normes de sécurité.' },
+        ],
         method: commonMethod,
         whyUs: commonWhyUs,
-        faq: []
+        faq: [
+            { question: "Comment gérez-vous la sécurité sur un site SEVESO ?", answer: "La sécurité sur un site classé SEVESO requiert des agents formés aux risques spécifiques et des procédures extrêmement rigoureuses, définies en étroite collaboration avec le responsable sécurité du site." },
+        ]
     },
     {
         slug: 'evenementiel-culture',
@@ -195,13 +238,26 @@ export const environmentsData: Environment[] = [
             title: "Votre événement, notre responsabilité.",
             paragraph: "La réussite d'un événement repose sur une sécurité discrète mais infaillible. Nous gérons les flux, contrôlons les accès et prévenons les incidents pour que votre événement soit un succès."
         },
-        issues: [],
-        missions: [],
+        issuesTitle: "Défis de la sécurité événementielle",
+        issues: [
+            { icon: 'Users', title: 'Gestion de foule', description: 'Canaliser les flux de public, éviter les mouvements de panique et gérer les files d\'attente sont des compétences clés.' },
+            { icon: 'Ticket', title: 'Contrôle d\'accès et filtrage', description: 'Assurer que seules les personnes autorisées entrent, tout en effectuant les contrôles nécessaires (sacs, billets) de manière fluide.' },
+        ],
+        missionsTitle: "Nos dispositifs pour vos événements",
+        missions: [
+            { icon: 'Scan', title: 'Filtrage et contrôle des billets', description: 'Agents postés aux entrées pour vérifier les titres d\'accès et effectuer les palpations de sécurité si nécessaire.' },
+            { icon: 'Flame', title: 'Sécurité Incendie (SSIAP)', description: 'Présence obligatoire dans la plupart des ERP pour assurer la prévention des risques incendie et gérer l\'évacuation.' },
+        ],
         relatedServices: ['securite-evenementielle', 'agent-securite-qualifie', 'agent-incendie-ssiap'],
-        useCases: [],
+        useCases: [
+            { title: 'Concert à La Défense Arena', description: 'Dispositif complet incluant agents de filtrage, gestion des flux dans les coursives et agents SSIAP.' },
+            { title: 'Salon professionnel (Porte de Versailles)', description: 'Surveillance des stands la nuit, contrôle des accès exposants et visiteurs, et gestion des mouvements logistiques.' },
+        ],
         method: commonMethod,
         whyUs: commonWhyUs,
-        faq: []
+        faq: [
+            { question: "Combien de temps à l'avance faut-il vous contacter ?", answer: "Pour un événement, le plus tôt est le mieux, idéalement 1 à 2 mois avant pour bien planifier le dispositif. Nous pouvons cependant répondre à des demandes plus urgentes." },
+        ]
     },
     {
         slug: 'dirigeants-vip',
@@ -216,13 +272,26 @@ export const environmentsData: Environment[] = [
             title: "La sécurité invisible.",
             paragraph: "La protection des personnes et des cadres de haut niveau exige une approche basée sur la confidentialité et l'anticipation. Nos dispositifs visent à sécuriser l'environnement de travail ou de vie sans perturber le quotidien."
         },
-        issues: [],
-        missions: [],
+        issuesTitle: "Enjeux de la protection de personnes",
+        issues: [
+            { icon: 'EyeOff', title: 'Discrétion Absolue', description: 'La meilleure sécurité est celle qui ne se voit pas. La confidentialité est la règle d\'or.' },
+            { icon: 'BrainCircuit', title: 'Anticipation des risques', description: 'Analyse des déplacements, des lieux et des contextes pour prévenir les menaces avant qu\'elles ne surviennent.' },
+        ],
+        missionsTitle: "Nos approches pour les dirigeants et VIP",
+        missions: [
+            { icon: 'Car', title: 'Accompagnement sécurisé', description: 'Chauffeur de sécurité, accompagnement discret lors de déplacements professionnels ou privés.' },
+            { icon: 'Home', title: 'Sécurisation de résidence', description: 'Audit de sûreté de la résidence et mise en place de solutions humaines et/ou technologiques adaptées.' },
+        ],
         relatedServices: ['audit-conseil-surete', 'agent-securite-qualifie'],
-        useCases: [],
+        useCases: [
+            { title: 'Accompagnement d\'un PDG', description: 'Chauffeur de sécurité assurant les trajets domicile-travail et les déplacements professionnels en toute discrétion.' },
+            { title: 'Surveillance d\'une villa (92)', description: 'Gardiennage permanent ou rondes aléatoires pour sécuriser une résidence privée lors des absences de ses occupants.' },
+        ],
         method: commonMethod,
         whyUs: commonWhyUs,
-        faq: []
+        faq: [
+            { question: "Faut-il une autorisation pour un service de protection rapprochée ?", answer: "Oui, la protection physique des personnes est une activité très réglementée qui nécessite des agréments spécifiques (APR) que nos agents possèdent." },
+        ]
     },
     {
         slug: 'sites-sensibles-institutionnels',
