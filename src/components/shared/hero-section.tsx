@@ -66,7 +66,7 @@ export function HeroSection({
   return (
     <section className="relative w-full overflow-hidden text-white">
       {/* Hauteur : stable, premium, et responsive */}
-      <div className="relative flex flex-col h-[85vh] min-h-[680px] md:h-[80vh] md:min-h-[720px]">
+      <div className="relative flex flex-col h-[85vh] min-h-[720px] md:h-[80vh] md:min-h-[760px]">
         {/* Background image */}
         {imageUrl ? (
           <Image
@@ -88,8 +88,8 @@ export function HeroSection({
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
         <div className="absolute -left-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[#2F8FD8]/15 blur-3xl" />
 
-        {/* Content */}
-        <div className="relative z-10 flex flex-1 flex-col justify-center">
+        {/* Content Aligned to bottom */}
+        <div className="relative z-10 flex flex-1 flex-col justify-end pb-10 md:pb-16">
           <div className="container mx-auto px-4">
             <div
               className={cn(
@@ -161,8 +161,8 @@ export function HeroSection({
                   href={cta1.href}
                   aria-label={cta1.ariaLabel ?? cta1.label}
                   className={cn(
-                    buttonVariants({ size: "lg", variant: cta1.variant }),
-                    "font-bold rounded-full",
+                    buttonVariants({ variant: cta1.variant }),
+                    "font-bold rounded-full h-14 px-10 text-base",
                     "shadow-lg shadow-black/20",
                     cta1.className
                   )}
@@ -174,8 +174,8 @@ export function HeroSection({
                   href={cta2.href}
                   aria-label={cta2.ariaLabel ?? cta2.label}
                   className={cn(
-                    buttonVariants({ size: "lg", variant: cta2.variant }),
-                    "font-bold rounded-full",
+                    buttonVariants({ variant: cta2.variant }),
+                    "font-bold rounded-full h-14 px-10 text-base",
                     "bg-white/15 border-white/20 text-white backdrop-blur hover:bg-white/25",
                     cta2.className
                   )}
@@ -184,17 +184,15 @@ export function HeroSection({
                 </Link>
               </div>
             </div>
-          </div>
-        </div>
-        
-        {/* Stats Bar at the bottom */}
-        {stats ? (
-            <div className="relative mt-auto pb-10 md:pb-16 z-10">
-              <div className="container mx-auto px-4">
+
+            {/* Stats Bar */}
+            {stats ? (
+              <div className="mt-24">
                 {stats}
               </div>
-            </div>
-          ) : null}
+            ) : null}
+          </div>
+        </div>
       </div>
     </section>
   );
