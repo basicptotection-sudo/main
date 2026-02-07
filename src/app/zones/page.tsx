@@ -51,7 +51,6 @@ export default function ZonesHubPage() {
     { label: "Zones d’intervention", href: "/zones" },
   ];
 
-  // Correction de la logique de création des zones
   // `locationsData` est la source unique pour les départements.
   const zones: Zone[] = locationsData
     .map((loc) => ({
