@@ -1,3 +1,4 @@
+
 import type React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -66,7 +67,7 @@ export function HeroSection({
   return (
     <section className="relative w-full overflow-hidden text-white">
       {/* Hauteur : stable, premium, et responsive */}
-      <div className="relative flex flex-col h-[85vh] min-h-[720px] md:h-[80vh] md:min-h-[760px]">
+      <div className="relative flex flex-col h-[70vh] min-h-[600px] md:h-[65vh] md:min-h-[620px]">
         {/* Background image */}
         {imageUrl ? (
           <Image
@@ -187,7 +188,7 @@ export function HeroSection({
 
             {/* Stats Bar */}
             {stats ? (
-              <div className="mt-24">
+              <div className="mt-16">
                 {stats}
               </div>
             ) : null}
