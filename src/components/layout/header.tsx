@@ -70,7 +70,7 @@ export function Header() {
   const premiumServices = useMemo(
     () =>
       servicesData.filter((s) =>
-        ["protection-rapprochee", "securite-evenementielle", "audit-conseil-surete"].includes(
+        ["securite-evenementielle", "audit-conseil-surete"].includes(
           s.slug
         )
       ),

@@ -545,62 +545,6 @@ export const servicesData: readonly Service[] = [
     },
   },
 
-  {
-    slug: "protection-rapprochee",
-    icon: "UserCheck",
-    title: "Protection Rapprochée",
-    shortDescription:
-      "Sécurité sur-mesure pour dirigeants, personnalités et familles. Discrétion, anticipation et maîtrise.",
-    description:
-      "Notre service de protection rapprochée (garde du corps) assure la sécurité des personnes exposées à des risques particuliers. Nous concevons des dispositifs sur-mesure, alliant discrétion absolue, analyse des menaces, et une présence rassurante mais non intrusive.",
-    keywords: [
-      "protection rapprochée",
-      "garde du corps",
-      "sécurité VIP",
-      "protection de personnalités",
-      "APR",
-      "sécurité dirigeant",
-    ],
-    heroImageId: ensureHero("service-protection-rapprochee"),
-    benefits: [
-      { title: "Discrétion Absolue", description: "Une présence qui protège sans jamais s’imposer ni altérer votre quotidien." },
-      { title: "Anticipation des Risques", description: "Analyse des menaces, reconnaissance des lieux, et planification des itinéraires pour prévenir les incidents." },
-      { title: "Gestion de Crise", description: "Protocoles d’extraction, communication sécurisée et coordination avec les autorités en cas d’urgence." },
-      { title: "Adaptabilité Totale", description: "Un dispositif flexible qui s’ajuste à vos déplacements, à votre agenda et au niveau de menace." },
-      { title: "Sérénité d’Esprit", description: "Libérez-vous des contraintes de sécurité pour vous concentrer sur vos objectifs." },
-      { title: "Confidentialité Garantie", description: "Engagement contractuel et déontologique de confidentialité sur toutes les informations partagées." },
-    ],
-    method: {
-      title: "Notre Protocole de Protection",
-      description: "Une méthodologie rigoureuse pour une sécurité sans faille.",
-      steps: [
-        { icon: "ShieldAlert", title: "1. Audit de Risques", description: "Évaluation de la menace, analyse de votre environnement et de vos habitudes de vie." },
-        { icon: "Route", title: "2. Planification", description: "Conception du dispositif, planification des itinéraires, et définition des procédures d'urgence." },
-        { icon: "UserCheck", title: "3. Déploiement", description: "Mise en place de l’équipe de protection, briefings quotidiens et adaptation constante." },
-        { icon: "BarChart", title: "4. Reporting & Débriefing", description: "Rapports d'activité discrets et débriefings réguliers pour ajuster et améliorer le dispositif en continu." },
-      ],
-    },
-    sectors: [
-      { icon: "Briefcase", name: "Dirigeants & Cadres" },
-      { icon: "Users", name: "Personnalités Publiques" },
-      { icon: "Gem", name: "Clients Fortunés (UHNWI)" },
-      { icon: "Plane", name: "Délégations & Voyages" },
-    ],
-    faq: [
-      { question: "Un garde du corps est-il armé ?", answer: "L'emport d'arme est très réglementé en France et réservé à des cas spécifiques après autorisation préfectorale. La plupart des missions se font sans arme, en privilégiant l'anticipation et la dissuasion." },
-      { question: "Comment garantissez-vous la discrétion ?", answer: "Nos agents sont formés aux codes du savoir-vivre, adaptent leur tenue et leur posture au contexte. La confidentialité est notre priorité absolue, garantie par contrat." },
-      { question: "Le dispositif est-il actif 24/7 ?", answer: "Absolument. Nous pouvons mettre en place des équipes qui se relaient pour assurer une protection continue, de jour comme de nuit, en France ou à l'étranger." },
-    ],
-    seo: {
-      slugKeyword: "protection rapprochée",
-      secondaryKeywords: ["garde du corps", "sécurité VIP", "protection dirigeant", "APR"],
-      metaTitle: "Protection rapprochée (garde du corps) en Île-de-France | Basic Protection",
-      metaDescription: "Service de protection rapprochée pour dirigeants, personnalités et familles. Discrétion, anticipation et gestion de crise. Devis confidentiel.",
-      h1: "Protection Rapprochée & Garde du Corps"
-    },
-    page: {}
-  },
-
   /** ✅ Sécurité événementielle : on retire les liens vers protection rapprochée */
   {
     slug: "securite-evenementielle",
