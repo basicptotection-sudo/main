@@ -1,9 +1,11 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 import { siteConfig } from "@/lib/config";
 import { servicesData } from "@/lib/services-data";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 import { AnimateOnScroll, Breadcrumbs, ServicesGrid, CTASection } from "@/components/shared";
 import { Button } from "@/components/ui/button";
@@ -50,6 +52,8 @@ export default function ServicesHubPage() {
   ];
 
   const phoneHref = safePhoneHref();
+  const heroImage = PlaceHolderImages.find((p) => p.id === "services-hub") || PlaceHolderImages.find((p) => p.id === "hero");
+
 
   const terrainSlugs = new Set([
     "agent-securite-qualifie",
@@ -113,20 +117,32 @@ export default function ServicesHubPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
-          <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-muted/40 blur-3xl" />
+      <section className="relative overflow-hidden border-b border-border text-white">
+        <div className="absolute inset-0">
+          {heroImage?.imageUrl ? (
+            <Image
+              src={heroImage.imageUrl}
+              alt="Services de sécurité privée"
+              fill
+              className="object-cover"
+              priority
+              quality={80}
+              data-ai-hint={heroImage.imageHint}
+            />
+          ) : (
+            <div className="absolute inset-0 bg-slate-900" />
+          )}
+          <div className="absolute inset-0 bg-black/60" />
         </div>
         
-        <div className="container mx-auto max-w-6xl px-4 py-14 md:py-20">
-            <Breadcrumbs items={breadcrumbItems} />
+        <div className="relative z-10 container mx-auto max-w-6xl px-4 py-16 md:py-24">
+            <Breadcrumbs items={breadcrumbItems} variant="onDark" />
             
-            <h1 className="mt-6 font-headline text-4xl font-bold tracking-tight text-primary md:text-5xl">
+            <h1 className="mt-6 font-headline text-4xl font-bold tracking-tight md:text-5xl [text-shadow:0_1px_3px_rgba(0,0,0,0.4)]">
                 Des services de sécurité sur-mesure
             </h1>
 
-            <p className="mt-4 max-w-3xl text-lg text-muted-foreground">
+            <p className="mt-4 max-w-3xl text-lg text-white/90 [text-shadow:0_1px_2px_rgba(0,0,0,0.3)]">
                 Des prestations terrain aux dispositifs premium : une méthode claire, des agents qualifiés et un pilotage rigoureux pour sécuriser durablement vos enjeux.
             </p>
 
@@ -134,7 +150,7 @@ export default function ServicesHubPage() {
                 <Button asChild size="lg">
                     <Link href="/devis">Demander un devis</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline">
+                <Button asChild size="lg" variant="outline" className="border-white/80 bg-black/20 text-white backdrop-blur-sm hover:bg-white/10 hover:text-white">
                     <a href={phoneHref}>Appeler un expert</a>
                 </Button>
             </div>
@@ -187,16 +203,6 @@ export default function ServicesHubPage() {
           secondaryCta={{ label: "Demander un devis", href: "/devis" }}
           highlights={["Réactivité Île-de-France", "Agents qualifiés", "Discrétion & méthode"]}
           className="bg-muted/30"
-        />
-      </AnimateOnScroll>
-
-      <AnimateOnScroll>
-        <CTASection
-          title="Prêt à sécuriser votre activité ?"
-          description="Décrivez-nous le lieu, les horaires, les accès et vos contraintes. Nous revenons vers vous rapidement avec une proposition claire et un devis structuré."
-          cta={{ label: "Obtenir un devis", href: "/devis" }}
-          secondaryCta={{label: "Appeler maintenant", href: phoneHref}}
-          className="bg-background"
         />
       </AnimateOnScroll>
     </div>
