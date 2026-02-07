@@ -1,3 +1,4 @@
+
 import type React from "react";
 import type { Metadata } from "next";
 
@@ -37,7 +38,8 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { ShieldCheck, ArrowRight, BadgeCheck, Clock, MapPin } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { ShieldCheck, ArrowRight, BadgeCheck, Clock, MapPin, CheckCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getLucideIcon } from "@/lib/icons";
 
@@ -143,20 +145,10 @@ export default function Home() {
       href: `/services/${service.slug}`,
     }));
 
-  const premiumServices = servicesData
-    .filter((s) =>
-      [
-        "protection-rapprochee",
-        "securite-evenementielle",
-        "audit-conseil-surete",
-      ].includes(s.slug)
-    )
-    .map((service) => ({
-      icon: service.icon,
-      title: service.title,
-      description: service.shortDescription,
-      href: `/services/${service.slug}`,
-    }));
+  const serviceEvenementiel = servicesData.find(s => s.slug === 'securite-evenementielle');
+  const serviceAudit = servicesData.find(s => s.slug === 'audit-conseil-surete');
+  const eventImage = PlaceHolderImages.find((p) => p.id === "service-evenementiel");
+  const auditImage = PlaceHolderImages.find((p) => p.id === "service-audit-conseil");
 
   const coverageZones = locationsData.map((loc) => ({
     name: loc.name,
@@ -303,14 +295,107 @@ export default function Home() {
             className="bg-background"
           />
         </AnimateOnScroll>
-
+        
         <AnimateOnScroll>
-          <ServicesGrid
-            title="Sûreté haut niveau"
-            description="Protection rapprochée, événementiel, audit & conseil : une expertise structurée, discrète et précise."
-            services={premiumServices}
-            className="bg-card"
-          />
+          <section id="sûrete-haut-niveau" className="bg-card py-16 md:py-24">
+            <div className="container mx-auto max-w-5xl px-4">
+              <SectionHeader
+                eyebrow="Sûreté haut niveau"
+                title="Une expertise pointue pour les contextes sensibles"
+                description="De l'analyse stratégique du risque à la sécurisation d'événements de prestige, nous apportons une réponse structurée et discrète."
+              />
+
+              <div className="mt-16 space-y-16">
+                {/* Feature 1: Événementiel */}
+                {serviceEvenementiel && eventImage && (
+                  <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center">
+                    <div className="md:w-2/5">
+                      <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-lg">
+                        <Image
+                          src={eventImage.imageUrl}
+                          alt={eventImage.description}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 40vw"
+                          data-ai-hint={eventImage.imageHint}
+                        />
+                      </div>
+                    </div>
+                    <div className="md:w-3/5">
+                      <Badge variant="secondary">Événementiel</Badge>
+                      <h3 className="mt-4 text-2xl lg:text-3xl font-bold font-headline text-primary">
+                        {serviceEvenementiel.title}
+                      </h3>
+                      <p className="mt-4 text-muted-foreground">
+                        Dispositifs sur-mesure pour galas, lancements, et événements corporate. Nous assurons la gestion des accès et la sûreté des zones sensibles avec une posture premium qui valorise votre image.
+                      </p>
+                      <ul className="mt-6 space-y-3 text-sm">
+                        <li className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground">Contrôle d'accès & gestion des flux</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground">Sûreté des zones VIP & techniques</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground">Coordination terrain & chef de dispositif</span>
+                        </li>
+                      </ul>
+                      <Button asChild variant="outline" className="mt-8">
+                        <Link href={`/services/${serviceEvenementiel.slug}`}>Découvrir le service</Link>
+                      </Button>
+                    </div>
+                  </div>
+                )}
+
+                {/* Feature 2: Audit */}
+                {serviceAudit && auditImage && (
+                  <div className="flex flex-col md:flex-row-reverse gap-8 lg:gap-12 items-center">
+                    <div className="md:w-2/5">
+                      <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-lg">
+                        <Image
+                          src={auditImage.imageUrl}
+                          alt={auditImage.description}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 40vw"
+                          data-ai-hint={auditImage.imageHint}
+                        />
+                      </div>
+                    </div>
+                    <div className="md:w-3/5">
+                      <Badge variant="secondary">Stratégie</Badge>
+                      <h3 className="mt-4 text-2xl lg:text-3xl font-bold font-headline text-primary">
+                        {serviceAudit.title}
+                      </h3>
+                      <p className="mt-4 text-muted-foreground">
+                        Transformez votre sécurité en un investissement stratégique. Nous analysons vos infrastructures et procédures pour identifier les failles et proposer un plan d'action pragmatique.
+                      </p>
+                      <ul className="mt-6 space-y-3 text-sm">
+                        <li className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground">Analyse des risques et vulnérabilités (360°)</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground">Recommandations priorisées et budgétisées</span>
+                        </li>
+                        <li className="flex items-start gap-3">
+                          <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                          <span className="text-muted-foreground">Aide à la rédaction de cahier des charges</span>
+                        </li>
+                      </ul>
+                      <Button asChild variant="outline" className="mt-8">
+                        <Link href={`/services/${serviceAudit.slug}`}>Découvrir le service</Link>
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
         </AnimateOnScroll>
       </div>
 
