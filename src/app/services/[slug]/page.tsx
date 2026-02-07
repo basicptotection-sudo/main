@@ -58,7 +58,7 @@ function isTerrain(slug: string) {
   return ["agent-securite-qualifie", "agent-cynophile", "agent-incendie-ssiap", "agent-rondier"].includes(slug);
 }
 function isPremium(slug: string) {
-  return ["protection-rapprochee", "securite-evenementielle", "audit-conseil-surete"].includes(slug);
+  return ["securite-evenementielle", "audit-conseil-surete"].includes(slug);
 }
 
 function relatedServicesFor(service: Service) {
@@ -158,14 +158,6 @@ function serviceContextBlocks(service: Service) {
           "Quand vous recherchez une sécurité mobile : passages à horaires variables, levée de doute, interventions sur alarme. Adapté aux entrepôts, zones d’activités, chantiers, commerces fermés la nuit.",
         scope:
           "Planification de rondes, points de contrôle, levée de doute, sécurisation temporaire, compte rendu détaillé, coordination selon protocole.",
-      };
-    case "protection-rapprochee":
-      return {
-        ...common,
-        when:
-          "Quand une personne exposée doit être sécurisée sans perturber son quotidien : dirigeants, VIP, familles, délégations. Discrétion, anticipation, itinéraires, protocole et gestion de crise.",
-        scope:
-          "Évaluation du risque, plan de protection, reconnaissances, sécurisation des déplacements, gestion des accès, coordination événementielle, adaptation en temps réel.",
       };
     case "securite-evenementielle":
       return {
@@ -341,7 +333,7 @@ export default function ServicePage({ params }: ServicePageProps) {
 
       {service.whyUs?.length ? (
         <AnimateOnScroll>
-          <section id="why-us" className="border-y bg-card py-16 md:py-24">
+          <section id="why-us" className="py-16 md:py-24 bg-muted/20">
             <div className="container mx-auto max-w-6xl px-4">
               <div className="mx-auto max-w-3xl text-center">
                 <h2 className="font-headline text-3xl font-bold md:text-4xl">
@@ -414,7 +406,7 @@ export default function ServicePage({ params }: ServicePageProps) {
             title="Vos avantages clés"
             description={`Les bénéfices concrets de notre service : ${service.title.toLowerCase()}.`}
             benefits={[...service.benefits]}
-            className="bg-card"
+            className="bg-muted/20"
           />
         </AnimateOnScroll>
       ) : null}
@@ -436,7 +428,7 @@ export default function ServicePage({ params }: ServicePageProps) {
 
       {service.sectors?.length ? (
         <AnimateOnScroll>
-          <SectorsGrid id="sectors" sectors={[...service.sectors]} className="bg-card" />
+          <SectorsGrid id="sectors" sectors={[...service.sectors]} className="bg-muted/20" />
         </AnimateOnScroll>
       ) : null}
 
@@ -454,7 +446,7 @@ export default function ServicePage({ params }: ServicePageProps) {
 
       {related.length ? (
         <AnimateOnScroll>
-          <section className="bg-card py-16 md:py-24">
+          <section className="bg-muted/20 py-16 md:py-24">
             <div className="container mx-auto max-w-6xl px-4">
               <div className="mx-auto max-w-3xl text-center">
                 <h2 className="font-headline text-3xl font-bold md:text-4xl">
