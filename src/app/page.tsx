@@ -231,7 +231,7 @@ export default function Home() {
           </div>
         }
         stats={
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-24 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <Stat
               Icon={StatShieldCheck}
               value="24/7"
@@ -258,28 +258,52 @@ export default function Home() {
 
       {/* TRUST / ABOUT */}
       <AnimateOnScroll>
-        <section id="about" className="bg-card py-16 md:py-24">
+        <section id="about" className="bg-card py-20 md:py-28">
           <div className="container mx-auto px-4">
-            <SectionHeader
-              eyebrow="BASIC PROTECTION"
-              title="L’exigence, sans compromis."
-              description="Plus qu’un prestataire : un partenaire de confiance, avec une exécution propre, des équipes encadrées et une coordination réactive."
-            />
+            <div className="grid lg:grid-cols-2 lg:gap-16 items-center">
+              {/* Left side */}
+              <div className="mb-12 lg:mb-0">
+                <p className="text-sm font-semibold uppercase tracking-wider text-primary">
+                  BASIC PROTECTION
+                </p>
+                <h2 className="mt-3 font-headline text-3xl md:text-4xl font-bold tracking-tight text-primary">
+                  L’exigence, sans compromis.
+                </h2>
+                <p className="mt-4 text-lg text-muted-foreground">
+                  Plus qu’un prestataire : un partenaire de confiance, avec une
+                  exécution propre, des équipes encadrées et une coordination
+                  réactive.
+                </p>
+                <div className="mt-8">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="rounded-xl"
+                  >
+                    <Link href="/devis">Obtenir une proposition</Link>
+                  </Button>
+                </div>
+              </div>
 
-            <div className="mt-12">
-              <TrustElements elements={trustElements} />
-            </div>
-
-            <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button
-                asChild
-                className={cn(
-                  "rounded-full px-6",
-                  "bg-[#1F2A44] text-white hover:bg-[#1F2A44]/90"
-                )}
-              >
-                <Link href="/devis">Obtenir une proposition</Link>
-              </Button>
+              {/* Right side - 2x2 Grid */}
+              <div className="grid sm:grid-cols-2 gap-8">
+                {trustElements.map((el, index) => {
+                  const Icon = getLucideIcon(el.icon);
+                  return (
+                    <div key={index}>
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
+                        <Icon className="h-6 w-6 text-primary" />
+                      </div>
+                      <h3 className="mt-5 text-lg font-semibold text-foreground">
+                        {el.title}
+                      </h3>
+                      <p className="mt-2 text-sm text-muted-foreground">
+                        {el.description}
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </section>
