@@ -306,13 +306,28 @@ export const environmentsData: Environment[] = [
             title: "La rigueur au service de l'État.",
             paragraph: "Ambassades, administrations, sites réglementés... Nous appliquons des protocoles de sécurité stricts, définis en collaboration avec vos responsables sûreté, pour garantir une protection sans faille."
         },
-        issues: [],
-        missions: [],
+        issues: [
+            { icon: 'Lock', title: 'Risque d\'intrusion et d\'espionnage', description: 'Protection contre les accès non autorisés visant à obtenir des informations sensibles ou à saboter les opérations.'},
+            { icon: 'ShieldAlert', title: 'Exigences réglementaires strictes', description: 'Respect des protocoles de sécurité imposés par l\'État ou des normes sectorielles (défense, recherche, etc.).'},
+            { icon: 'Users', title: 'Gestion des habilitations', description: 'Contrôle rigoureux des différents niveaux d\'accès pour le personnel, les visiteurs et les prestataires.'},
+            { icon: 'EyeOff', title: 'Discrétion et confidentialité', description: 'La communication et les opérations doivent être menées avec une confidentialité absolue pour ne pas exposer les activités du site.'}
+        ],
+        missions: [
+            { icon: 'Fingerprint', title: 'Contrôle d’accès renforcé', description: 'Vérification d\'identité, contrôle des habilitations, gestion des badges et escorte de visiteurs en zones réglementées.' },
+            { icon: 'Radio', title: 'Surveillance périmétrique et intérieure', description: 'Rondes de surveillance, surveillance vidéo et détection d\'anomalies sur les clôtures, les accès et les points critiques.' },
+            { icon: 'AlertTriangle', title: 'Gestion de crise et procédures d\'urgence', description: 'Application des protocoles spécifiques en cas d\'alerte (intrusion, incendie, menace) et liaison avec les forces de l\'ordre.' },
+        ],
         relatedServices: ['agent-securite-qualifie', 'audit-conseil-surete', 'agent-incendie-ssiap'],
-        useCases: [],
+        useCases: [
+            { title: 'Centre de recherche sensible', description: 'Dispositif incluant contrôle d\'accès biométrique, rondes dans les laboratoires et surveillance des zones de stockage de données.' },
+            { title: 'Bâtiment administratif régalien', description: 'Accueil filtrant, contrôle des visiteurs, gestion des flux et surveillance générale pour garantir la sérénité et la sécurité du personnel.' },
+        ],
         method: commonMethod,
         whyUs: commonWhyUs,
-        faq: []
+        faq: [
+             { question: "Vos agents sont-ils habilités pour les sites sensibles ?", answer: 'Oui, nous sélectionnons des agents ayant les habilitations requises (comme l\'habilitation Confidentiel Défense si nécessaire) et l\'expérience des environnements réglementés.' },
+             { question: "Comment assurez-vous la confidentialité ?", answer: 'Nos agents signent des clauses de confidentialité strictes et sont formés pour ne jamais divulguer d\'informations sur les activités, le personnel ou les dispositifs du site.' }
+        ]
     },
     {
         slug: 'immobilier-residentiel',
@@ -327,12 +342,26 @@ export const environmentsData: Environment[] = [
             title: "Protéger le cadre de vie.",
             paragraph: "Nous mettons en place des dispositifs de surveillance pour assurer la quiétude des résidents, prévenir les incivilités, contrôler les accès et gérer les incidents du quotidien."
         },
-        issues: [],
-        missions: [],
+        issues: [
+            { icon: 'Angry', title: 'Incivilités et dégradations', description: 'Prévention des nuisances, des dégradations dans les parties communes et des conflits de voisinage.'},
+            { icon: 'KeyRound', title: 'Gestion des accès', description: 'Contrôle des accès aux parkings, halls et locaux techniques pour éviter les occupations illicites.'},
+            { icon: 'Car', title: 'Vols et cambriolages', description: 'Une présence dissuasive et des rondes régulières réduisent significativement le risque de vols dans les appartements, caves et parkings.'}
+        ],
+        missions: [
+             { icon: 'Home', title: 'Gardiennage et permanence', description: 'Présence d\'un agent à des horaires fixes pour accueillir, renseigner, recevoir les colis et assurer une surveillance continue.' },
+             { icon: 'Footprints', title: 'Rondes de surveillance', description: 'Passages à horaires variables dans les parties communes, les sous-sols et les extérieurs pour dissuader et détecter les anomalies.' },
+             { icon: 'PhoneForwarded', title: 'Intervention sur alarme', description: 'Gestion des alarmes des parties communes et liaison avec les résidents ou le syndic selon les procédures.' },
+        ],
         relatedServices: ['agent-securite-qualifie', 'agent-rondier'],
-        useCases: [],
+        useCases: [
+             { title: 'Résidence de standing', description: 'Agent d\'accueil et de sécurité en journée pour le filtrage des visiteurs et la gestion des services, complété par des rondes de nuit.' },
+             { title: 'Copropriété avec parkings', description: 'Rondes de surveillance nocturnes à horaires variables pour prévenir les vols de véhicules et les dégradations dans les sous-sols.' },
+        ],
         method: commonMethod,
         whyUs: commonWhyUs,
-        faq: []
+        faq: [
+             { question: "Un agent peut-il gérer les colis des résidents ?", answer: 'Oui, la réception et la mise à disposition des colis peuvent faire partie des consignes de poste d\'un agent d\'accueil et de sécurité.' },
+             { question: "Comment un agent de sécurité gère-t-il un conflit de voisinage ?", answer: 'L\'agent intervient en tant que médiateur pour apaiser la situation, rappelle les règles de la copropriété et consigne l\'événement dans la main courante. Il n\'a pas le pouvoir de police mais agit pour restaurer le calme.' }
+        ]
     }
 ];
