@@ -51,33 +51,16 @@ export default function ZonesHubPage() {
     { label: "Zones d’intervention", href: "/zones" },
   ];
 
-  // Départements IDF (hub)
-  const idfDepartments: Zone[] = [
-    { name: "Paris (75)", href: "/zones/paris-75", kind: "departement", code: "75" },
-    { name: "Hauts-de-Seine (92)", href: "/zones/hauts-de-seine-92", kind: "departement", code: "92" },
-    { name: "Seine-Saint-Denis (93)", href: "/zones/seine-saint-denis-93", kind: "departement", code: "93" },
-    { name: "Val-de-Marne (94)", href: "/zones/val-de-marne-94", kind: "departement", code: "94" },
-    { name: "Val-d’Oise (95)", href: "/zones/val-doise-95", kind: "departement", code: "95" },
-    { name: "Yvelines (78)", href: "/zones/yvelines-78", kind: "departement", code: "78" },
-    { name: "Seine-et-Marne (77)", href: "/zones/seine-et-marne-77", kind: "departement", code: "77" },
-    { name: "Essonne (91)", href: "/zones/essonne-91", kind: "departement", code: "91" },
-  ];
-
-  // Villes / zones depuis tes données (si c’est plutôt des villes : ça passe quand même)
-  const zonesFromData: Zone[] = locationsData.map((loc) => ({
-    name: loc.name,
-    href: `/zones/${loc.slug}`,
-    kind: "ville",
-  }));
-
-  const map = new Map<string, Zone>();
-  [...idfDepartments, ...zonesFromData].forEach((z) => map.set(z.href, z));
-
-  // tri: départements d’abord, puis alpha
-  const zones = Array.from(map.values()).sort((a, b) => {
-    if (a.kind !== b.kind) return a.kind === "departement" ? -1 : 1;
-    return a.name.localeCompare(b.name, "fr");
-  });
+  // Correction de la logique de création des zones
+  // `locationsData` est la source unique pour les départements.
+  const zones: Zone[] = locationsData
+    .map((loc) => ({
+      name: loc.name,
+      href: `/zones/${loc.slug}`,
+      kind: 'departement', // Corrigé : ces entrées sont des départements
+      code: loc.name.match(/\((\d+)\)/)?.[1],
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
   return (
     <div className="bg-background text-foreground">
