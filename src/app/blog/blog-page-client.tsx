@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Breadcrumbs } from "@/components/shared";
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,7 @@ import { ArrowRight, Search, Sparkles, TrendingUp } from "lucide-react";
 
 import type { Post, PostFrontmatter } from "@/lib/blog";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Separator } from "@/components/ui/separator";
 
 type SortKey = "recent" | "oldest" | "title";
 
@@ -112,7 +113,6 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
       return sortKey === "oldest" ? da - db : db - da;
     });
 
-    // On évite le doublon si featured affiché
     return sorted.filter((p) => p.slug !== featured?.slug);
   }, [posts, deferredQuery, activeTag, sortKey, featured?.slug]);
 
@@ -128,7 +128,7 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
         </div>
 
         <div className="container mx-auto max-w-6xl px-4 py-14 md:py-20">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-4xl text-center">
             <Breadcrumbs items={breadcrumbItems} centered />
 
             <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-4 py-2 text-xs text-muted-foreground backdrop-blur">
@@ -137,97 +137,42 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
             </div>
 
             <h1 className="mt-6 font-headline text-4xl font-bold tracking-tight md:text-5xl">
-              Notre Blog
+              Blog & Analyses
             </h1>
 
-            <p className="mx-auto mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">
+            <p className="mx-auto mt-4 max-w-3xl text-base text-muted-foreground md:text-lg">
               Des contenus utiles, concrets et exigeants : méthodes, réglementation, retours d’expérience,
-              et bonnes pratiques terrain.
+              et bonnes pratiques terrain pour les professionnels.
             </p>
 
-            {/* Search + sort */}
-            <div className="mt-8 grid gap-3 md:grid-cols-[1fr_auto_auto] md:items-center">
+            {/* Search + filter panel */}
+            <div className="mt-8 mx-auto max-w-3xl rounded-2xl border bg-card/60 p-4 shadow-sm backdrop-blur">
               <div className="relative">
                 <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <Input
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Rechercher un article (ex: rondes, contrôle d’accès, événementiel…)…"
+                  placeholder="Rechercher (ex: rondes, contrôle d’accès, événementiel…)…"
                   className="h-11 pl-10"
                 />
               </div>
-
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  variant={sortKey === "recent" ? "default" : "outline"}
-                  className="h-11 rounded-xl"
-                  onClick={() => setSortKey("recent")}
-                >
-                  Récent
-                </Button>
-                <Button
-                  type="button"
-                  variant={sortKey === "oldest" ? "default" : "outline"}
-                  className="h-11 rounded-xl"
-                  onClick={() => setSortKey("oldest")}
-                >
-                  Ancien
-                </Button>
-                <Button
-                  type="button"
-                  variant={sortKey === "title" ? "default" : "outline"}
-                  className="h-11 rounded-xl"
-                  onClick={() => setSortKey("title")}
-                >
-                  A–Z
-                </Button>
+              <div className="mt-4 flex flex-col md:flex-row gap-3 justify-between items-center">
+                <div className="flex gap-2">
+                  <span className="text-sm text-muted-foreground hidden md:inline-flex items-center">Trier par :</span>
+                  <Button type="button" variant={sortKey === "recent" ? "secondary" : "ghost"} size="sm" onClick={() => setSortKey("recent")}>Récent</Button>
+                  <Button type="button" variant={sortKey === "oldest" ? "secondary" : "ghost"} size="sm" onClick={() => setSortKey("oldest")}>Ancien</Button>
+                  <Button type="button" variant={sortKey === "title" ? "secondary" : "ghost"} size="sm" onClick={() => setSortKey("title")}>A-Z</Button>
+                </div>
+                <Button type="button" variant="ghost" size="sm" className="text-muted-foreground" onClick={() => { setQuery(""); setActiveTag("Tous"); setSortKey("recent"); }}>Réinitialiser</Button>
               </div>
-
-              <Button
-                type="button"
-                variant="outline"
-                className="h-11 rounded-xl"
-                onClick={() => {
-                  setQuery("");
-                  setActiveTag("Tous");
-                  setSortKey("recent");
-                }}
-              >
-                Réinitialiser
-              </Button>
             </div>
 
             {/* Tags */}
             {allTags.length > 0 && (
               <div className="no-scrollbar mt-6 flex items-center justify-center gap-2 overflow-x-auto py-1">
-                <button
-                  className={cn(
-                    "shrink-0 rounded-full border px-4 py-2 text-sm transition",
-                    activeTag === "Tous"
-                      ? "border-border bg-muted/40 text-foreground"
-                      : "border-border text-muted-foreground hover:bg-muted/30 hover:text-foreground"
-                  )}
-                  onClick={() => setActiveTag("Tous")}
-                  type="button"
-                >
-                  Tous
-                </button>
-
+                <button className={cn("shrink-0 rounded-full border px-3 py-1.5 text-sm transition-colors", activeTag === 'Tous' ? 'bg-primary text-primary-foreground border-transparent' : 'bg-background hover:bg-muted/50')} onClick={() => setActiveTag('Tous')} type="button">Tous</button>
                 {allTags.map((t) => (
-                  <button
-                    key={t}
-                    className={cn(
-                      "shrink-0 rounded-full border px-4 py-2 text-sm transition",
-                      activeTag === t
-                        ? "border-border bg-muted/40 text-foreground"
-                        : "border-border text-muted-foreground hover:bg-muted/30 hover:text-foreground"
-                    )}
-                    onClick={() => setActiveTag(t)}
-                    type="button"
-                  >
-                    {t}
-                  </button>
+                  <button key={t} className={cn("shrink-0 rounded-full border px-3 py-1.5 text-sm transition-colors", activeTag === t ? 'bg-primary text-primary-foreground border-transparent' : 'bg-background hover:bg-muted/50')} onClick={() => setActiveTag(t)} type="button">{t}</button>
                 ))}
               </div>
             )}
@@ -236,86 +181,52 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
       </section>
 
       {/* Live region (accessibilité) */}
-      <div className="sr-only" aria-live="polite">
-        {filtered.length} résultat{filtered.length > 1 ? "s" : ""}.
-      </div>
+      <div className="sr-only" aria-live="polite">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}.</div>
 
       {/* Featured */}
-      {featured ? (
+      {featured && (
         <section className="container mx-auto max-w-6xl px-4 py-12 md:py-16">
-          <div className="flex items-center gap-2 text-sm font-semibold">
+          <div className="flex items-center gap-2 text-sm font-semibold mb-4">
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
             À la une
           </div>
-
-          <Link href={`/blog/${featured.slug}`} className="mt-4 block">
-            <div className="grid gap-6 overflow-hidden rounded-3xl border border-border bg-background md:grid-cols-[1.3fr_1fr]">
-              <div className="relative aspect-[16/9] md:aspect-auto md:min-h-[320px]">
+          <Link href={`/blog/${featured.slug}`} className="group block">
+            <div className="grid md:grid-cols-2 gap-8 items-center overflow-hidden rounded-3xl border border-border bg-card shadow-lg transition-all hover:shadow-xl">
+              <div className="relative aspect-[16/10] md:aspect-auto md:h-full">
                 {featuredCover ? (
-                  <Image
-                    src={featuredCover}
-                    alt={featured.frontmatter.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 60vw"
-                    priority
-                  />
+                  <Image src={featuredCover} alt={featured.frontmatter.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" priority />
                 ) : (
                   <div className="absolute inset-0 bg-muted/30" />
                 )}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
               </div>
-
-              <div className="p-6 md:p-8">
+              <div className="p-8">
                 <div className="flex flex-wrap items-center gap-2">
                   <Badge variant="secondary">À la une</Badge>
-                  {safeTags(featured.frontmatter.tags).slice(0, 2).map((t) => (
-                    <Badge key={t} variant="outline">
-                      {t}
-                    </Badge>
-                  ))}
+                  {safeTags(featured.frontmatter.tags).slice(0, 2).map((t) => ( <Badge key={t} variant="outline">{t}</Badge> ))}
                 </div>
-
-                <h2 className="mt-4 font-headline text-2xl font-bold md:text-3xl">
-                  {featured.frontmatter.title}
-                </h2>
-
-                <p className="mt-3 text-muted-foreground">
-                  {featured.frontmatter.description}
-                </p>
-
+                <h2 className="mt-4 font-headline text-3xl font-bold md:text-4xl">{featured.frontmatter.title}</h2>
+                <p className="mt-3 text-muted-foreground">{featured.frontmatter.description}</p>
                 <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                  <span>
-                    {format(new Date(featured.frontmatter.date), "dd MMMM yyyy", { locale: fr })}
-                  </span>
+                  <span>{format(new Date(featured.frontmatter.date), "dd MMMM yyyy", { locale: fr })}</span>
                   <span className="opacity-40">•</span>
                   <span>{readingTimeFrom(getPostContent(featured)) ?? "Lecture"}</span>
                 </div>
-
-                <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium">
-                  Lire l’article <ArrowRight className="h-4 w-4" />
-                </div>
+                <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary">Lire l’article <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
               </div>
             </div>
           </Link>
         </section>
-      ) : null}
+      )}
 
       {/* Grid */}
       <section className="container mx-auto max-w-6xl px-4 pb-16 md:pb-24">
         <div className="flex items-end justify-between gap-4">
           <div>
-            <h2 className="font-headline text-2xl font-bold md:text-3xl">
-              Tous les articles
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              {filtered.length} article{filtered.length > 1 ? "s" : ""} affiché
-              {filtered.length > 1 ? "s" : ""} (hors mise en avant).
-            </p>
+            <h2 className="font-headline text-2xl font-bold md:text-3xl">Tous les articles</h2>
+            <p className="mt-2 text-sm text-muted-foreground">{filtered.length} article{filtered.length > 1 ? "s" : ""} affiché{filtered.length > 1 ? "s" : ""}.</p>
           </div>
-
           <div className="hidden md:flex items-center gap-2 text-xs text-muted-foreground">
-            Astuce : tague un article avec <span className="font-semibold">“À la une”</span> pour le mettre en avant.
+            Astuce : taguez un article “À la une” pour le mettre en avant.
           </div>
         </div>
 
@@ -326,103 +237,51 @@ export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>
             const dateLabel = format(new Date(post.frontmatter.date), "dd MMMM yyyy", { locale: fr });
 
             return (
-              <Link href={`/blog/${post.slug}`} key={post.slug} className="block group">
+              <Link href={`/blog/${post.slug}`} key={post.slug} className="group block">
                 <Card className="h-full overflow-hidden rounded-3xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
                   <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
-                    {cover ? (
-                      <Image
-                        src={cover}
-                        alt={post.frontmatter.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 bg-muted/30" />
-                    )}
+                    {cover ? ( <Image src={cover} alt={post.frontmatter.title} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, 33vw" /> ) : ( <div className="absolute inset-0 bg-muted/30" /> )}
                     <div className="absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
                   </div>
-
                   <CardHeader className="p-6">
                     <p className="text-sm text-muted-foreground">{dateLabel}</p>
-
-                    <CardTitle className="mt-2 leading-snug">
-                      {post.frontmatter.title}
-                    </CardTitle>
-
-                    <CardDescription className="mt-2">
-                      {post.frontmatter.description}
-                    </CardDescription>
-
-                    {tags.length > 0 && (
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        {tags.slice(0, 4).map((tag) => (
-                          <Badge key={tag} variant="secondary">
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-
-                    <div className="mt-5 inline-flex items-center gap-2 text-sm font-medium">
-                      Lire <ArrowRight className="h-4 w-4" />
-                    </div>
+                    <CardTitle className="mt-2 leading-snug">{post.frontmatter.title}</CardTitle>
+                    <CardDescription className="mt-2 line-clamp-2">{post.frontmatter.description}</CardDescription>
                   </CardHeader>
+                  <CardFooter className="p-6 pt-0">
+                    <div className="flex items-center text-sm font-medium text-primary">Lire l'article <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" /></div>
+                  </CardFooter>
                 </Card>
               </Link>
             );
           })}
         </div>
 
-        {/* Empty state */}
         {filtered.length === 0 && (
-          <div className="mt-12 rounded-3xl border border-border bg-muted/10 p-8 text-center">
+          <div className="mt-12 rounded-3xl border border-dashed bg-muted/20 p-8 text-center">
             <div className="mx-auto max-w-xl">
-              <h3 className="font-headline text-xl font-bold">Aucun résultat</h3>
-              <p className="mt-2 text-muted-foreground">
-                Essaie un autre mot-clé ou retire un filtre.
-              </p>
-              <Button
-                type="button"
-                className="mt-5 rounded-xl"
-                variant="outline"
-                onClick={() => {
-                  setQuery("");
-                  setActiveTag("Tous");
-                  setSortKey("recent");
-                }}
-              >
-                Réinitialiser les filtres
-              </Button>
+              <h3 className="font-headline text-xl font-bold">Aucun article ne correspond à votre recherche</h3>
+              <p className="mt-2 text-muted-foreground">Essayez un autre mot-clé ou retirez un filtre.</p>
+              <Button type="button" className="mt-5 rounded-xl" variant="outline" onClick={() => { setQuery(""); setActiveTag("Tous"); setSortKey("recent"); }}>Réinitialiser les filtres</Button>
             </div>
           </div>
         )}
       </section>
 
       {/* CTA bas */}
-      <section className="border-t border-border bg-muted/10">
+      <section className="border-t border-border bg-muted/20">
         <div className="container mx-auto max-w-6xl px-4 py-14 md:py-20">
-          <div className="grid gap-8 rounded-3xl border border-border bg-background p-8 md:grid-cols-[1fr_auto] md:items-center">
+          <div className="grid gap-8 rounded-3xl border border-border bg-background p-8 md:grid-cols-2 md:items-center">
             <div>
-              <h3 className="font-headline text-2xl font-bold md:text-3xl">
-                Recevoir les meilleurs conseils
-              </h3>
-              <p className="mt-3 text-muted-foreground">
-                1 email occasionnel : méthodes, checklists, retours terrain, conformité.
-              </p>
+              <h3 className="font-headline text-2xl font-bold md:text-3xl">Recevez nos meilleures analyses</h3>
+              <p className="mt-3 text-muted-foreground">Un e-mail occasionnel avec des méthodes, checklists, retours terrain, et conseils sur la conformité réglementaire.</p>
             </div>
-
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Input className="h-11 w-full sm:w-[280px]" placeholder="Votre email" />
-              <Button className="h-11 rounded-xl" type="button">
-                S’abonner
-              </Button>
+              <Input className="h-11 w-full sm:w-auto flex-grow" placeholder="Votre adresse e-mail" type="email" />
+              <Button className="h-11 rounded-xl" type="button">S’inscrire</Button>
             </div>
           </div>
-
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            Pas de spam. Désinscription en 1 clic.
-          </p>
+          <p className="mt-4 text-center text-xs text-muted-foreground">Désinscription en 1 clic. Pas de spam.</p>
         </div>
       </section>
     </div>
