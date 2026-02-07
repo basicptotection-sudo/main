@@ -4,10 +4,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
+import { ChevronDown } from 'lucide-react';
 
 import { servicesData, type Service } from "@/lib/services-data";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { siteConfig } from "@/lib/config";
+import { getLucideIcon } from "@/lib/icons";
 
 import {
   ProcessSteps,
@@ -253,9 +255,165 @@ export async function generateMetadata({ params }: ServicePageProps): Promise<Me
   };
 }
 
+function ProtectionRapprocheePage({ service }: { service: Service }) {
+  const { benefits, method, sectors, faq } = service;
+  const heroImage = PlaceHolderImages.find(p => p.id === service.heroImageId) ?? PlaceHolderImages.find(p => p.id === "hero");
+  const phoneHref = `tel:${siteConfig.contact.phoneE164 || siteConfig.contact.phone.replace(/\s/g, "")}`;
+
+  const principles = [
+    {
+      icon: 'Eye',
+      title: 'Anticipation',
+      description: 'Analyse des menaces, reconnaissance des lieux et planification des itinéraires pour neutraliser le risque à la source.',
+    },
+    {
+      icon: 'UserX',
+      title: 'Discrétion',
+      description: 'Une présence qui protège sans jamais s’imposer. Nos agents s’adaptent à votre environnement et à vos codes.',
+    },
+    {
+      icon: 'GitBranch',
+      title: 'Adaptabilité',
+      description: 'Le dispositif évolue en temps réel selon vos déplacements, votre agenda et le niveau de menace évalué.',
+    },
+  ];
+
+  return (
+    <div className="bg-[#111319] text-gray-300">
+      <ServiceJsonLd service={service} breadcrumbs={[{label: "Accueil", href: "/"}, {label: "Services", href: "/services"}, {label: service.title}]} />
+      
+      {/* Hero */}
+      <section className="relative h-screen flex flex-col justify-center items-center text-center text-white">
+        <div className="absolute inset-0">
+          {heroImage && (
+            <Image
+              src={heroImage.imageUrl}
+              alt={heroImage.description}
+              fill
+              className="object-cover"
+              quality={90}
+              priority
+            />
+          )}
+          <div className="absolute inset-0 bg-black/70" />
+        </div>
+        <div className="relative z-10 p-4">
+          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">Protection Rapprochée</p>
+          <h1 className="mt-4 font-headline text-5xl md:text-7xl font-bold [text-shadow:0_3px_15px_rgba(0,0,0,0.6)]">
+            La Sécurité Invisible.
+          </h1>
+          <p className="mt-6 max-w-2xl mx-auto text-lg text-gray-300 [text-shadow:0_2px_8px_rgba(0,0,0,0.5)]">
+            Protéger votre intégrité et votre tranquillité d’esprit, sans jamais altérer votre quotidien.
+          </p>
+        </div>
+        <div className="absolute bottom-10 z-10 animate-bounce">
+          <ChevronDown className="h-8 w-8 text-white/50" />
+        </div>
+      </section>
+
+      {/* Intro */}
+      <AnimateOnScroll>
+        <section className="py-20 md:py-32">
+          <div className="container mx-auto px-4 max-w-3xl">
+            <div className="prose prose-lg prose-invert text-center mx-auto">
+              <h2 className="text-primary !font-bold">Protéger, sans contraindre.</h2>
+              <p className="text-gray-400">
+                Notre philosophie de la protection rapprochée repose sur une conviction : la meilleure sécurité est celle qui ne se voit pas. Elle s’anticipe, s’organise en amont et s’adapte en permanence. Nous ne vendons pas une présence, nous concevons un écosystème de sérénité autour de vous.
+              </p>
+            </div>
+          </div>
+        </section>
+      </AnimateOnScroll>
+      
+      {/* Principles */}
+      <AnimateOnScroll>
+        <section className="py-20 md:py-24 bg-black/20">
+            <div className="container mx-auto px-4 max-w-5xl">
+                <div className="text-center mb-16">
+                    <h2 className="font-headline text-4xl font-bold text-white">Nos Principes Fondamentaux</h2>
+                </div>
+                <div className="grid md:grid-cols-3 gap-10">
+                    {principles.map(p => {
+                      const Icon = getLucideIcon(p.icon);
+                      return (
+                        <div key={p.title} className="text-center">
+                            <div className="flex justify-center mb-6">
+                                <div className="flex items-center justify-center h-16 w-16 rounded-full bg-primary/10 border border-primary/20">
+                                    <Icon className="h-7 w-7 text-primary" />
+                                </div>
+                            </div>
+                            <h3 className="text-xl font-semibold text-white mb-3">{p.title}</h3>
+                            <p className="text-gray-400">{p.description}</p>
+                        </div>
+                      )
+                    })}
+                </div>
+            </div>
+        </section>
+      </AnimateOnScroll>
+
+      {/* Method */}
+      <AnimateOnScroll>
+        <ProcessSteps 
+            title={method.title}
+            description={method.description}
+            steps={method.steps}
+            className="py-20 md:py-32"
+        />
+      </AnimateOnScroll>
+
+      {/* Sectors */}
+      <AnimateOnScroll>
+        <SectorsGrid
+            title="Pour qui ?"
+            description="Nous intervenons pour des dirigeants, personnalités publiques, familles et délégations ayant des besoins de sécurité spécifiques, en France et à l'étranger."
+            sectors={sectors}
+            className="bg-black/20 py-20 md:py-24"
+        />
+      </AnimateOnScroll>
+      
+      {/* FAQ */}
+      <AnimateOnScroll>
+        <FAQAccordion
+            title="Questions Confidentielles"
+            description="Les réponses aux questions fréquentes sur la protection rapprochée."
+            items={normalizeFaq(service)}
+            className="py-20 md:py-32"
+        />
+      </AnimateOnScroll>
+
+      {/* CTA */}
+      <AnimateOnScroll>
+        <section className="py-20 md:py-32">
+          <div className="container mx-auto max-w-3xl px-4 text-center">
+            <h2 className="font-headline text-4xl font-bold text-white">Demander une consultation confidentielle</h2>
+            <p className="mt-5 text-lg text-gray-400">
+              Chaque situation est unique. Contactez notre responsable de pôle pour un échange discret et une analyse préliminaire de vos besoins.
+            </p>
+            <div className="mt-10 flex justify-center gap-4">
+              <Button asChild size="lg" className="rounded-full px-8 bg-primary text-primary-foreground hover:bg-primary/90">
+                <a href={`mailto:${siteConfig.contact.email}`}>Envoyer un email</a>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="rounded-full px-8 border-gray-700 hover:bg-gray-800 hover:border-gray-600">
+                <a href={phoneHref}>Appel direct</a>
+              </Button>
+            </div>
+            <p className="mt-4 text-xs text-gray-500">Réponse sous 24h par un interlocuteur unique.</p>
+          </div>
+        </section>
+      </AnimateOnScroll>
+    </div>
+  );
+}
+
+
 export default function ServicePage({ params }: ServicePageProps) {
   const service = servicesData.find((s) => s.slug === params.slug);
   if (!service) return notFound();
+
+  if (service.slug === 'protection-rapprochee') {
+    return <ProtectionRapprocheePage service={service} />;
+  }
 
   const heroImage =
     PlaceHolderImages.find((p) => p.id === service.heroImageId) ??
