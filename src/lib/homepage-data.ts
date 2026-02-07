@@ -1,3 +1,5 @@
+import { environmentsData } from './environments-data';
+
 export const trustElements = [
   {
     icon: "ShieldCheck",
@@ -52,54 +54,11 @@ export const processSteps = [
   },
 ];
 
-/**
- * IMPORTANT :
- * Si ton composant SectorsGrid attend toujours un href,
- * il faut le renseigner pour éviter des erreurs et pour le SEO (maillage interne).
- * Je te mets des URLs cohérentes avec ton architecture /environnements/[slug]
- */
-export const sectors = [
-  {
-    icon: "Building2",
-    name: "Sièges sociaux & bureaux",
-    href: "/environnements/sieges-sociaux-bureaux",
-  },
-  {
-    icon: "Store",
-    name: "Luxe, retail & hôtellerie",
-    href: "/environnements/luxe-retail-hotellerie",
-  },
-  {
-    icon: "HardHat",
-    name: "Chantiers & sites BTP",
-    href: "/environnements/chantiers-sites-btp",
-  },
-  {
-    icon: "Factory",
-    name: "Industrie & logistique",
-    href: "/environnements/industrie-logistique",
-  },
-  {
-    icon: "CalendarDays",
-    name: "Événementiel & culture",
-    href: "/environnements/evenementiel-culture",
-  },
-  {
-    icon: "Users",
-    name: "Dirigeants & VIP",
-    href: "/environnements/dirigeants-vip",
-  },
-  {
-    icon: "Landmark",
-    name: "Sites sensibles & institutionnels",
-    href: "/environnements/sites-sensibles-institutionnels",
-  },
-  {
-    icon: "Building",
-    name: "Immobilier & résidentiel",
-    href: "/environnements/immobilier-residentiel",
-  },
-];
+export const sectors = environmentsData.map(env => ({
+  icon: env.icon,
+  name: env.name,
+  href: `/environnements/${env.slug}`,
+}));
 
 export const testimonials = [
   {
