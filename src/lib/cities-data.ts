@@ -96,6 +96,58 @@ export const citiesDataBase: City[] = [
   { slug: "meaux-77100", title: "Sécurité Privée Meaux", department: "Seine-et-Marne (77)", focus: ["industrie"], keywords: ["sécurité meaux", "gardiennage 77100"] },
   { slug: "melun-77000", title: "Sécurité Privée Melun", department: "Seine-et-Marne (77)", focus: ["bureaux"], keywords: ["sécurité melun", "gardiennage 77000"] },
   { slug: "serris-77700", title: "Sécurité Privée Serris", department: "Seine-et-Marne (77)", focus: ["événementiel"], keywords: ["sécurité serris", "gardiennage 77700"] },
+
+  // Paris (75) – quartiers/arrondissements business
+  { slug: "paris-3-75003", title: "Sécurité Privée Paris 3e", department: "Paris (75)", focus: ["luxe","résidentiel"], keywords: ["sécurité paris 3", "gardiennage 75003"] },
+  { slug: "paris-4-75004", title: "Sécurité Privée Paris 4e", department: "Paris (75)", focus: ["luxe","événementiel"], keywords: ["sécurité paris 4", "gardiennage 75004"] },
+  { slug: "paris-5-75005", title: "Sécurité Privée Paris 5e", department: "Paris (75)", focus: ["bureaux","résidentiel"], keywords: ["sécurité paris 5", "gardiennage 75005"] },
+  { slug: "paris-6-75006", title: "Sécurité Privée Paris 6e", department: "Paris (75)", focus: ["luxe","résidentiel"], keywords: ["sécurité paris 6", "gardiennage 75006"] },
+  { slug: "paris-7-75007", title: "Sécurité Privée Paris 7e", department: "Paris (75)", focus: ["bureaux","luxe"], keywords: ["sécurité paris 7", "gardiennage 75007"] },
+  { slug: "paris-11-75011", title: "Sécurité Privée Paris 11e", department: "Paris (75)", focus: ["bureaux","événementiel"], keywords: ["sécurité paris 11", "gardiennage 75011"] },
+  { slug: "paris-14-75014", title: "Sécurité Privée Paris 14e", department: "Paris (75)", focus: ["résidentiel","bureaux"], keywords: ["sécurité paris 14", "gardiennage 75014"] },
+  { slug: "paris-18-75018", title: "Sécurité Privée Paris 18e", department: "Paris (75)", focus: ["événementiel","résidentiel"], keywords: ["sécurité paris 18", "gardiennage 75018"] },
+  { slug: "paris-19-75019", title: "Sécurité Privée Paris 19e", department: "Paris (75)", focus: ["chantiers","résidentiel"], keywords: ["sécurité paris 19", "gardiennage 75019"] },
+  { slug: "paris-20-75020", title: "Sécurité Privée Paris 20e", department: "Paris (75)", focus: ["résidentiel","bureaux"], keywords: ["sécurité paris 20", "gardiennage 75020"] },
+
+  // Hauts-de-Seine (92) – tertiaire + résidentiel premium
+  { slug: "nanterre-92000", title: "Sécurité Privée Nanterre", department: "Hauts-de-Seine (92)", focus: ["bureaux","tech"], keywords: ["sécurité nanterre", "gardiennage 92000"] },
+  { slug: "asnieres-sur-seine-92600", title: "Sécurité Privée Asnières-sur-Seine", department: "Hauts-de-Seine (92)", focus: ["résidentiel","bureaux"], keywords: ["sécurité asnières", "gardiennage 92600"] },
+  { slug: "colombes-92700", title: "Sécurité Privée Colombes", department: "Hauts-de-Seine (92)", focus: ["bureaux","industrie"], keywords: ["sécurité colombes", "gardiennage 92700"] },
+  { slug: "meudon-92190", title: "Sécurité Privée Meudon", department: "Hauts-de-Seine (92)", focus: ["tech","bureaux"], keywords: ["sécurité meudon", "gardiennage 92190"] },
+  { slug: "clamart-92140", title: "Sécurité Privée Clamart", department: "Hauts-de-Seine (92)", focus: ["résidentiel","bureaux"], keywords: ["sécurité clamart", "gardiennage 92140"] },
+  { slug: "rueil-malmaison-92500", title: "Sécurité Privée Rueil-Malmaison", department: "Hauts-de-Seine (92)", focus: ["bureaux","résidentiel"], keywords: ["sécurité rueil-malmaison", "gardiennage 92500"] },
+
+  // Seine-Saint-Denis (93) – logistique + chantiers + événements
+  { slug: "tremblay-en-france-93290", title: "Sécurité Privée Tremblay-en-France", department: "Seine-Saint-Denis (93)", focus: ["logistique","industrie"], keywords: ["sécurité tremblay", "gardiennage 93290"] },
+  { slug: "aulnay-sous-bois-93600", title: "Sécurité Privée Aulnay-sous-Bois", department: "Seine-Saint-Denis (93)", focus: ["industrie","logistique"], keywords: ["sécurité aulnay", "gardiennage 93600"] },
+  { slug: "bobigny-93000", title: "Sécurité Privée Bobigny", department: "Seine-Saint-Denis (93)", focus: ["bureaux","résidentiel"], keywords: ["sécurité bobigny", "gardiennage 93000"] },
+  { slug: "noisy-le-grand-93160", title: "Sécurité Privée Noisy-le-Grand", department: "Seine-Saint-Denis (93)", focus: ["bureaux","résidentiel"], keywords: ["sécurité noisy-le-grand", "gardiennage 93160"] },
+  { slug: "le-bourget-93350", title: "Sécurité Privée Le Bourget", department: "Seine-Saint-Denis (93)", focus: ["logistique","événementiel"], keywords: ["sécurité le bourget", "gardiennage 93350"] },
+
+  // Val-de-Marne (94) – logistique + tertiaire + industrie
+  { slug: "thiais-94320", title: "Sécurité Privée Thiais", department: "Val-de-Marne (94)", focus: ["logistique","résidentiel"], keywords: ["sécurité thiais", "gardiennage 94320"] },
+  { slug: "choisy-le-roi-94600", title: "Sécurité Privée Choisy-le-Roi", department: "Val-de-Marne (94)", focus: ["logistique","industrie"], keywords: ["sécurité choisy-le-roi", "gardiennage 94600"] },
+  { slug: "vincennes-94300", title: "Sécurité Privée Vincennes", department: "Val-de-Marne (94)", focus: ["résidentiel","bureaux"], keywords: ["sécurité vincennes", "gardiennage 94300"] },
+  { slug: "saint-maur-des-fosses-94100", title: "Sécurité Privée Saint-Maur-des-Fossés", department: "Val-de-Marne (94)", focus: ["résidentiel"], keywords: ["sécurité saint-maur", "gardiennage 94100"] },
+
+  // Val-d’Oise (95) – plateformes + industrie + résidentiel
+  { slug: "gonesse-95500", title: "Sécurité Privée Gonesse", department: "Val-d'Oise (95)", focus: ["logistique","industrie"], keywords: ["sécurité gonesse", "gardiennage 95500"] },
+  { slug: "goussainville-95190", title: "Sécurité Privée Goussainville", department: "Val-d'Oise (95)", focus: ["logistique","industrie"], keywords: ["sécurité goussainville", "gardiennage 95190"] },
+  { slug: "franconville-95130", title: "Sécurité Privée Franconville", department: "Val-d'Oise (95)", focus: ["bureaux","résidentiel"], keywords: ["sécurité franconville", "gardiennage 95130"] },
+  { slug: "ermont-95120", title: "Sécurité Privée Ermont", department: "Val-d'Oise (95)", focus: ["résidentiel","bureaux"], keywords: ["sécurité ermont", "gardiennage 95120"] },
+
+  // Essonne (91) – Saclay + Massy + zones d’activités
+  { slug: "orsay-91400", title: "Sécurité Privée Orsay", department: "Essonne (91)", focus: ["tech"], keywords: ["sécurité orsay", "gardiennage 91400"] },
+  { slug: "les-ulis-91940", title: "Sécurité Privée Les Ulis", department: "Essonne (91)", focus: ["tech","industrie"], keywords: ["sécurité les ulis", "gardiennage 91940"] },
+  { slug: "corbeil-essonnes-91100", title: "Sécurité Privée Corbeil-Essonnes", department: "Essonne (91)", focus: ["industrie","logistique"], keywords: ["sécurité corbeil-essonnes", "gardiennage 91100"] },
+  { slug: "ris-orangis-91130", title: "Sécurité Privée Ris-Orangis", department: "Essonne (91)", focus: ["logistique","industrie"], keywords: ["sécurité ris-orangis", "gardiennage 91130"] },
+
+  // Seine-et-Marne (77) – plateformes XXL + zones touristiques
+  { slug: "mitry-mory-77290", title: "Sécurité Privée Mitry-Mory", department: "Seine-et-Marne (77)", focus: ["logistique","industrie"], keywords: ["sécurité mitry-mory", "gardiennage 77290"] },
+  { slug: "lognes-77185", title: "Sécurité Privée Lognes", department: "Seine-et-Marne (77)", focus: ["logistique","bureaux"], keywords: ["sécurité lognes", "gardiennage 77185"] },
+  { slug: "pontault-combault-77340", title: "Sécurité Privée Pontault-Combault", department: "Seine-et-Marne (77)", focus: ["résidentiel","bureaux"], keywords: ["sécurité pontault-combault", "gardiennage 77340"] },
+  { slug: "moissy-cramayel-77550", title: "Sécurité Privée Moissy-Cramayel", department: "Seine-et-Marne (77)", focus: ["logistique","industrie"], keywords: ["sécurité moissy-cramayel", "gardiennage 77550"] },
+  { slug: "lieusaint-77127", title: "Sécurité Privée Lieusaint", department: "Seine-et-Marne (77)", focus: ["logistique"], keywords: ["sécurité lieusaint", "gardiennage 77127"] },
 ];
 
 /* =========================================================
@@ -334,7 +386,8 @@ function uniqKeepOrder(list: string[]) {
 }
 
 function buildPremiumKeywords(citySlug: string, focus: CityFocus[], extra: string[] = []) {
-  const cityKey = citySlug.split("-").slice(0, -1).join(" "); // ex: "paris-8" -> "paris"
+  // ex: "issy-les-moulineaux-92130" -> "issy les moulineaux"
+  const cityKey = citySlug.split("-").slice(0, -1).join(" ");
   const fromFocus = focus.flatMap((f) => focusToKeywords[f] ?? []);
   return uniqKeepOrder([
     ...extra,
@@ -691,6 +744,166 @@ const premiumCityOverrides: Record<string, Partial<City>> = {
   },
 };
 
+Object.assign(premiumCityOverrides, {
+  // PARIS : luxe / institutionnel / ERP / résidentiel
+  "paris-6-75006": {
+    premium: true,
+    focus: ["luxe", "résidentiel"],
+    intro:
+      "Paris 6e : quartiers premium et forte exigence de discrétion. Nous proposons des dispositifs orientés filtrage, rondes ciblées et prévention, avec une posture irréprochable et une traçabilité claire des événements.",
+    useCases: pickUseCases(["luxe", "résidentiel"]),
+    keywords: buildPremiumKeywords("paris-6-75006", ["luxe", "résidentiel"], [
+      "sécurité paris 6",
+      "sécurité quartier premium",
+    ]),
+  },
+  "paris-7-75007": {
+    premium: true,
+    focus: ["bureaux", "luxe"],
+    intro:
+      "Paris 7e : institutions, bureaux et environnements sensibles. Nous déployons une sécurité orientée contrôle d’accès strict, gestion des visiteurs et respect des procédures internes, avec reporting fiable.",
+    useCases: pickUseCases(["bureaux", "luxe"]),
+    keywords: buildPremiumKeywords("paris-7-75007", ["bureaux", "luxe"], [
+      "sécurité paris 7",
+      "contrôle d'accès paris 7",
+    ]),
+  },
+  "paris-11-75011": {
+    premium: true,
+    focus: ["bureaux", "événementiel"],
+    intro:
+      "Paris 11e : flux continus, lieux de vie et sites tertiaires. Nous dimensionnons un dispositif pragmatique : contrôle d’accès, prévention, rondes et renforts ponctuels pour événements, avec des consignes claires.",
+    useCases: pickUseCases(["bureaux", "événementiel"]),
+    keywords: buildPremiumKeywords("paris-11-75011", ["bureaux", "événementiel"], [
+      "sécurité paris 11",
+      "sécurité événementielle paris 11",
+    ]),
+  },
+  "paris-20-75020": {
+    premium: true,
+    focus: ["résidentiel", "bureaux"],
+    intro:
+      "Paris 20e : résidences, copropriétés, bureaux et besoins de prévention au quotidien. Nous assurons surveillance, rondes, gestion d’accès et traçabilité des incidents, avec une présence rassurante et cadrée.",
+    useCases: pickUseCases(["résidentiel", "bureaux"]),
+    keywords: buildPremiumKeywords("paris-20-75020", ["résidentiel", "bureaux"], [
+      "sécurité paris 20",
+      "gardiennage copropriété paris 20",
+    ]),
+  },
+
+  // 92 : tertiaire + tours
+  "nanterre-92000": {
+    premium: true,
+    focus: ["bureaux", "tech"],
+    intro:
+      "Nanterre : continuité tertiaire avec La Défense et sites multi-accès. Nous sécurisons vos immeubles, sièges et campus : contrôle d’accès, rondes, procédures d’alerte et reporting exploitable.",
+    useCases: pickUseCases(["bureaux", "tech"]),
+    keywords: buildPremiumKeywords("nanterre-92000", ["bureaux", "tech"], [
+      "sécurité nanterre",
+      "gardiennage nanterre",
+    ]),
+  },
+  "rueil-malmaison-92500": {
+    premium: true,
+    focus: ["bureaux", "résidentiel"],
+    intro:
+      "Rueil-Malmaison : mix sièges, bureaux et résidentiel. Nous mettons en place des dispositifs stables : accueil filtrant, rondes, prévention et gestion d’incidents, avec un suivi opérationnel régulier.",
+    useCases: pickUseCases(["bureaux", "résidentiel"]),
+    keywords: buildPremiumKeywords("rueil-malmaison-92500", ["bureaux", "résidentiel"], [
+      "sécurité rueil-malmaison",
+      "gardiennage 92500",
+    ]),
+  },
+
+  // 93 : logistique / industrie
+  "tremblay-en-france-93290": {
+    premium: true,
+    focus: ["logistique", "industrie"],
+    intro:
+      "Tremblay-en-France : zones logistiques et sites industriels stratégiques. Nous sécurisons entrepôts, quais et accès camions : contrôle d’accès, rondes, levées de doute et traçabilité.",
+    useCases: pickUseCases(["logistique", "industrie"]),
+    keywords: buildPremiumKeywords("tremblay-en-france-93290", ["logistique", "industrie"], [
+      "sécurité tremblay-en-france",
+      "gardiennage entrepôt 93290",
+    ]),
+  },
+  "aulnay-sous-bois-93600": {
+    premium: true,
+    focus: ["industrie", "logistique"],
+    intro:
+      "Aulnay-sous-Bois : activité industrielle et logistique. Nous mettons en place un dispositif robuste : surveillance périmétrique, contrôle d’accès, prévention intrusions et reporting.",
+    useCases: pickUseCases(["industrie", "logistique"]),
+    keywords: buildPremiumKeywords("aulnay-sous-bois-93600", ["industrie", "logistique"], [
+      "sécurité aulnay-sous-bois",
+      "gardiennage 93600",
+    ]),
+  },
+
+  // 94 : logistique + résidentiel premium
+  "thiais-94320": {
+    premium: true,
+    focus: ["logistique", "résidentiel"],
+    intro:
+      "Thiais : zones commerciales, logistique urbaine et résidentiel. Nous proposons contrôle d’accès, rondes et prévention, avec une posture adaptée aux sites recevant du public.",
+    useCases: pickUseCases(["logistique", "résidentiel"]),
+    keywords: buildPremiumKeywords("thiais-94320", ["logistique", "résidentiel"], [
+      "sécurité thiais",
+      "gardiennage thiais",
+    ]),
+  },
+  "vincennes-94300": {
+    premium: true,
+    focus: ["résidentiel", "bureaux"],
+    intro:
+      "Vincennes : résidentiel exigeant et bureaux. Nous assurons filtrage, rondes, prévention des incidents et gestion des accès, avec discrétion et procédures claires.",
+    useCases: pickUseCases(["résidentiel", "bureaux"]),
+    keywords: buildPremiumKeywords("vincennes-94300", ["résidentiel", "bureaux"], [
+      "sécurité vincennes",
+      "gardiennage 94300",
+    ]),
+  },
+
+  // 95 : plateformes
+  "gonesse-95500": {
+    premium: true,
+    focus: ["logistique", "industrie"],
+    intro:
+      "Gonesse : plateformes logistiques et zones d’activité. Nous sécurisons vos sites multi-accès : contrôle d’accès, rondes, prévention et traçabilité des événements.",
+    useCases: pickUseCases(["logistique", "industrie"]),
+    keywords: buildPremiumKeywords("gonesse-95500", ["logistique", "industrie"], [
+      "sécurité gonesse",
+      "gardiennage 95500",
+    ]),
+  },
+
+  // 77 : logistique XXL
+  "mitry-mory-77290": {
+    premium: true,
+    focus: ["logistique", "industrie"],
+    intro:
+      "Mitry-Mory : axe logistique majeur en Seine-et-Marne. Nous mettons en place un dispositif orienté entrepôts : accès camions, quais, rondes périmétriques et procédures d’alerte.",
+    useCases: pickUseCases(["logistique", "industrie"]),
+    keywords: buildPremiumKeywords("mitry-mory-77290", ["logistique", "industrie"], [
+      "sécurité mitry-mory",
+      "gardiennage entrepôt 77290",
+    ]),
+  },
+
+  // 91 : tech / industrie
+  "les-ulis-91940": {
+    premium: true,
+    focus: ["tech", "industrie"],
+    intro:
+      "Les Ulis : pôle tech/industrie. Nous déployons une sécurité orientée contrôle d’accès strict, confidentialité, rondes et reporting, pour des sites à forte valeur.",
+    useCases: pickUseCases(["tech", "industrie"]),
+    keywords: buildPremiumKeywords("les-ulis-91940", ["tech", "industrie"], [
+      "sécurité les ulis",
+      "gardiennage 91940",
+    ]),
+  },
+});
+
+
 /* =========================================================
    4) Export final : base + overrides premium
    - Important: on ne remplace pas ta base si elle a déjà focus/keywords,
@@ -721,4 +934,22 @@ function mergeCity(base: City, over?: Partial<City>): City {
   };
 }
 
-export const citiesData: City[] = citiesDataBase.map((c) => mergeCity(c, premiumCityOverrides[c.slug]));
+function cityKeyFromSlug(slug: string) {
+  // "issy-les-moulineaux-92130" -> "issy les moulineaux"
+  return slug.split("-").slice(0, -1).join(" ").replace(/\s+/g, " ").trim();
+}
+
+function ensureKeywords(city: City): City {
+  if (city.keywords && city.keywords.length > 0) return city;
+
+  const cityKey = cityKeyFromSlug(city.slug);
+  const byFocus = (city.focus ?? []).flatMap((f) => focusToKeywords[f] ?? []);
+  const base = [`sécurité ${cityKey}`, `gardiennage ${cityKey}`, `agent de sécurité ${cityKey}`];
+
+  return { ...city, keywords: uniqKeepOrder([...byFocus, ...base]) };
+}
+
+
+export const citiesData: City[] = citiesDataBase
+  .map((c) => mergeCity(c, premiumCityOverrides[c.slug]))
+  .map(ensureKeywords);
