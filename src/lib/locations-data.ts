@@ -145,10 +145,10 @@ export const locationsData: Location[] = [
     ],
 
     mainCities: [
-      { name: "Plaisir", href: "/villes/plaisir-78370" },
-      { name: "Versailles", href: "/villes/versailles-78000" },
-      { name: "Saint-Germain-en-Laye", href: "/villes/saint-germain-en-laye-78100" },
       { name: "Montigny-le-Bretonneux", href: "/villes/montigny-le-bretonneux-78180" },
+      { name: "Plaisir", href: "/villes/plaisir-78370" },
+      { name: "Saint-Germain-en-Laye", href: "/villes/saint-germain-en-laye-78100" },
+      { name: "Versailles", href: "/villes/versailles-78000" },
     ],
 
     whyUs: commonWhyUs,
@@ -225,10 +225,26 @@ export const locationsData: Location[] = [
     ],
 
     mainCities: [
-      { name: "Paris 8e (Triangle d'Or)", href: "/villes/paris-8-75008" },
-      { name: "Paris 1er (Vendôme)", href: "/villes/paris-1-75001" },
-      { name: "Le Marais", href: "#" },
-      { name: "La Défense (via Courbevoie)", href: "/villes/la-defense-92400" },
+        { name: "Paris 10e", href: "/villes/paris-10-75010" },
+        { name: "Paris 11e", href: "/villes/paris-11-75011" },
+        { name: "Paris 12e", href: "/villes/paris-12-75012" },
+        { name: "Paris 13e", href: "/villes/paris-13-75013" },
+        { name: "Paris 14e", href: "/villes/paris-14-75014" },
+        { name: "Paris 15e", href: "/villes/paris-15-75015" },
+        { name: "Paris 16e", href: "/villes/paris-16-75016" },
+        { name: "Paris 17e", href: "/villes/paris-17-75017" },
+        { name: "Paris 18e", href: "/villes/paris-18-75018" },
+        { name: "Paris 19e", href: "/villes/paris-19-75019" },
+        { name: "Paris 1er", href: "/villes/paris-1-75001" },
+        { name: "Paris 20e", href: "/villes/paris-20-75020" },
+        { name: "Paris 2e", href: "/villes/paris-2-75002" },
+        { name: "Paris 3e", href: "/villes/paris-3-75003" },
+        { name: "Paris 4e", href: "/villes/paris-4-75004" },
+        { name: "Paris 5e", href: "/villes/paris-5-75005" },
+        { name: "Paris 6e", href: "/villes/paris-6-75006" },
+        { name: "Paris 7e", href: "/villes/paris-7-75007" },
+        { name: "Paris 8e", href: "/villes/paris-8-75008" },
+        { name: "Paris 9e", href: "/villes/paris-9-75009" },
     ],
 
     whyUs: commonWhyUs,
@@ -303,10 +319,19 @@ export const locationsData: Location[] = [
     ],
 
     mainCities: [
-      { name: "La Défense", href: "/villes/la-defense-92400" },
-      { name: "Neuilly-sur-Seine", href: "/villes/neuilly-sur-seine-92200" },
-      { name: "Boulogne-Billancourt", href: "/villes/boulogne-billancourt-92100" },
-      { name: "Levallois-Perret", href: "/villes/levallois-perret-92300" },
+        { name: "Asnières-sur-Seine", href: "/villes/asnieres-sur-seine-92600" },
+        { name: "Boulogne-Billancourt", href: "/villes/boulogne-billancourt-92100" },
+        { name: "Clamart", href: "/villes/clamart-92140" },
+        { name: "Colombes", href: "/villes/colombes-92700" },
+        { name: "Courbevoie", href: "/villes/courbevoie-92400" },
+        { name: "Issy-les-Moulineaux", href: "/villes/issy-les-moulineaux-92130" },
+        { name: "La Défense", href: "/villes/la-defense-92400" },
+        { name: "Levallois-Perret", href: "/villes/levallois-perret-92300" },
+        { name: "Meudon", href: "/villes/meudon-92190" },
+        { name: "Nanterre", href: "/villes/nanterre-92000" },
+        { name: "Neuilly-sur-Seine", href: "/villes/neuilly-sur-seine-92200" },
+        { name: "Puteaux", href: "/villes/puteaux-92800" },
+        { name: "Rueil-Malmaison", href: "/villes/rueil-malmaison-92500" }
     ],
 
     whyUs: commonWhyUs,
@@ -382,10 +407,16 @@ export const locationsData: Location[] = [
     ],
 
     mainCities: [
-      { name: "Saint-Denis", href: "/villes/saint-denis-93200" },
-      { name: "Aubervilliers", href: "/villes/aubervilliers-93300" },
-      { name: "Montreuil", href: "#" },
-      { name: "Pantin", href: "#" },
+        { name: "Aubervilliers", href: "/villes/aubervilliers-93300" },
+        { name: "Aulnay-sous-Bois", href: "/villes/aulnay-sous-bois-93600" },
+        { name: "Bobigny", href: "/villes/bobigny-93000" },
+        { name: "Le Bourget", href: "/villes/le-bourget-93350" },
+        { name: "Montreuil", href: "/villes/montreuil-93100" },
+        { name: "Noisy-le-Grand", href: "/villes/noisy-le-grand-93160" },
+        { name: "Pantin", href: "/villes/pantin-93500" },
+        { name: "Saint-Denis", href: "/villes/saint-denis-93200" },
+        { name: "Tremblay-en-France", href: "/villes/tremblay-en-france-93290" },
+        { name: "Villepinte", href: "/villes/villepinte-93420" }
     ],
 
     whyUs: commonWhyUs,
@@ -460,10 +491,15 @@ export const locationsData: Location[] = [
     ],
 
     mainCities: [
-      { name: "Créteil", href: "/villes/creteil-94000" },
-      { name: "Vitry-sur-Seine", href: "#" },
-      { name: "Rungis", href: "/villes/rungis-94150" },
-      { name: "Ivry-sur-Seine", href: "/villes/ivry-sur-seine-94200" },
+        { name: "Choisy-le-Roi", href: "/villes/choisy-le-roi-94600" },
+        { name: "Créteil", href: "/villes/creteil-94000" },
+        { name: "Ivry-sur-Seine", href: "/villes/ivry-sur-seine-94200" },
+        { name: "Orly", href: "/villes/orly-94310" },
+        { name: "Rungis", href: "/villes/rungis-94150" },
+        { name: "Saint-Maur-des-Fossés", href: "/villes/saint-maur-des-fosses-94100" },
+        { name: "Thiais", href: "/villes/thiais-94320" },
+        { name: "Vincennes", href: "/villes/vincennes-94300" },
+        { name: "Vitry-sur-Seine", href: "/villes/vitry-sur-seine-94400" }
     ],
 
     whyUs: commonWhyUs,
@@ -539,10 +575,14 @@ export const locationsData: Location[] = [
     ],
 
     mainCities: [
-      { name: "Cergy", href: "/villes/cergy-95000" },
-      { name: "Argenteuil", href: "/villes/argenteuil-95100" },
-      { name: "Roissy-en-France", href: "/villes/roissy-en-france-95700" },
-      { name: "Sarcelles", href: "#" },
+        { name: "Argenteuil", href: "/villes/argenteuil-95100" },
+        { name: "Cergy", href: "/villes/cergy-95000" },
+        { name: "Ermont", href: "/villes/ermont-95120" },
+        { name: "Franconville", href: "/villes/franconville-95130" },
+        { name: "Gonesse", href: "/villes/gonesse-95500" },
+        { name: "Goussainville", href: "/villes/goussainville-95190" },
+        { name: "Roissy-en-France", href: "/villes/roissy-en-france-95700" },
+        { name: "Sarcelles", href: "/villes/sarcelles-95200" }
     ],
 
     whyUs: commonWhyUs,
@@ -619,10 +659,15 @@ export const locationsData: Location[] = [
     ],
 
     mainCities: [
-      { name: "Marne-la-Vallée / Chessy", href: "/villes/marne-la-vallee-77700" },
-      { name: "Meaux", href: "/villes/meaux-77100" },
-      { name: "Melun", href: "/villes/melun-77000" },
-      { name: "Serris", href: "#" },
+        { name: "Lieusaint", href: "/villes/lieusaint-77127" },
+        { name: "Lognes", href: "/villes/lognes-77185" },
+        { name: "Marne-la-Vallée", href: "/villes/marne-la-vallee-77700" },
+        { name: "Meaux", href: "/villes/meaux-77100" },
+        { name: "Melun", href: "/villes/melun-77000" },
+        { name: "Mitry-Mory", href: "/villes/mitry-mory-77290" },
+        { name: "Moissy-Cramayel", href: "/villes/moissy-cramayel-77550" },
+        { name: "Pontault-Combault", href: "/villes/pontault-combault-77340" },
+        { name: "Serris", href: "/villes/serris-77700" }
     ],
 
     whyUs: commonWhyUs,
@@ -699,10 +744,14 @@ export const locationsData: Location[] = [
     ],
 
     mainCities: [
-      { name: "Évry-Courcouronnes", href: "/villes/evry-courcouronnes-91000" },
-      { name: "Massy", href: "/villes/massy-91300" },
-      { name: "Palaiseau", href: "#" },
-      { name: "Saclay", href: "/villes/saclay-91400" },
+        { name: "Corbeil-Essonnes", href: "/villes/corbeil-essonnes-91100" },
+        { name: "Évry-Courcouronnes", href: "/villes/evry-courcouronnes-91000" },
+        { name: "Les Ulis", href: "/villes/les-ulis-91940" },
+        { name: "Massy", href: "/villes/massy-91300" },
+        { name: "Orsay", href: "/villes/orsay-91400" },
+        { name: "Palaiseau", href: "/villes/palaiseau-91120" },
+        { name: "Ris-Orangis", href: "/villes/ris-orangis-91130" },
+        { name: "Saclay", href: "/villes/saclay-91400" }
     ],
 
     whyUs: commonWhyUs,
