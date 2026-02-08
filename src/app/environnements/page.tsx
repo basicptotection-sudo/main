@@ -15,16 +15,15 @@ import { ArrowRight, ShieldCheck, ClipboardCheck, Target, MapPin } from "lucide-
 
 function toCanonical(path: string) {
   const base = siteConfig?.url?.replace(/\/$/, "") || "";
-  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+  const p = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${p}`;
 }
 
 export const metadata: Metadata = {
   title: "Environnements d’intervention | Sécurité privée en Île-de-France",
   description:
     "Découvrez nos solutions de sécurité privée adaptées à chaque environnement : sièges sociaux, bureaux, chantiers, commerces, sites sensibles, événements… Dispositifs sur mesure, encadrés et traçables.",
-  alternates: {
-    canonical: toCanonical("/environnements"),
-  },
+  alternates: { canonical: toCanonical("/environnements") },
   openGraph: {
     title: "Environnements d’intervention | Basic Protection Privée",
     description:
@@ -43,7 +42,7 @@ export const metadata: Metadata = {
 
 export default function EnvironnementsHubPage() {
   const heroImage =
-    PlaceHolderImages.find((p) => p.id === "environments-hero") ||
+    PlaceHolderImages.find((p) => p.id === "environments-hero") ??
     PlaceHolderImages.find((p) => p.id === "hero");
 
   const breadcrumbItems = [
@@ -51,8 +50,39 @@ export default function EnvironnementsHubPage() {
     { label: "Environnements", href: "/environnements" },
   ];
 
+  // ✅ JSON-LD (SEO)
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: breadcrumbItems.map((it, idx) => ({
+          "@type": "ListItem",
+          position: idx + 1,
+          name: it.label,
+          item: `${siteConfig.url}${it.href}`,
+        })),
+      },
+      {
+        "@type": "ItemList",
+        name: "Environnements d’intervention",
+        itemListElement: environmentsData.map((e, idx) => ({
+          "@type": "ListItem",
+          position: idx + 1,
+          url: `${siteConfig.url}/environnements/${e.slug}`,
+          name: e.heroTitle ?? e.name,
+        })),
+      },
+    ],
+  };
+
   return (
     <div className="bg-background text-foreground">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       <HeroSection
         title="Sécurité privée par environnement"
         description="Chaque secteur a ses enjeux : flux, accès, public, horaires, sensibilité du site. Nous adaptons nos dispositifs pour sécuriser efficacement, sans perturber votre activité."
@@ -80,7 +110,7 @@ export default function EnvironnementsHubPage() {
                 exécution terrain encadrée : consignes claires, supervision et reporting.
               </p>
 
-              <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
                 <Button asChild>
                   <Link href="/services">Découvrir nos services</Link>
                 </Button>
@@ -90,12 +120,12 @@ export default function EnvironnementsHubPage() {
               </div>
             </div>
 
-            {/* Méthode (UX + crédibilité) */}
+            {/* Méthode */}
             <div className="mx-auto mt-12 grid max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
               <Card className="border bg-card">
                 <CardHeader className="flex flex-row items-start gap-4">
-                  <div className="bg-primary/10 rounded-xl p-3">
-                    <Target className="w-5 h-5 text-primary" />
+                  <div className="rounded-xl bg-primary/10 p-3">
+                    <Target className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <CardTitle className="text-lg">Analyse & cadrage</CardTitle>
@@ -108,8 +138,8 @@ export default function EnvironnementsHubPage() {
 
               <Card className="border bg-card">
                 <CardHeader className="flex flex-row items-start gap-4">
-                  <div className="bg-primary/10 rounded-xl p-3">
-                    <ClipboardCheck className="w-5 h-5 text-primary" />
+                  <div className="rounded-xl bg-primary/10 p-3">
+                    <ClipboardCheck className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <CardTitle className="text-lg">Consignes & procédures</CardTitle>
@@ -122,8 +152,8 @@ export default function EnvironnementsHubPage() {
 
               <Card className="border bg-card">
                 <CardHeader className="flex flex-row items-start gap-4">
-                  <div className="bg-primary/10 rounded-xl p-3">
-                    <ShieldCheck className="w-5 h-5 text-primary" />
+                  <div className="rounded-xl bg-primary/10 p-3">
+                    <ShieldCheck className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <CardTitle className="text-lg">Supervision & continuité</CardTitle>
@@ -140,7 +170,7 @@ export default function EnvironnementsHubPage() {
 
       {/* Grid environnements */}
       <AnimateOnScroll>
-        <section id="environments" className="py-16 md:py-24 bg-muted/20">
+        <section id="environments" className="bg-muted/20 py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
               <Badge variant="secondary" className="mb-4">
@@ -150,18 +180,13 @@ export default function EnvironnementsHubPage() {
                 Nos secteurs d’expertise
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                Explorez nos solutions par environnement : chaque page détaille les risques fréquents, les bonnes
-                pratiques et l’approche recommandée.
+                Chaque page détaille les risques fréquents, les bonnes pratiques et l’approche recommandée.
               </p>
             </div>
 
             <div className="mx-auto mt-12 grid max-w-6xl gap-6 md:grid-cols-2">
               {environmentsData.map((env) => (
-                <Link
-                  href={`/environnements/${env.slug}`}
-                  key={env.slug}
-                  className="group block"
-                >
+                <Link href={`/environnements/${env.slug}`} key={env.slug} className="group block">
                   <Card className="h-full overflow-hidden rounded-2xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
                     <CardHeader className="p-6">
                       <CardTitle className="flex items-center justify-between gap-4 text-lg">
@@ -175,15 +200,15 @@ export default function EnvironnementsHubPage() {
 
                       <div className="mt-4 flex flex-wrap gap-2">
                         <Badge variant="secondary" className="gap-2">
-                          <ShieldCheck className="w-4 h-4" />
+                          <ShieldCheck className="h-4 w-4" />
                           Sur-mesure
                         </Badge>
                         <Badge variant="secondary" className="gap-2">
-                          <ClipboardCheck className="w-4 h-4" />
+                          <ClipboardCheck className="h-4 w-4" />
                           Reporting
                         </Badge>
                         <Badge variant="secondary" className="gap-2">
-                          <MapPin className="w-4 h-4" />
+                          <MapPin className="h-4 w-4" />
                           Île-de-France
                         </Badge>
                       </div>
@@ -191,48 +216,48 @@ export default function EnvironnementsHubPage() {
 
                     <CardContent className="px-6 pb-6 pt-0">
                       <p className="text-sm text-muted-foreground">
-                        Voir les recommandations, les dispositifs types et les cas d’usage.
+                        Recommandations, dispositifs types et cas d’usage.
                       </p>
                     </CardContent>
                   </Card>
                 </Link>
               ))}
             </div>
-
-            {/* CTA intermédiaire (conversion) */}
-            <div className="mx-auto mt-12 max-w-4xl">
-              <CTASection
-                title="Vous ne savez pas quel environnement choisir ?"
-                description="Décrivez votre site (activité, accès, horaires, public). On vous oriente vers le dispositif adapté."
-                cta={{ label: "Demander un devis", href: "/devis" }}
-              />
-            </div>
           </div>
         </section>
       </AnimateOnScroll>
 
-      {/* SEO content (court mais utile) */}
+      {/* ✅ CTA (hors section environments) : sémantique propre */}
+      <AnimateOnScroll>
+        <CTASection
+          title="Vous ne savez pas quel environnement choisir ?"
+          description="Décrivez votre site (activité, accès, horaires, public). On vous oriente vers le dispositif adapté."
+          cta={{ label: "Demander un devis", href: "/devis" }}
+          className="bg-background"
+        />
+      </AnimateOnScroll>
+
+      {/* SEO content */}
       <AnimateOnScroll>
         <section className="py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl">
-              <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary">
+              <h2 className="font-headline text-2xl font-bold text-primary md:text-3xl">
                 Pourquoi raisonner “par environnement” ?
               </h2>
               <div className="mt-4 space-y-4 text-muted-foreground">
                 <p>
-                  Les risques et les priorités varient fortement selon le contexte : un siège social implique souvent
-                  un contrôle d’accès discret, des procédures visiteurs et une supervision fluide ; un chantier exige
-                  plutôt une prévention des intrusions, des rondes et des mesures anti-vol ; un commerce doit protéger
-                  les personnes et les flux sans dégrader l’expérience client.
+                  Les risques et les priorités varient selon le contexte : un siège social implique un contrôle d’accès
+                  discret et des procédures visiteurs ; un chantier exige une prévention des intrusions et des rondes ;
+                  un commerce doit protéger les personnes et les flux sans dégrader l’expérience client.
                 </p>
                 <p>
-                  Notre approche consiste à adapter la posture, les consignes et le niveau de contrôle à votre
-                  environnement — pour une sécurité efficace, mesurable et durable.
+                  Notre approche adapte la posture, les consignes et le niveau de contrôle à votre environnement — pour
+                  une sécurité efficace, mesurable et durable.
                 </p>
               </div>
 
-              <div className="mt-8 flex flex-col sm:flex-row gap-3">
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button asChild>
                   <Link href="/devis">Demander un devis</Link>
                 </Button>

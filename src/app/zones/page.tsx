@@ -56,7 +56,7 @@ export default function ZonesHubPage() {
     .map((loc) => ({
       name: loc.name,
       href: `/zones/${loc.slug}`,
-      kind: 'departement', // Corrigé : ces entrées sont des départements
+      kind: 'departement' as 'departement', // Corrigé : ces entrées sont des départements
       code: loc.name.match(/\((\d+)\)/)?.[1],
     }))
     .sort((a, b) => a.name.localeCompare(b.name, 'fr'));
