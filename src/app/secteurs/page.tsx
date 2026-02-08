@@ -1,8 +1,8 @@
-// src/app/environnements/page.tsx
+// src/app/secteurs/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { environmentsData } from "@/lib/environments-data";
+import { sectorsData } from "@/lib/secteurs-data";
 import { siteConfig } from "@/lib/config";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
@@ -20,34 +20,34 @@ function toCanonical(path: string) {
 }
 
 export const metadata: Metadata = {
-  title: "Environnements d’intervention | Sécurité privée en Île-de-France",
+  title: "Secteurs d’intervention | Sécurité privée en Île-de-France",
   description:
-    "Découvrez nos solutions de sécurité privée adaptées à chaque environnement : sièges sociaux, bureaux, chantiers, commerces, sites sensibles, événements… Dispositifs sur mesure, encadrés et traçables.",
-  alternates: { canonical: toCanonical("/environnements") },
+    "Découvrez nos solutions de sécurité privée adaptées à chaque secteur : sièges sociaux, bureaux, chantiers, commerces, sites sensibles, événements… Dispositifs sur mesure, encadrés et traçables.",
+  alternates: { canonical: toCanonical("/secteurs") },
   openGraph: {
-    title: "Environnements d’intervention | Basic Protection Privée",
+    title: "Secteurs d’intervention | Basic Protection Privée",
     description:
-      "Solutions de sécurité privée adaptées à chaque environnement : bureaux, chantiers, commerces, sites sensibles, événements… Dispositifs sur mesure en Île-de-France.",
-    url: toCanonical("/environnements"),
+      "Solutions de sécurité privée adaptées à chaque secteur : bureaux, chantiers, commerces, sites sensibles, événements… Dispositifs sur mesure en Île-de-France.",
+    url: toCanonical("/secteurs"),
     siteName: siteConfig?.name || "Basic Protection Privée",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Environnements d’intervention | Basic Protection Privée",
+    title: "Secteurs d’intervention | Basic Protection Privée",
     description:
-      "Sécurité privée par environnement : solutions sur mesure, encadrées et traçables en Île-de-France.",
+      "Sécurité privée par secteur : solutions sur mesure, encadrées et traçables en Île-de-France.",
   },
 };
 
-export default function EnvironnementsHubPage() {
+export default function SecteursHubPage() {
   const heroImage =
     PlaceHolderImages.find((p) => p.id === "environments-hero") ??
     PlaceHolderImages.find((p) => p.id === "hero");
 
   const breadcrumbItems = [
     { label: "Accueil", href: "/" },
-    { label: "Environnements", href: "/environnements" },
+    { label: "Secteurs", href: "/secteurs" },
   ];
 
   // ✅ JSON-LD (SEO)
@@ -65,11 +65,11 @@ export default function EnvironnementsHubPage() {
       },
       {
         "@type": "ItemList",
-        name: "Environnements d’intervention",
-        itemListElement: environmentsData.map((e, idx) => ({
+        name: "Secteurs d’intervention",
+        itemListElement: sectorsData.map((e, idx) => ({
           "@type": "ListItem",
           position: idx + 1,
-          url: `${siteConfig.url}/environnements/${e.slug}`,
+          url: `${siteConfig.url}/secteurs/${e.slug}`,
           name: e.heroTitle ?? e.name,
         })),
       },
@@ -84,13 +84,13 @@ export default function EnvironnementsHubPage() {
       />
 
       <HeroSection
-        title="Sécurité privée par environnement"
+        title="Sécurité privée par secteur"
         description="Chaque secteur a ses enjeux : flux, accès, public, horaires, sensibilité du site. Nous adaptons nos dispositifs pour sécuriser efficacement, sans perturber votre activité."
-        cta1={{ label: "Voir les environnements", href: "#environments" }}
+        cta1={{ label: "Voir les secteurs", href: "#secteurs" }}
         cta2={{ label: "Demander un devis", href: "/devis", variant: "secondary" }}
         breadcrumbs={<Breadcrumbs items={breadcrumbItems} />}
         imageUrl={heroImage?.imageUrl}
-        imageAlt="Sécurité privée adaptée à chaque environnement"
+        imageAlt="Sécurité privée adaptée à chaque secteur"
         imageHint={heroImage?.imageHint ?? "security team"}
       />
 
@@ -168,13 +168,13 @@ export default function EnvironnementsHubPage() {
         </section>
       </AnimateOnScroll>
 
-      {/* Grid environnements */}
+      {/* Grid secteurs */}
       <AnimateOnScroll>
-        <section id="environments" className="bg-muted/20 py-16 md:py-24">
+        <section id="secteurs" className="bg-muted/20 py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl text-center">
               <Badge variant="secondary" className="mb-4">
-                Environnements
+                Secteurs
               </Badge>
               <h2 className="font-headline text-3xl font-bold tracking-tight text-primary md:text-4xl">
                 Nos secteurs d’expertise
@@ -185,17 +185,17 @@ export default function EnvironnementsHubPage() {
             </div>
 
             <div className="mx-auto mt-12 grid max-w-6xl gap-6 md:grid-cols-2">
-              {environmentsData.map((env) => (
-                <Link href={`/environnements/${env.slug}`} key={env.slug} className="group block">
+              {sectorsData.map((sector) => (
+                <Link href={`/secteurs/${sector.slug}`} key={sector.slug} className="group block">
                   <Card className="h-full overflow-hidden rounded-2xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
                     <CardHeader className="p-6">
                       <CardTitle className="flex items-center justify-between gap-4 text-lg">
-                        <span className="line-clamp-1">{env.heroTitle}</span>
+                        <span className="line-clamp-1">{sector.heroTitle}</span>
                         <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1" />
                       </CardTitle>
 
                       <CardDescription className="mt-2 line-clamp-3">
-                        {env.heroDescription}
+                        {sector.heroDescription}
                       </CardDescription>
 
                       <div className="mt-4 flex flex-wrap gap-2">
@@ -227,10 +227,10 @@ export default function EnvironnementsHubPage() {
         </section>
       </AnimateOnScroll>
 
-      {/* ✅ CTA (hors section environments) : sémantique propre */}
+      {/* ✅ CTA (hors section secteurs) : sémantique propre */}
       <AnimateOnScroll>
         <CTASection
-          title="Vous ne savez pas quel environnement choisir ?"
+          title="Vous ne savez pas quel secteur choisir ?"
           description="Décrivez votre site (activité, accès, horaires, public). On vous oriente vers le dispositif adapté."
           cta={{ label: "Demander un devis", href: "/devis" }}
           className="bg-background"
@@ -243,7 +243,7 @@ export default function EnvironnementsHubPage() {
           <div className="container mx-auto px-4">
             <div className="mx-auto max-w-3xl">
               <h2 className="font-headline text-2xl font-bold text-primary md:text-3xl">
-                Pourquoi raisonner “par environnement” ?
+                Pourquoi raisonner “par secteur” ?
               </h2>
               <div className="mt-4 space-y-4 text-muted-foreground">
                 <p>
@@ -252,7 +252,7 @@ export default function EnvironnementsHubPage() {
                   un commerce doit protéger les personnes et les flux sans dégrader l’expérience client.
                 </p>
                 <p>
-                  Notre approche adapte la posture, les consignes et le niveau de contrôle à votre environnement — pour
+                  Notre approche adapte la posture, les consignes et le niveau de contrôle à votre secteur — pour
                   une sécurité efficace, mesurable et durable.
                 </p>
               </div>

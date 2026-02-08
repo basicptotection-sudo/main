@@ -1,7 +1,7 @@
 
 import { servicesData, type Service } from '@/lib/services-data';
 
-export type Environment = {
+export type SectorDef = {
     slug: string;
     icon: string;
     name: string;
@@ -47,14 +47,14 @@ export type Environment = {
     }[],
 }
 
-const commonWhyUs: Environment['whyUs'] = [
+const commonWhyUs: SectorDef['whyUs'] = [
     { icon: 'Award', title: 'Conformité & Réglementation', description: 'Agents agréés CNAPS, respect des conventions collectives et de la législation en vigueur.' },
     { icon: 'ClipboardCheck', title: 'Cadrage & Consignes Claires', description: 'Définition d\'un plan de mission précis et de consignes opérationnelles adaptées à votre site.' },
     { icon: 'Users', title: 'Supervision & Contrôle Qualité', description: 'Management de proximité, contrôles inopinés et suivi régulier de la prestation.' },
     { icon: 'FileText', title: 'Reporting & Transparence', description: 'Mains courantes informatisées et rapports d\'activité pour une traçabilité totale.' }
 ];
 
-const commonMethod: Environment['method'] = {
+const commonMethod: SectorDef['method'] = {
     title: "Notre méthode : claire, structurée, maîtrisée",
     description: "De l'analyse à l'action, un processus rigoureux pour renforcer la sûreté de vos sites.",
     steps: [
@@ -66,7 +66,7 @@ const commonMethod: Environment['method'] = {
 };
 
 
-export const environmentsData: Environment[] = [
+export const sectorsData: SectorDef[] = [
     {
         slug: 'sieges-sociaux-bureaux',
         icon: 'Building2',
@@ -75,10 +75,10 @@ export const environmentsData: Environment[] = [
         metaDescription: 'Sécurité privée pour sièges sociaux et bureaux : contrôle d’accès, surveillance, rondes et dispositifs sur mesure en Île-de-France.',
         heroImageId: 'zone-hauts-de-seine',
         heroTitle: "Sécurité des Sièges Sociaux & Bureaux",
-        heroDescription: "Dispositifs de sécurité privée adaptés aux environnements tertiaires exigeants.",
+        heroDescription: "Dispositifs de sécurité privée adaptés aux secteurs tertiaires exigeants.",
         intro: {
             title: "Une sécurité pensée, maîtrisée et pilotée.",
-            paragraph: "La sécurité d’un siège social ou d’un immeuble de bureaux ne se limite pas à une simple présence. Elle engage l’image de l’entreprise, la protection des collaborateurs, la continuité d’activité et la confidentialité des données. Entre flux quotidiens, visiteurs, prestataires et exigences de discrétion, les environnements tertiaires nécessitent une approche structurée, fluide et professionnelle."
+            paragraph: "La sécurité d’un siège social ou d’un immeuble de bureaux ne se limite pas à une simple présence. Elle engage l’image de l’entreprise, la protection des collaborateurs, la continuité d’activité et la confidentialité des données. Entre flux quotidiens, visiteurs, prestataires et exigences de discrétion, les secteurs tertiaires nécessitent une approche structurée, fluide et professionnelle."
         },
         issuesTitle: "Les enjeux spécifiques des sièges sociaux et bureaux",
         issues: [
@@ -103,7 +103,7 @@ export const environmentsData: Environment[] = [
                 description: 'Intrusion, conflit ou incident peuvent perturber l’activité. Le dispositif doit prévenir, absorber et gérer sans désorganiser le site.',
             }
         ],
-        missionsTitle: "Typologie des missions en environnement tertiaire",
+        missionsTitle: "Typologie des missions en secteur tertiaire",
         missions: [
             { icon: 'Fingerprint', title: 'Contrôle d’accès', description: 'Accueil et orientation, vérification des autorisations, gestion des badges et registres, filtrage discret et efficace.' },
             { icon: 'Radio', title: 'Surveillance et rondes', description: 'Rondes intérieures/extérieures, vérification des zones sensibles, prévention des risques et surveillance en horaires décalés.' },
@@ -131,7 +131,7 @@ export const environmentsData: Environment[] = [
         metaDescription: 'Sécurité privée pour le luxe, retail et hôtellerie : prévention des pertes, accueil premium et gestion des risques en Île-de-France.',
         heroImageId: 'service-evenementiel',
         heroTitle: "Luxe, Retail & Hôtellerie",
-        heroDescription: "Dispositifs premium alliant sécurité discrète et excellence du service pour les environnements exigeants.",
+        heroDescription: "Dispositifs premium alliant sécurité discrète et excellence du service pour les secteurs exigeants.",
         intro: {
             title: "Une sécurité à l'image de votre marque.",
             paragraph: "Dans les secteurs du luxe, du retail et de l'hôtellerie, l'agent de sécurité est un ambassadeur. Nos dispositifs sont conçus pour protéger vos actifs et vos clients tout en sublimant leur expérience."
@@ -141,7 +141,7 @@ export const environmentsData: Environment[] = [
             { icon: 'Gem', title: 'Prévention des pertes', description: 'Protéger des produits de haute valeur contre le vol à l\'étalage et les tentatives de braquage.' },
             { icon: 'Users', title: 'Expérience client', description: 'Assurer une sécurité visible mais non intrusive, avec une posture d\'accueil et de service irréprochable.' },
         ],
-        missionsTitle: "Nos missions en environnement premium",
+        missionsTitle: "Nos missions en secteur premium",
         missions: [
              { icon: 'Eye', title: 'Accueil & Filtrage', description: 'Contrôle discret des entrées, orientation des clients et gestion des accès aux zones privées.' },
              { icon: 'Shield', title: 'Présence dissuasive', description: 'Une présence élégante et vigilante pour décourager les actes malveillants sans nuire à l\'atmosphère du lieu.' },
@@ -267,17 +267,15 @@ export const environmentsData: Environment[] = [
         metaDescription: 'Solutions de sécurité discrètes pour dirigeants, personnalités et leurs lieux de travail ou de résidence en Île-de-France.',
         heroImageId: 'hero',
         heroTitle: "Sécurité Dirigeants & VIP",
-        heroDescription: "Discrétion, anticipation et sérénité pour les environnements les plus sensibles.",
+        heroDescription: "Discrétion, anticipation et sérénité pour les contextes les plus sensibles.",
         intro: {
             title: "La sécurité invisible.",
             paragraph: "La protection des personnes et des cadres de haut niveau exige une approche basée sur la confidentialité et l'anticipation. Nos dispositifs visent à sécuriser l'environnement de travail ou de vie sans perturber le quotidien."
         },
-        issuesTitle: "Enjeux de la protection de personnes",
         issues: [
             { icon: 'EyeOff', title: 'Discrétion Absolue', description: 'La meilleure sécurité est celle qui ne se voit pas. La confidentialité est la règle d\'or.' },
             { icon: 'BrainCircuit', title: 'Anticipation des risques', description: 'Analyse des déplacements, des lieux et des contextes pour prévenir les menaces avant qu\'elles ne surviennent.' },
         ],
-        missionsTitle: "Nos approches pour les dirigeants et VIP",
         missions: [
             { icon: 'Car', title: 'Accompagnement sécurisé', description: 'Chauffeur de sécurité, accompagnement discret lors de déplacements professionnels ou privés.' },
             { icon: 'Home', title: 'Sécurisation de résidence', description: 'Audit de sûreté de la résidence et mise en place de solutions humaines et/ou technologiques adaptées.' },

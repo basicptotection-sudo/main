@@ -1,4 +1,4 @@
-import { environmentsData } from './environments-data';
+import { sectorsData } from './secteurs-data';
 
 export const trustElements = [
   {
@@ -54,10 +54,10 @@ export const processSteps = [
   },
 ];
 
-export const sectors = environmentsData.map(env => ({
-  icon: env.icon,
-  name: env.name,
-  href: `/environnements/${env.slug}`,
+export const sectors = sectorsData.map(sector => ({
+  icon: sector.icon,
+  name: sector.name,
+  href: `/secteurs/${sector.slug}`,
 }));
 
 export const testimonials = [
