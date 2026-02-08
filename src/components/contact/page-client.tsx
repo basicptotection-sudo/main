@@ -312,6 +312,24 @@ export default function ContactPageClient() {
 
             {/* Side info */}
             <aside className="lg:col-span-5 space-y-6">
+              {/* Option : Google Maps embed (sans JS lourd) */}
+              <Card className="border overflow-hidden">
+                <CardHeader>
+                  <CardTitle className="text-xl font-headline">Localisation</CardTitle>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <iframe
+                    title="Carte - Basic Protection Privée"
+                    className="w-full h-[320px] border-0"
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(
+                      COMPANY.address
+                    )}&output=embed`}
+                  />
+                </CardContent>
+              </Card>
+            
               <Card className="border bg-card">
                 <CardHeader>
                   <CardTitle className="text-xl font-headline">
@@ -399,24 +417,6 @@ export default function ContactPageClient() {
                     On vous répond avec une proposition claire : effectifs,
                     organisation, consignes, et modalités de suivi.
                   </p>
-                </CardContent>
-              </Card>
-
-              {/* Option : Google Maps embed (sans JS lourd) */}
-              <Card className="border overflow-hidden">
-                <CardHeader>
-                  <CardTitle className="text-xl font-headline">Localisation</CardTitle>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <iframe
-                    title="Carte - Basic Protection Privée"
-                    className="w-full h-[320px] border-0"
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(
-                      COMPANY.address
-                    )}&output=embed`}
-                  />
                 </CardContent>
               </Card>
             </aside>
