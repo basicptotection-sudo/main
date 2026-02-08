@@ -1,60 +1,69 @@
-import { sectorsData } from './secteurs-data';
+// src/lib/home-data.ts
+import { sectorsData } from "./secteurs-data";
+
+/**
+ * Home – data “haut niveau”
+ * Objectif : crédible, orienté conversion, et SEO-friendly.
+ * - claims mesurées (pas de promesses risquées)
+ * - vocabulaire métier (consignes, main courante, levée de doute, PC, etc.)
+ * - cohérence avec tes pages secteurs + services
+ */
 
 export const trustElements = [
   {
     icon: "ShieldCheck",
-    title: "Conformité & Encadrement",
+    title: "Conformité, encadrement, traçabilité",
     description:
-      "Agents titulaires d’une carte professionnelle (CNAPS) et équipes encadrées sur le terrain. Procédures claires, consignes formalisées et contrôle qualité.",
+      "Agents titulaires d’une carte professionnelle CNAPS, dispositif cadré (consignes, points de contrôle) et management de proximité. Contrôles qualité et traçabilité systématique.",
   },
   {
     icon: "FileText",
-    title: "Consignes & Reporting",
+    title: "Consignes & reporting actionnable",
     description:
-      "Main courante, rapports d’activité et points réguliers : vous gardez une visibilité claire sur l’exécution et les incidents, avec un suivi continu.",
+      "Main courante, rapports d’activité et synthèses exploitables : vous suivez la prestation, les incidents, les actions correctives et l’évolution du risque sur site.",
   },
   {
     icon: "MapPin",
     title: "Réactivité en Île-de-France",
     description:
-      "Basés à Plaisir (78), nous mobilisons rapidement des équipes sur Paris et toute l’Île-de-France grâce à une organisation structurée et des agents disponibles.",
+      "Basés à Plaisir (78), nous intervenons sur Paris et toute l’Île-de-France. Renforts, mises en place planifiées et continuité de service selon le contexte.",
   },
   {
     icon: "Lock",
-    title: "Discrétion & Confidentialité",
+    title: "Discrétion & confidentialité",
     description:
-      "Confidentialité et posture irréprochable : nos agents interviennent avec discrétion, rigueur et respect des environnements sensibles (VIP, sièges, événements).",
+      "Posture irréprochable, confidentialité et respect des procédures internes : environnements sensibles (sièges, VIP, retail premium, institutionnels, événements).",
   },
 ];
 
 export const processSteps = [
   {
     icon: "MessageCircle",
-    title: "1. Cadrage & Analyse",
+    title: "1. Cadrage & analyse du risque",
     description:
-      "Échange rapide + analyse du site, des risques, des horaires et des contraintes. Objectif : définir un besoin clair et mesurable.",
+      "Échange + collecte des informations clés (flux, horaires, points sensibles, antécédents, contraintes). Objectif : un besoin clair, une mission cadrée, des indicateurs simples.",
   },
   {
-    icon: "FileText",
-    title: "2. Plan de mission",
+    icon: "ClipboardList",
+    title: "2. Plan de mission & consignes",
     description:
-      "Rédaction des consignes, définition des postes, rondes, contrôles, et modalités de reporting. Une organisation lisible avant le démarrage.",
+      "Définition des postes, rondes, contrôles, protocole incidents, procédures d’accès et modalités de reporting. Validation avant démarrage pour une exécution fluide.",
   },
   {
     icon: "Users",
     title: "3. Déploiement & supervision",
     description:
-      "Mise en place des équipes, prise de poste cadrée et management de proximité. Contrôles réguliers pour maintenir un niveau constant.",
+      "Mise en place des équipes, prise de poste cadrée et pilotage terrain. Ajustements opérationnels si besoin (flux, horaires, périmètre) avec un interlocuteur identifié.",
   },
   {
     icon: "TrendingUp",
     title: "4. Suivi & amélioration continue",
     description:
-      "Rapports, points de suivi et ajustements (horaires, effectifs, périmètre). Le dispositif évolue avec vos besoins et vos retours.",
+      "Rapports, points réguliers et actions correctives. Le dispositif évolue avec votre activité, vos pics de fréquentation, vos contraintes et les retours terrain.",
   },
 ];
 
-export const sectors = sectorsData.map(sector => ({
+export const sectors = sectorsData.map((sector) => ({
   icon: sector.icon,
   name: sector.name,
   href: `/secteurs/${sector.slug}`,
@@ -63,67 +72,73 @@ export const sectors = sectorsData.map(sector => ({
 export const testimonials = [
   {
     quote:
-      "Une équipe professionnelle qui a su comprendre nos contraintes. La communication est fluide et les consignes sont parfaitement appliquées.",
+      "Une équipe professionnelle qui a compris nos contraintes. Communication simple, dispositif cadré, consignes appliquées et remontées terrain exploitables.",
     name: "Directeur sûreté",
-    role: "Groupe industriel – Île-de-France",
+    role: "Groupe industriel — Île-de-France",
   },
   {
     quote:
-      "Le dispositif pour notre événement était discret et très efficace. Une vraie tranquillité d’esprit pour nos équipes et nos invités.",
+      "Dispositif discret et efficace pour notre événement. Gestion des accès et des flux, présence rassurante, coordination fluide avec l’organisation.",
     name: "Responsable événementiel",
-    role: "Agence – Paris",
+    role: "Agence — Paris",
   },
   {
     quote:
-      "Réactivité et sérieux exemplaires. Les rapports sont clairs et les agents très professionnels sur le terrain.",
+      "Réactivité et sérieux. Rapports clairs, agents professionnels, et un pilotage terrain qui fait la différence sur la durée.",
     name: "Gestionnaire de site",
-    role: "Parc tertiaire – Yvelines",
+    role: "Parc tertiaire — Yvelines",
   },
 ];
 
 /**
- * FAQ : ajout de questions “SEO money” (prix, délais, cadre, documents, déroulé),
- * tout en restant crédible et sans promesses risquées.
+ * FAQ “SEO money”
+ * - prix, délais, cadre, documents, déroulé
+ * - réponses factuelles (sans promesses absolues)
  */
 export const faqItems = [
   {
     question: "Quelle est votre zone d’intervention ?",
     answer:
-      "Basés à Plaisir (78), nous intervenons sur toute l’Île-de-France : Paris (75), 92, 93, 94, 91, 95, 77 et 78. La réactivité dépend du type de mission, des horaires et du niveau de dispositif attendu.",
+      "Nous intervenons sur toute l’Île-de-France : Paris (75), 78, 92, 93, 94, 91, 95 et 77. La réactivité dépend du type de mission, des horaires, du niveau de risque et du dispositif attendu (poste fixe, rondes, événement, SSIAP, etc.).",
   },
   {
     question: "Quel délai pour mettre en place un dispositif ?",
     answer:
-      "Selon le contexte, une mise en place peut être rapide (urgence, renfort, événement) ou nécessiter un cadrage plus complet (site sensible, consignes détaillées). Dans tous les cas, nous validons d’abord le besoin, puis nous planifions un déploiement réaliste et encadré.",
+      "Selon le contexte, une mise en place peut être rapide (renfort, urgence, événement ponctuel) ou nécessiter un cadrage plus complet (sites sensibles, consignes détaillées, multi-sites). Nous validons d’abord le besoin, puis planifions un déploiement réaliste et encadré.",
+  },
+  {
+    question: "Quels types de missions proposez-vous ?",
+    answer:
+      "Contrôle d’accès, gardiennage, rondes (pédestres/véhiculées), levée de doute, sécurité événementielle, agents cynophiles selon configuration, et sécurité incendie (SSIAP) lorsque requis. Le choix dépend du site, des flux et des risques.",
   },
   {
     question: "Comment garantissez-vous la qualité de vos agents ?",
     answer:
-      "Nos agents disposent d’une carte professionnelle valide délivrée par le CNAPS. Ils sont encadrés par un management de proximité, avec des contrôles qualité et un suivi opérationnel (consignes, main courante, rapports).",
+      "Agents avec carte professionnelle CNAPS valide, consignes formalisées, management de proximité, contrôles qualité, et reporting (main courante / rapports). Nous privilégions une exécution cadrée et traçable plutôt qu’une “présence” non pilotée.",
   },
   {
     question: "Quel est le prix d’un agent de sécurité ?",
     answer:
-      "Le coût dépend du type de mission, du nombre d’agents, des horaires (jour/nuit/week-end), du niveau de risque, du lieu et des équipements requis. Après une analyse de vos besoins, nous vous transmettons un devis structuré et transparent.",
+      "Le tarif dépend du volume horaire, des horaires (jour/nuit/week-end), du niveau de risque, de la technicité (SSIAP, cynophile), du lieu et des contraintes d’accès. Après analyse, nous transmettons un devis structuré et transparent, avec le détail du dispositif.",
   },
   {
     question: "Comment est établi un devis ?",
     answer:
-      "Le devis est précédé d’un cadrage : périmètre, horaires, postes, rondes, points de contrôle, consignes et modalités de reporting. Nous chiffrons ensuite le dispositif selon le volume horaire, le niveau d’encadrement et les contraintes.",
+      "Nous cadrons d’abord : périmètre, horaires, postes, rondes, points de contrôle, consignes, procédures incidents et reporting. Ensuite, nous chiffrons selon le volume, le niveau d’encadrement et les contraintes terrain.",
   },
   {
-    question: "Qu’est-ce qui vous différencie d’un grand groupe de sécurité ?",
+    question: "Pouvez-vous sécuriser plusieurs sites avec une organisation centralisée ?",
     answer:
-      "Notre structure à taille humaine favorise la réactivité, une communication directe et un pilotage de proximité. Vous gagnez en clarté, en souplesse et en qualité d’exécution, avec un interlocuteur identifiable.",
+      "Oui. Pour les groupes, syndics, gestionnaires multi-sites ou donneurs d’ordre, nous pouvons organiser une approche homogène (consignes, reporting, référents) tout en adaptant le dispositif site par site.",
   },
   {
     question: "Proposez-vous des services pour les particuliers ?",
     answer:
-      "Oui, selon les situations : protection rapprochée (VIP) et surveillance de résidences privées. Nous évaluons d’abord le contexte et les risques pour définir un dispositif adapté et discret.",
+      "Oui selon les situations : surveillance de résidences et protection de personnes (sur demande et selon le cadre réglementaire). Nous évaluons d’abord le contexte et les risques pour proposer une solution adaptée et discrète.",
   },
   {
     question: "Que faut-il préparer pour démarrer une mission ?",
     answer:
-      "Idéalement : horaires, accès (clés/badges), zones à surveiller, consignes spécifiques, contacts sur site et procédures en cas d’incident. Nous vous accompagnons pour formaliser ces éléments et sécuriser le démarrage.",
+      "Horaires, accès (clés/badges), zones à surveiller, consignes spécifiques, contacts sur site, procédures en cas d’incident, et règles internes (confidentialité, accueil, flux). Nous vous aidons à formaliser ces éléments pour sécuriser le démarrage.",
   },
 ];
