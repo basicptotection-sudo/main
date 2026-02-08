@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -57,9 +58,9 @@ const useFormField = () => {
   return {
     id,
     name: fieldContext.name,
-    formItemId: `${id}-form-item`,
-    formDescriptionId: `${id}-form-item-description`,
-    formMessageId: `${id}-form-item-message`,
+    formItemId: `${fieldContext.name}-${id}`,
+    formDescriptionId: `${fieldContext.name}-${id}-description`,
+    formMessageId: `${fieldContext.name}-${id}-message`,
     ...fieldState,
   }
 }
@@ -147,7 +148,7 @@ const FormMessage = React.forwardRef<
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, children, ...props }, ref) => {
   const { error, formMessageId } = useFormField()
-  const body = error ? String(error?.message ?? "") : children
+  const body = error ? String(error?.message) : children
 
   if (!body) {
     return null
