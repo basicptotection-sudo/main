@@ -37,7 +37,64 @@ export type City = {
    ========================================================= */
 
 export const citiesDataBase: City[] = [
-  // ... tes 120 entrées existantes ici (inchangées)
+  // Yvelines (78)
+  { slug: "plaisir-78370", title: "Sécurité Privée Plaisir", department: "Yvelines (78)", focus: ["bureaux"], keywords: ["sécurité plaisir", "gardiennage 78370"] },
+  { slug: "versailles-78000", title: "Sécurité Privée Versailles", department: "Yvelines (78)", focus: ["événementiel", "résidentiel"], keywords: ["sécurité versailles", "gardiennage 78000"] },
+  { slug: "saint-germain-en-laye-78100", title: "Sécurité Privée Saint-Germain-en-Laye", department: "Yvelines (78)", focus: ["résidentiel", "luxe"], keywords: ["sécurité saint-germain-en-laye", "gardiennage 78100"] },
+  { slug: "montigny-le-bretonneux-78180", title: "Sécurité Privée Montigny-le-Bretonneux", department: "Yvelines (78)", focus: ["bureaux", "tech"], keywords: ["sécurité montigny-le-bretonneux", "gardiennage sqy"] },
+
+  // Paris (75)
+  { slug: "paris-1-75001", title: "Sécurité Privée Paris 1er", department: "Paris (75)", focus: [], keywords: [] },
+  { slug: "paris-2-75002", title: "Sécurité Privée Paris 2e", department: "Paris (75)", focus: [], keywords: [] },
+  { slug: "paris-8-75008", title: "Sécurité Privée Paris 8e", department: "Paris (75)", focus: [], keywords: [] },
+  { slug: "paris-9-75009", title: "Sécurité Privée Paris 9e", department: "Paris (75)", focus: [], keywords: [] },
+  { slug: "paris-10-75010", title: "Sécurité Privée Paris 10e", department: "Paris (75)", focus: [], keywords: [] },
+  { slug: "paris-12-75012", title: "Sécurité Privée Paris 12e", department: "Paris (75)", focus: [], keywords: [] },
+  { slug: "paris-13-75013", title: "Sécurité Privée Paris 13e", department: "Paris (75)", focus: [], keywords: [] },
+  { slug: "paris-15-75015", title: "Sécurité Privée Paris 15e", department: "Paris (75)", focus: [], keywords: [] },
+  { slug: "paris-16-75016", title: "Sécurité Privée Paris 16e", department: "Paris (75)", focus: [], keywords: [] },
+  { slug: "paris-17-75017", title: "Sécurité Privée Paris 17e", department: "Paris (75)", focus: [], keywords: [] },
+
+  // Hauts-de-Seine (92)
+  { slug: "la-defense-92400", title: "Sécurité Privée La Défense", department: "Hauts-de-Seine (92)", focus: [], keywords: [] },
+  { slug: "courbevoie-92400", title: "Sécurité Privée Courbevoie", department: "Hauts-de-Seine (92)", focus: [], keywords: [] },
+  { slug: "puteaux-92800", title: "Sécurité Privée Puteaux", department: "Hauts-de-Seine (92)", focus: [], keywords: [] },
+  { slug: "neuilly-sur-seine-92200", title: "Sécurité Privée Neuilly-sur-Seine", department: "Hauts-de-Seine (92)", focus: [], keywords: [] },
+  { slug: "boulogne-billancourt-92100", title: "Sécurité Privée Boulogne-Billancourt", department: "Hauts-de-Seine (92)", focus: [], keywords: [] },
+  { slug: "issy-les-moulineaux-92130", title: "Sécurité Privée Issy-les-Moulineaux", department: "Hauts-de-Seine (92)", focus: [], keywords: [] },
+  { slug: "levallois-perret-92300", title: "Sécurité Privée Levallois-Perret", department: "Hauts-de-Seine (92)", focus: ["bureaux"], keywords: ["sécurité levallois", "gardiennage 92300"] },
+  
+  // Seine-Saint-Denis (93)
+  { slug: "saint-denis-93200", title: "Sécurité Privée Saint-Denis", department: "Seine-Saint-Denis (93)", focus: [], keywords: [] },
+  { slug: "villepinte-93420", title: "Sécurité Privée Villepinte", department: "Seine-Saint-Denis (93)", focus: [], keywords: [] },
+  { slug: "aubervilliers-93300", title: "Sécurité Privée Aubervilliers", department: "Seine-Saint-Denis (93)", focus: [], keywords: [] },
+  { slug: "montreuil-93100", title: "Sécurité Privée Montreuil", department: "Seine-Saint-Denis (93)", focus: ["chantiers", "bureaux"], keywords: ["sécurité montreuil", "gardiennage 93100"] },
+  { slug: "pantin-93500", title: "Sécurité Privée Pantin", department: "Seine-Saint-Denis (93)", focus: ["logistique", "bureaux"], keywords: ["sécurité pantin", "gardiennage 93500"] },
+  
+  // Val-de-Marne (94)
+  { slug: "rungis-94150", title: "Sécurité Privée Rungis", department: "Val-de-Marne (94)", focus: [], keywords: [] },
+  { slug: "orly-94310", title: "Sécurité Privée Orly", department: "Val-de-Marne (94)", focus: [], keywords: [] },
+  { slug: "creteil-94000", title: "Sécurité Privée Créteil", department: "Val-de-Marne (94)", focus: [], keywords: [] },
+  { slug: "ivry-sur-seine-94200", title: "Sécurité Privée Ivry-sur-Seine", department: "Val-de-Marne (94)", focus: ["logistique", "chantiers"], keywords: ["sécurité ivry-sur-seine", "gardiennage 94200"] },
+  { slug: "vitry-sur-seine-94400", title: "Sécurité Privée Vitry-sur-Seine", department: "Val-de-Marne (94)", focus: ["logistique", "industrie"], keywords: ["sécurité vitry-sur-seine", "gardiennage 94400"] },
+  
+  // Val-d'Oise (95)
+  { slug: "roissy-en-france-95700", title: "Sécurité Privée Roissy-en-France", department: "Val-d'Oise (95)", focus: [], keywords: [] },
+  { slug: "cergy-95000", title: "Sécurité Privée Cergy", department: "Val-d'Oise (95)", focus: [], keywords: [] },
+  { slug: "argenteuil-95100", title: "Sécurité Privée Argenteuil", department: "Val-d'Oise (95)", focus: ["industrie", "chantiers"], keywords: ["sécurité argenteuil", "gardiennage 95100"] },
+  { slug: "sarcelles-95200", title: "Sécurité Privée Sarcelles", department: "Val-d'Oise (95)", focus: ["résidentiel", "bureaux"], keywords: ["sécurité sarcelles", "gardiennage 95200"] },
+  
+  // Essonne (91)
+  { slug: "massy-91300", title: "Sécurité Privée Massy", department: "Essonne (91)", focus: [], keywords: [] },
+  { slug: "evry-courcouronnes-91000", title: "Sécurité Privée Évry-Courcouronnes", department: "Essonne (91)", focus: ["bureaux"], keywords: ["sécurité evry", "gardiennage 91000"] },
+  { slug: "saclay-91400", title: "Sécurité Privée Saclay", department: "Essonne (91)", focus: ["tech"], keywords: ["sécurité saclay", "gardiennage 91400"] },
+  { slug: "palaiseau-91120", title: "Sécurité Privée Palaiseau", department: "Essonne (91)", focus: ["tech"], keywords: ["sécurité palaiseau", "gardiennage 91120"] },
+
+  // Seine-et-Marne (77)
+  { slug: "marne-la-vallee-77700", title: "Sécurité Privée Marne-la-Vallée", department: "Seine-et-Marne (77)", focus: ["événementiel"], keywords: ["sécurité marne-la-vallee", "gardiennage 77700"] },
+  { slug: "meaux-77100", title: "Sécurité Privée Meaux", department: "Seine-et-Marne (77)", focus: ["industrie"], keywords: ["sécurité meaux", "gardiennage 77100"] },
+  { slug: "melun-77000", title: "Sécurité Privée Melun", department: "Seine-et-Marne (77)", focus: ["bureaux"], keywords: ["sécurité melun", "gardiennage 77000"] },
+  { slug: "serris-77700", title: "Sécurité Privée Serris", department: "Seine-et-Marne (77)", focus: ["événementiel"], keywords: ["sécurité serris", "gardiennage 77700"] },
 ];
 
 /* =========================================================
