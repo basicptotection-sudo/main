@@ -12,7 +12,8 @@ export type CityFocus =
   | "logistique"
   | "événementiel"
   | "résidentiel"
-  | "tech";
+  | "tech"
+  | "industrie";
 
 export type CityUseCase = {
   icon: string; // lucide icon name (string)
@@ -150,6 +151,12 @@ const focusToKeywords: Record<CityFocus, string[]> = {
     "contrôle d'accès strict",
     "protection des données",
     "sécurité campus",
+  ],
+  industrie: [
+    "sécurité industrie",
+    "gardiennage site industriel",
+    "contrôle d'accès usine",
+    "surveillance production",
   ],
 };
 
@@ -293,6 +300,23 @@ const focusToUseCases: Record<CityFocus, CityUseCase[]> = {
       content:
         "Analyse terrain, identification des failles (flux, accès, process) et plan d’action priorisé.",
     },
+  ],
+  industrie: [
+    {
+      icon: "Factory",
+      title: "Sites de production & usines",
+      content: "Contrôle des accès, surveillance des périmètres, prévention des intrusions et gestion des flux logistiques internes."
+    },
+    {
+      icon: "ShieldCheck",
+      title: "Procédures & sécurité",
+      content: "Application des consignes de sécurité spécifiques au site, gestion des alarmes techniques et reporting d'activité."
+    },
+    {
+      icon: "Warehouse",
+      title: "Zones de stockage & matières sensibles",
+      content: "Sécurisation des zones de stockage, contrôle des entrées/sorties de matières et prévention des vols."
+    }
   ],
 };
 
