@@ -1,3 +1,4 @@
+
 // src/app/secteurs/page.tsx
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -12,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { ArrowRight, ShieldCheck, ClipboardCheck, Target, MapPin } from "lucide-react";
+import { getLucideIcon } from "@/lib/icons";
 
 function toCanonical(path: string) {
   const base = siteConfig?.url?.replace(/\/$/, "") || "";
@@ -185,43 +187,49 @@ export default function SecteursHubPage() {
             </div>
 
             <div className="mx-auto mt-12 grid max-w-6xl gap-6 md:grid-cols-2">
-              {sectorsData.map((sector) => (
-                <Link href={`/secteurs/${sector.slug}`} key={sector.slug} className="group block">
-                  <Card className="h-full overflow-hidden rounded-2xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
-                    <CardHeader className="p-6">
-                      <CardTitle className="flex items-center justify-between gap-4 text-lg">
-                        <span className="line-clamp-1">{sector.heroTitle}</span>
-                        <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1" />
-                      </CardTitle>
+              {sectorsData.map((sector) => {
+                const Icon = getLucideIcon(sector.icon);
+                return (
+                  <Link href={`/secteurs/${sector.slug}`} key={sector.slug} className="group block">
+                    <Card className="h-full overflow-hidden rounded-2xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
+                      <CardHeader className="p-6">
+                        <div className="flex items-center justify-between gap-4">
+                           <div className="flex items-center gap-4">
+                              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-secondary">
+                                <Icon className="h-6 w-6 text-secondary-foreground" />
+                              </div>
+                              <CardTitle className="text-lg">
+                                {sector.heroTitle}
+                              </CardTitle>
+                           </div>
+                           <ArrowRight className="h-5 w-5 text-muted-foreground transition-transform group-hover:translate-x-1" />
+                        </div>
 
-                      <CardDescription className="mt-2 line-clamp-3">
-                        {sector.heroDescription}
-                      </CardDescription>
+                        <CardDescription className="mt-4 line-clamp-3">
+                          {sector.heroDescription}
+                        </CardDescription>
+                      </CardHeader>
 
-                      <div className="mt-4 flex flex-wrap gap-2">
-                        <Badge variant="secondary" className="gap-2">
-                          <ShieldCheck className="h-4 w-4" />
-                          Sur-mesure
-                        </Badge>
-                        <Badge variant="secondary" className="gap-2">
-                          <ClipboardCheck className="h-4 w-4" />
-                          Reporting
-                        </Badge>
-                        <Badge variant="secondary" className="gap-2">
-                          <MapPin className="h-4 w-4" />
-                          Île-de-France
-                        </Badge>
-                      </div>
-                    </CardHeader>
-
-                    <CardContent className="px-6 pb-6 pt-0">
-                      <p className="text-sm text-muted-foreground">
-                        Recommandations, dispositifs types et cas d’usage.
-                      </p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
+                      <CardContent className="px-6 pb-6 pt-0">
+                         <div className="flex flex-wrap gap-2">
+                          <Badge variant="outline" className="gap-2">
+                            <ShieldCheck className="h-4 w-4" />
+                            Sur-mesure
+                          </Badge>
+                          <Badge variant="outline" className="gap-2">
+                            <ClipboardCheck className="h-4 w-4" />
+                            Reporting
+                          </Badge>
+                          <Badge variant="outline" className="gap-2">
+                            <MapPin className="h-4 w-4" />
+                            Île-de-France
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </section>
