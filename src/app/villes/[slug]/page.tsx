@@ -8,6 +8,7 @@ import {
   Breadcrumbs,
   AnimateOnScroll,
   TrustElements,
+  HeroSection,
 } from "@/components/shared";
 import { citiesData, type City, type CityFocus } from "@/lib/cities-data";
 import { servicesData, type Service } from "@/lib/services-data";
