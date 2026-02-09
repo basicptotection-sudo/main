@@ -219,7 +219,7 @@ export default function Home() {
           imageAlt={heroImage?.description ?? "Sécurité privée en Île-de-France"}
           imageHint={heroImage?.imageHint}
           breadcrumbs={
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-sm text-white shadow-sm backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-sm text-white shadow-sm backdrop-blur pt-40">
               <ShieldCheck className="h-4 w-4 text-[#2F8FD8]" />
               <span className="font-medium">
                 Sécurité privée • Encadrement • Discrétion
@@ -228,20 +228,20 @@ export default function Home() {
           }
         />
 
-        <div className="relative z-10 -mt-12">
+        <div className="relative z-10 -mt-16">
           <div className="container mx-auto px-4">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Stat
                 Icon={StatShieldCheck}
                 value="24/7"
                 label="Disponibilité & astreinte"
-                variant="lightOnDark"
+                variant="darkOnLight"
               />
               <Stat
                 Icon={StatBadgeCheck}
                 value="Encadré"
                 label="Supervision & reporting"
-                variant="lightOnDark"
+                variant="darkOnLight"
               />
               <Stat
                 Icon={StatClock}
