@@ -29,6 +29,7 @@ import { Separator } from "@/components/ui/separator";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { siteConfig } from "@/lib/config";
+import { sendEmail } from "@/ai/flows/send-email-flow";
 
 import {
   MapPin,
@@ -81,6 +82,22 @@ export default function ContactPageClient() {
       };
       
       addDocumentNonBlocking(contactCollection, submissionData);
+
+      await sendEmail({
+        from: 'onboarding@resend.dev',
+        to: siteConfig.contact.email,
+        subject: `[Contact BPP] ${data.subject} - ${data.fullName}`,
+        html: `
+          <h1>Nouvelle demande de contact (basic-protection.fr)</h1>
+          <p><strong>Nom:</strong> ${data.fullName}</p>
+          <p><strong>Email:</strong> <a href="mailto:${data.email}">${data.email}</a></p>
+          <p><strong>Téléphone:</strong> ${data.phone || 'Non renseigné'}</p>
+          <p><strong>Société:</strong> ${data.company || 'Non renseigné'}</p>
+          <hr>
+          <h2>Message</h2>
+          <p style="white-space: pre-wrap;">${data.message}</p>
+        `,
+      });
 
       router.push('/merci');
     } catch (error) {

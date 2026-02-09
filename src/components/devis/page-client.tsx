@@ -44,6 +44,7 @@ import { addDocumentNonBlocking } from "@/firebase";
 import { servicesData } from "@/lib/services-data";
 import { siteConfig } from "@/lib/config";
 import { Breadcrumbs } from "@/components/shared";
+import { sendEmail } from "@/ai/flows/send-email-flow";
 
 const serviceTitles = servicesData.map((s) => s.title) as [string, ...string[]];
 
@@ -174,6 +175,33 @@ export default function DevisPageClient() {
       };
 
       addDocumentNonBlocking(leadsCollection, leadData);
+
+      await sendEmail({
+        from: 'onboarding@resend.dev',
+        to: siteConfig.contact.email,
+        subject: `[Devis BPP] ${values.serviceOfInterest} - ${values.fullName}`,
+        html: `
+          <h1>Nouvelle demande de devis (basic-protection.fr)</h1>
+          <p><strong>Nom:</strong> ${values.fullName}</p>
+          <p><strong>Email:</strong> <a href="mailto:${values.email}">${values.email}</a></p>
+          <p><strong>Téléphone:</strong> ${values.phone}</p>
+          <p><strong>Société:</strong> ${values.company || 'Non renseigné'}</p>
+          <hr>
+          <h2>Détails de la demande</h2>
+          <ul>
+            <li><strong>Service souhaité:</strong> ${values.serviceOfInterest}</li>
+            <li><strong>Type de besoin:</strong> ${values.requestType}</li>
+            <li><strong>Urgence:</strong> ${values.urgency}</li>
+            <li><strong>Ville:</strong> ${values.locationCity || 'Non renseigné'}</li>
+            <li><strong>Date souhaitée:</strong> ${values.preferredDate || 'Non renseigné'}</li>
+            <li><strong>Durée (h):</strong> ${values.durationHours || 'Non renseigné'}</li>
+            <li><strong>Effectif attendu:</strong> ${values.expectedPeople || 'Non renseigné'}</li>
+          </ul>
+          <hr>
+          <h2>Message</h2>
+          <p style="white-space: pre-wrap;">${values.message}</p>
+        `
+      });
 
       // analytics placeholder
       console.log("Analytics Event: submit_devis", { service: values.serviceOfInterest });
