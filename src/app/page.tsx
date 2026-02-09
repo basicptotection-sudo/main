@@ -1,4 +1,5 @@
 
+
 import type React from "react";
 import type { Metadata } from "next";
 
@@ -108,21 +109,19 @@ function Stat({
     <div
       className={cn(
         "flex items-center gap-4 rounded-2xl border px-5 py-4",
-        isLightOnDark
-          ? "border-white/10 bg-white/5 text-white backdrop-blur-sm"
-          : "border-border bg-card text-card-foreground shadow-lg"
+        "border-border bg-card text-card-foreground shadow-lg"
       )}
     >
       <div
         className={cn(
           "flex h-10 w-10 items-center justify-center rounded-xl",
-          isLightOnDark ? "bg-[#2F8FD8]/15" : "bg-primary/10"
+          "bg-primary/10"
         )}
       >
         <Icon
           className={cn(
             "h-5 w-5",
-            isLightOnDark ? "text-[#2F8FD8]" : "text-primary"
+            "text-primary"
           )}
         />
       </div>
@@ -130,7 +129,7 @@ function Stat({
         <div
           className={cn(
             "text-xl font-bold leading-none",
-            isLightOnDark ? "" : "text-primary"
+            "text-primary"
           )}
         >
           {value}
@@ -138,7 +137,7 @@ function Stat({
         <div
           className={cn(
             "mt-1 text-sm",
-            isLightOnDark ? "text-white/80" : "text-muted-foreground"
+            "text-muted-foreground"
           )}
         >
           {label}
