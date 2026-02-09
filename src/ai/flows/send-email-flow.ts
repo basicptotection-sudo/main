@@ -12,7 +12,6 @@ import { Resend } from 'resend';
 
 // IMPORTANT: This flow requires a RESEND_API_KEY environment variable to be set.
 // You can get an API key from https://resend.com
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export const SendEmailInputSchema = z.object({
   to: z.string().email(),
@@ -33,6 +32,13 @@ const sendEmailFlow = ai.defineFlow(
     outputSchema: z.any(),
   },
   async (input) => {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      console.error('Resend API key is not set. Please add the RESEND_API_KEY secret to your project.');
+      throw new Error('Email sending is not configured on the server.');
+    }
+    const resend = new Resend(apiKey);
+
     try {
       const { data, error } = await resend.emails.send({
         from: input.from,

@@ -45,7 +45,7 @@
     {
       "id": "zone-paris",
       "description": "Aerial view of Paris with the Eiffel Tower.",
-      "imageUrl": "https://images.unsplash.com/photo-1502602898657-3e91760c0337?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxQYXJpc3xlbnwwfHx8fDE3MTY0OTAwMDF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/images/securite-privee-idf.webp",
       "imageHint": "paris city"
     },
     {
@@ -105,7 +105,7 @@
     {
       "id": "about-hero",
       "description": "Diverse team of security professionals standing together, looking confident.",
-      "imageUrl": "https://images.unsplash.com/photo-1521791136064-7986c2920216?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDE3fHx8ZW58MHx8fHw%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageUrl": "/images/a-propos-basic-protection.webp",
       "imageHint": "team diverse"
     },
     {
