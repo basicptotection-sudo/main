@@ -1,4 +1,3 @@
-
 import type React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -34,19 +33,13 @@ type HeroSectionProps = {
   imageAlt?: string;
   imageHint?: string;
 
-  /** Petite ligne au-dessus du H1 (preuve / promesse / zone) */
   kicker?: string;
-
-  /** Breadcrumbs / badge (comme sur ta homepage) */
   breadcrumbs?: React.ReactNode;
-  
-  /** Stats bar to embed at the bottom */
+
+  /** Cards/stats à chevaucher */
   stats?: React.ReactNode;
 
-  /** 2-4 points de preuve (conversion) */
   highlights?: HeroHighlight[];
-
-  /** Alignement du bloc texte */
   align?: "left" | "center";
 };
 
@@ -64,10 +57,17 @@ export function HeroSection({
   highlights,
   align = "left",
 }: HeroSectionProps) {
+  const hasStats = Boolean(stats);
+
   return (
-    <section className="relative w-full overflow-hidden text-white">
-      {/* Hauteur : stable, premium, et responsive */}
-      <div className="relative flex flex-col h-[70vh] min-h-[680px] md:h-[65vh] md:min-h-[700px] pb-14">
+    <section className="relative w-full overflow-visible text-white">
+      <div
+        className={cn(
+          "relative flex flex-col h-[70vh] min-h-[680px] md:h-[65vh] md:min-h-[700px]",
+          hasStats ? "pb-40 md:pb-48" : "pb-20 md:pb-24"
+
+        )}
+      >
         {/* Background image */}
         {imageUrl ? (
           <Image
@@ -84,13 +84,15 @@ export function HeroSection({
           <div className="absolute inset-0 bg-[#0B1220]" />
         )}
 
-        {/* Overlays (lisibilité + style) */}
+        {/* Overlays */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/20" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
-        <div className="absolute -left-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[#2F8FD8]/15 blur-3xl" />
 
-        {/* Content Aligned to bottom */}
-        <div className="relative z-10 flex flex-1 flex-col justify-end pt-5">
+        {/* ✅ SUPPRIMÉ : le glow oblong bleu */}
+
+        {/* Content */}
+        <div className="relative z-10 flex flex-1 flex-col justify-end pt-16 md:pt-20">
+
           <div className="container mx-auto px-4">
             <div
               className={cn(
@@ -98,15 +100,11 @@ export function HeroSection({
                 align === "center" ? "mx-auto text-center" : "text-left"
               )}
             >
-              {/* Breadcrumb / badge */}
               {breadcrumbs ? (
                 <div
                   className={cn(
-                    // Liens en blanc atténué + hover blanc
                     "[&_a]:text-white/75 [&_a:hover]:text-white",
-                    // Dernier item en blanc (que ce soit <a> ou <span>)
                     "[&_li:last-child>a]:text-white [&_li:last-child>span]:text-white",
-                    // Lisibilité (shadow)
                     "[&_a]:[text-shadow:0_1px_2px_rgba(0,0,0,0.55)]",
                     "[&_span]:[text-shadow:0_1px_2px_rgba(0,0,0,0.55)]"
                   )}
@@ -115,24 +113,20 @@ export function HeroSection({
                 </div>
               ) : null}
 
-              {/* Kicker */}
               {kicker ? (
                 <p className="mt-4 text-sm font-semibold tracking-[0.18em] text-white/85 uppercase">
                   {kicker}
                 </p>
               ) : null}
 
-              {/* H1 */}
               <h1 className="mt-4 text-4xl font-headline font-bold tracking-tight [text-shadow:0_2px_10px_rgba(0,0,0,0.55)] md:text-6xl">
                 {title}
               </h1>
 
-              {/* Description */}
               <p className="mt-5 max-w-2xl text-lg text-white/85 [text-shadow:0_2px_8px_rgba(0,0,0,0.55)] md:text-xl">
                 {description}
               </p>
 
-              {/* Highlights */}
               {highlights?.length ? (
                 <ul
                   className={cn(
@@ -188,15 +182,21 @@ export function HeroSection({
           </div>
         </div>
 
-        {/* Stats Bar */}
+        {/* Stats Bar chevauche le body */}
         {stats ? (
-          <div className="absolute bottom-0 left-1/2 z-20 w-full max-w-7xl -translate-x-1/2 translate-y-1/2 px-4">
-            <div className="container mx-auto px-0">
-               {stats}
-            </div>
+          <div
+            className={cn(
+              "absolute bottom-0 left-1/2 z-20 w-full max-w-7xl -translate-x-1/2 px-4",
+              "translate-y-[55%] md:translate-y-[60%]"
+            )}
+          >
+            <div className="container mx-auto px-0">{stats}</div>
           </div>
         ) : null}
       </div>
+
+      {/* Espace sous le hero pour absorber le chevauchement */}
+      {hasStats ? <div className="h-28 md:h-32" aria-hidden="true" /> : null}
     </section>
   );
 }

@@ -5,7 +5,7 @@ export const siteConfig = {
   url: "https://www.basic-protection.fr",
   ogImage: "/brand/og.png",
   contact: {
-    email: "contact@basic-protection.fr",
+    email: "basic-exploitation@outlook.com",
     phone: "06 77 93 28 31",
     phoneE164: "+33677932831",
   },
@@ -25,7 +25,7 @@ export const siteConfig = {
     mapsUrl: "https://www.google.com/maps/search/?api=1&query=5+rue+des+Frères+Lumière+78370+Plaisir",
     areaServed: ["Yvelines (78)", "Paris (75)", "Hauts-de-Seine (92)", "Seine-Saint-Denis (93)", "Val-de-Marne (94)", "Val-d'Oise (95)", "Seine-et-Marne (77)", "Essonne (91)"],
     telephone: "+33677932831",
-    email: "contact@basic-protection.fr",
+    email: "basic-exploitation@outlook.com",
     openingHours: "Lundi - Vendredi : 9h00 - 18h00",
   },
 };

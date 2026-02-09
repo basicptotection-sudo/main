@@ -28,7 +28,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-
+import { siteConfig } from "@/lib/config";
 
 import {
   MapPin,
@@ -39,15 +39,6 @@ import {
   CheckCircle2,
   ArrowRight,
 } from "lucide-react";
-
-const COMPANY = {
-  name: "Basic Protection Privée",
-  email: "contact@basic-protection.fr",
-  phone: "+33677932831",
-  phoneDisplay: "06 77 93 28 31",
-  address: "5 rue des Frères Lumière, 78370 Plaisir",
-  area: "Île-de-France (Paris, 78, 92, 93, 94)",
-};
 
 const contactFormSchema = z.object({
   fullName: z.string().min(2, { message: "Le nom complet est requis." }),
@@ -64,6 +55,9 @@ export default function ContactPageClient() {
   const router = useRouter();
   const firestore = useFirestore();
   const { toast } = useToast();
+
+  const addressLine = `${siteConfig.business.address.street}, ${siteConfig.business.address.postalCode} ${siteConfig.business.address.city}`;
+  const area = "Île-de-France (Paris, 78, 92, 93, 94)";
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -117,20 +111,20 @@ export default function ContactPageClient() {
               Décrivez votre site, vos horaires et vos contraintes : nous vous
               proposons un dispositif clair et adapté (gardiennage, rondes,
               contrôle d’accès, événementiel). Basés à{" "}
-              <strong className="text-foreground">Plaisir (78370)</strong>, nous
+              <strong className="text-foreground">{siteConfig.business.address.city} ({siteConfig.business.address.postalCode})</strong>, nous
               intervenons en{" "}
               <strong className="text-foreground">Île-de-France</strong>.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-3">
               <Button asChild className="w-full sm:w-auto">
-                <a href={`tel:${COMPANY.phone}`}>
-                  Appeler {COMPANY.phoneDisplay}
+                <a href={`tel:${siteConfig.contact.phoneE164}`}>
+                  Appeler {siteConfig.contact.phone}
                 </a>
               </Button>
 
               <Button asChild variant="outline" className="w-full sm:w-auto">
-                <a href={`mailto:${COMPANY.email}`}>{COMPANY.email}</a>
+                <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a>
               </Button>
             </div>
 
@@ -297,12 +291,12 @@ export default function ContactPageClient() {
 
                   <div className="text-sm text-muted-foreground">
                     Besoin d’un traitement plus rapide ?{" "}
-                    <a className="underline" href={`tel:${COMPANY.phone}`}>
+                    <a className="underline" href={`tel:${siteConfig.contact.phoneE164}`}>
                       Appelez-nous
                     </a>{" "}
                     ou envoyez un email à{" "}
-                    <a className="underline" href={`mailto:${COMPANY.email}`}>
-                      {COMPANY.email}
+                    <a className="underline" href={`mailto:${siteConfig.contact.email}`}>
+                      {siteConfig.contact.email}
                     </a>
                     .
                   </div>
@@ -326,7 +320,7 @@ export default function ContactPageClient() {
                     <div>
                       <p className="font-medium text-foreground">Adresse</p>
                       <p className="text-sm text-muted-foreground">
-                        {COMPANY.address}
+                        {addressLine}
                       </p>
                     </div>
                   </div>
@@ -339,9 +333,9 @@ export default function ContactPageClient() {
                       <p className="font-medium text-foreground">Téléphone</p>
                       <a
                         className="text-sm text-muted-foreground hover:underline"
-                        href={`tel:${COMPANY.phone}`}
+                        href={`tel:${siteConfig.contact.phoneE164}`}
                       >
-                        {COMPANY.phoneDisplay}
+                        {siteConfig.contact.phone}
                       </a>
                     </div>
                   </div>
@@ -354,9 +348,9 @@ export default function ContactPageClient() {
                       <p className="font-medium text-foreground">Email</p>
                       <a
                         className="text-sm text-muted-foreground hover:underline"
-                        href={`mailto:${COMPANY.email}`}
+                        href={`mailto:${siteConfig.contact.email}`}
                       >
-                        {COMPANY.email}
+                        {siteConfig.contact.email}
                       </a>
                     </div>
                   </div>
@@ -368,7 +362,7 @@ export default function ContactPageClient() {
                     <div>
                       <p className="font-medium text-foreground">Disponibilité</p>
                       <p className="text-sm text-muted-foreground">
-                        Réponse rapide (jours ouvrés) — intervention en {COMPANY.area}
+                        Réponse rapide (jours ouvrés) — intervention en {area}
                       </p>
                     </div>
                   </div>
@@ -393,7 +387,7 @@ export default function ContactPageClient() {
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     src={`https://www.google.com/maps?q=${encodeURIComponent(
-                      COMPANY.address
+                      addressLine
                     )}&output=embed`}
                   />
                 </CardContent>
