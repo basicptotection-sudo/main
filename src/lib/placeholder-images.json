@@ -3,7 +3,7 @@
     {
       "id": "hero",
       "description": "A focused security professional in a dark suit, communicating via earpiece in a high-end corporate setting.",
-      "imageUrl": "/images/societe-securite-privee-yvelines-ile-de-france.avif",
+      "imageUrl": "/images/securite-privee-gardiennage.webp",
       "imageHint": "premium security"
     },
     {
@@ -21,13 +21,13 @@
     {
       "id": "service-evenementiel",
       "description": "Security team managing access to a high-end event.",
-      "imageUrl": "https://images.unsplash.com/photo-1762474293029-6a7f3698312c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxldmVudCUyMHNlY3VyaXR5fGVufDB8fHx8MTc2OTA5Mjc3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/images/service-securite-evenementielle.webp",
       "imageHint": "event security"
     },
     {
       "id": "service-audit-conseil",
       "description": "Security expert analyzing blueprints in a modern office.",
-      "imageUrl": "https://images.unsplash.com/photo-1768839721719-c5ed97c1fd58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzZWN1cml0eSUyMGF1ZGl0fGVufDB8fHx8MTc2OTA5Mjc3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/images/service-audit-conseil.webp",
       "imageHint": "security audit"
     },
     {
@@ -39,7 +39,7 @@
     {
       "id": "zones-hub",
       "description": "Map of the Ile-de-France region with pins on major cities.",
-      "imageUrl": "https://images.unsplash.com/photo-1600010101590-fbc57640c470?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtYXAlMjBGcmFuY2V8ZW58MHx8fHwxNzY5MDkzMDQ4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/images/securite-privee-idf.webp",
       "imageHint": "map France"
     },
     {
@@ -87,19 +87,19 @@
     {
       "id": "service-agent-cyno",
       "description": "Security guard with a German Shepherd dog patrolling an industrial area at dusk.",
-      "imageUrl": "https://images.unsplash.com/photo-1629853412159-22237c157a09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cml0eSUyMGRvZ3xlbnwwfHx8fDE3NjkwOTk5OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/images/agent-cynophile.webp",
       "imageHint": "security dog"
     },
     {
       "id": "service-agent-ssiap",
       "description": "Fire safety officer inspecting a fire extinguisher in a commercial building hallway.",
-      "imageUrl": "https://images.unsplash.com/photo-1543347103-6a98da819038?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmcmUlMjBzYWZldHl8ZW58MHx8fHwxNzY5MTAwMDAxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/images/securite-incendie.webp",
       "imageHint": "fire safety"
     },
     {
       "id": "service-agent-rondier",
       "description": "Security guard with a flashlight making rounds in a dark parking garage at night.",
-      "imageUrl": "https://images.unsplash.com/photo-1618214362883-a7493b8a3e75?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cml0eSUyMHBhdHJvbCUyMG5pZ2h0fGVufDB8fHx8MTc2OTEwMDAwMnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/images/agent-rondier.webp",
       "imageHint": "security patrol night"
     },
     {

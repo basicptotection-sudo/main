@@ -68,7 +68,7 @@ export default function ZonesHubPage() {
         <div className="absolute inset-0">
           {heroImage?.imageUrl ? (
             <div
-              className="absolute inset-0 opacity-15"
+              className="absolute inset-0 opacity-10"
               style={{
                 backgroundImage: `url(${heroImage.imageUrl})`,
                 backgroundSize: "cover",
