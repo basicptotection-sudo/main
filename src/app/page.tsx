@@ -228,7 +228,7 @@ export default function Home() {
           }
         />
 
-        <div className="relative z-10 -mt-20">
+        <div className="relative z-10 -mt-12">
           <div className="container mx-auto px-4">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Stat
