@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -121,20 +122,25 @@ export default function VillesHubPage() {
               <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-4 py-2 text-sm">
                 <ShieldCheck className="h-4 w-4 text-primary" />
                 <span className="text-muted-foreground">
-                  Contenu local • Cas d’usage réels • FAQ adaptée
+                  Analyse locale • Dispositifs sur-mesure • Proximité
                 </span>
               </div>
 
               <h2 className="mt-6 font-headline text-3xl font-bold tracking-tight text-primary md:text-4xl">
-                Pages “Ville” : du contenu utile, pas dupliqué
+                Une sécurité pensée pour votre réalité locale
               </h2>
               <p className="mt-4 text-lg text-muted-foreground">
-                Chaque page intègre des scénarios concrets, une FAQ ciblée et des services mis en avant
-                selon les spécificités locales (bureaux, chantiers, ERP, logistique, événementiel…).
+                Chaque ville a ses propres défis : quartiers d'affaires denses, zones logistiques, chantiers majeurs ou secteurs résidentiels. C'est pourquoi nos pages 'Ville' détaillent des cas d'usage concrets et des dispositifs adaptés aux risques de votre environnement.
               </p>
 
               <div className="mt-7 flex flex-wrap items-center justify-center gap-2">
-                {["Gardiennage", "Rondes", "SSIAP", "Cynophile", "Événementiel"].map((t) => (
+                {[
+                  "Sièges sociaux",
+                  "Chantiers BTP",
+                  "Logistique",
+                  "Retail & Luxe",
+                  "Événementiel",
+                ].map((t) => (
                   <Badge key={t} variant="secondary">
                     {t}
                   </Badge>
