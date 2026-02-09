@@ -97,14 +97,11 @@ function Stat({
   Icon,
   label,
   value,
-  variant,
 }: {
   Icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: string;
-  variant: "lightOnDark" | "darkOnLight";
 }) {
-  const isLightOnDark = variant === "lightOnDark";
   return (
     <div
       className={cn(
@@ -225,42 +222,35 @@ export default function Home() {
               </span>
             </div>
           }
-        />
-
-        <div className="relative z-10 -mt-8">
-          <div className="container mx-auto px-4">
+          stats={
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Stat
                 Icon={StatShieldCheck}
                 value="24/7"
                 label="Disponibilité & astreinte"
-                variant="darkOnLight"
               />
               <Stat
                 Icon={StatBadgeCheck}
                 value="Encadré"
                 label="Supervision & reporting"
-                variant="darkOnLight"
               />
               <Stat
                 Icon={StatClock}
                 value="< 24h"
                 label="Déploiement possible"
-                variant="darkOnLight"
               />
               <Stat
                 Icon={StatMapPin}
                 value="IDF"
                 label="Couverture régionale"
-                variant="darkOnLight"
               />
             </div>
-          </div>
-        </div>
+          }
+        />
 
         {/* TRUST / ABOUT */}
         <AnimateOnScroll>
-          <section id="about" className="bg-card pt-20 md:pt-28 pb-20 md:pb-28">
+          <section id="about" className="bg-card pt-28 md:pt-36 pb-20 md:pb-28">
             <div className="container mx-auto px-4">
               <div className="grid lg:grid-cols-2 lg:gap-16 items-center">
                 {/* Left side */}

@@ -67,7 +67,7 @@ export function HeroSection({
   return (
     <section className="relative w-full overflow-hidden text-white">
       {/* Hauteur : stable, premium, et responsive */}
-      <div className="relative flex flex-col h-[70vh] min-h-[600px] md:h-[65vh] md:min-h-[620px]">
+      <div className="relative flex flex-col h-[70vh] min-h-[680px] md:h-[65vh] md:min-h-[700px] pb-14">
         {/* Background image */}
         {imageUrl ? (
           <Image
@@ -90,7 +90,7 @@ export function HeroSection({
         <div className="absolute -left-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[#2F8FD8]/15 blur-3xl" />
 
         {/* Content Aligned to bottom */}
-        <div className="relative z-10 flex flex-1 flex-col justify-end pt-20 pb-24 md:pb-32">
+        <div className="relative z-10 flex flex-1 flex-col justify-end pt-5">
           <div className="container mx-auto px-4">
             <div
               className={cn(
@@ -185,15 +185,17 @@ export function HeroSection({
                 </Link>
               </div>
             </div>
-
-            {/* Stats Bar */}
-            {stats ? (
-              <div className="mt-16">
-                {stats}
-              </div>
-            ) : null}
           </div>
         </div>
+
+        {/* Stats Bar */}
+        {stats ? (
+          <div className="absolute bottom-0 left-1/2 z-20 w-full max-w-7xl -translate-x-1/2 translate-y-1/2 px-4">
+            <div className="container mx-auto px-0">
+               {stats}
+            </div>
+          </div>
+        ) : null}
       </div>
     </section>
   );
