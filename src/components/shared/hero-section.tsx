@@ -90,7 +90,7 @@ export function HeroSection({
         <div className="absolute -left-24 top-1/2 h-[520px] w-[520px] -translate-y-1/2 rounded-full bg-[#2F8FD8]/15 blur-3xl" />
 
         {/* Content Aligned to bottom */}
-        <div className="relative z-10 flex flex-1 flex-col justify-end pt-5 pb-16 md:pb-20">
+        <div className="relative z-10 flex flex-1 flex-col justify-end pt-40 pb-24 md:pb-32">
           <div className="container mx-auto px-4">
             <div
               className={cn(
