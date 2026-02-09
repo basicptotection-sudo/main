@@ -96,23 +96,53 @@ function Stat({
   Icon,
   label,
   value,
+  variant,
 }: {
   Icon: React.ComponentType<{ className?: string }>;
   label: string;
   value: string;
+  variant: "lightOnDark" | "darkOnLight";
 }) {
+  const isLightOnDark = variant === "lightOnDark";
   return (
-    <div className="flex items-center gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-4 text-white backdrop-blur-sm">
+    <div
+      className={cn(
+        "flex items-center gap-4 rounded-2xl border px-5 py-4",
+        isLightOnDark
+          ? "border-white/10 bg-white/5 text-white backdrop-blur-sm"
+          : "border-border bg-card text-card-foreground shadow-lg"
+      )}
+    >
       <div
-        className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2F8FD8]/15"
+        className={cn(
+          "flex h-10 w-10 items-center justify-center rounded-xl",
+          isLightOnDark ? "bg-[#2F8FD8]/15" : "bg-primary/10"
+        )}
       >
         <Icon
-          className="h-5 w-5 text-[#2F8FD8]"
+          className={cn(
+            "h-5 w-5",
+            isLightOnDark ? "text-[#2F8FD8]" : "text-primary"
+          )}
         />
       </div>
       <div className="min-w-0">
-        <div className="text-xl font-bold leading-none">{value}</div>
-        <div className="mt-1 text-sm text-white/80">{label}</div>
+        <div
+          className={cn(
+            "text-xl font-bold leading-none",
+            isLightOnDark ? "" : "text-primary"
+          )}
+        >
+          {value}
+        </div>
+        <div
+          className={cn(
+            "mt-1 text-sm",
+            isLightOnDark ? "text-white/80" : "text-muted-foreground"
+          )}
+        >
+          {label}
+        </div>
       </div>
     </div>
   );
@@ -196,35 +226,42 @@ export default function Home() {
               </span>
             </div>
           }
-          stats={
-            <div className="mt-24 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        />
+
+        <div className="relative z-10 -mt-20">
+          <div className="container mx-auto px-4">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <Stat
                 Icon={StatShieldCheck}
                 value="24/7"
                 label="Disponibilité & astreinte"
+                variant="lightOnDark"
               />
               <Stat
                 Icon={StatBadgeCheck}
                 value="Encadré"
                 label="Supervision & reporting"
+                variant="lightOnDark"
               />
               <Stat
                 Icon={StatClock}
                 value="< 24h"
                 label="Déploiement possible"
+                variant="darkOnLight"
               />
               <Stat
                 Icon={StatMapPin}
                 value="IDF"
                 label="Couverture régionale"
+                variant="darkOnLight"
               />
             </div>
-          }
-        />
+          </div>
+        </div>
 
         {/* TRUST / ABOUT */}
         <AnimateOnScroll>
-          <section id="about" className="bg-card py-20 md:py-28">
+          <section id="about" className="bg-card pt-20 md:pt-28 pb-20 md:pb-28">
             <div className="container mx-auto px-4">
               <div className="grid lg:grid-cols-2 lg:gap-16 items-center">
                 {/* Left side */}
