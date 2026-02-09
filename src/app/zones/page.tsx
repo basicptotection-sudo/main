@@ -68,7 +68,7 @@ export default function ZonesHubPage() {
         <div className="absolute inset-0">
           {heroImage?.imageUrl ? (
             <div
-              className="absolute inset-0 opacity-40"
+              className="absolute inset-0 opacity-25"
               style={{
                 backgroundImage: `url(${heroImage.imageUrl})`,
                 backgroundSize: "cover",
@@ -76,7 +76,7 @@ export default function ZonesHubPage() {
               }}
             />
           ) : null}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/80 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/40 to-background" />
         </div>
 
         <div className="relative container mx-auto max-w-6xl px-4 py-14 md:py-18">
