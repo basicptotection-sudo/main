@@ -113,7 +113,7 @@ export const locationsData: Location[] = [
       "sécurité saint-quentin-en-yvelines",
     ],
 
-    heroImageId: "zone-paris",
+    heroImageId: "zone-yvelines-78",
 
     intro: {
       title: "Une présence locale pour sécuriser les Yvelines, avec méthode et traçabilité.",
@@ -375,7 +375,7 @@ export const locationsData: Location[] = [
       "sécurité aubervilliers",
     ],
 
-    heroImageId: "zones-hub",
+    heroImageId: "zone-seine-saint-denis-93",
 
     intro: {
       title: "Protéger les investissements et les flux : une sécurité robuste et pilotée.",
@@ -435,7 +435,7 @@ export const locationsData: Location[] = [
       {
         question: "Pouvez-vous intervenir la nuit et le week-end ?",
         answer:
-          "Oui. Ce sont les créneaux les plus exposés. On adapte horaires et fréquence selon votre niveau de risque.",
+          "Oui. Ce sont les créneaux les plus exposés. On adapte la fréquence et les points de passage selon vos risques.",
       },
     ],
   },
@@ -459,7 +459,7 @@ export const locationsData: Location[] = [
       "sécurité zone d'activité 94",
     ],
 
-    heroImageId: "zones-hub",
+    heroImageId: "zone-val-de-marne-94",
 
     intro: {
       title: "Sécuriser les flux et la continuité : une approche opérationnelle, terrain et traçable.",
@@ -518,7 +518,7 @@ export const locationsData: Location[] = [
       {
         question: "Fournissez-vous un reporting régulier ?",
         answer:
-          "Oui. Main courante, rapports d’événements et synthèses selon la fréquence souhaitée.",
+          "Oui. Main courante, rapports d’événements et synthèses selon la fréquence souhaitée (quotidienne, hebdomadaire, mensuelle).",
       },
     ],
   },
@@ -543,7 +543,7 @@ export const locationsData: Location[] = [
       "sécurité argenteuil",
     ],
 
-    heroImageId: "zones-hub",
+    heroImageId: "zone-val-doise-95",
 
     intro: {
       title: "Protéger les axes stratégiques du 95 : logistique, activité économique et flux.",
@@ -627,7 +627,7 @@ export const locationsData: Location[] = [
       "sécurité melun",
     ],
 
-    heroImageId: "zones-hub",
+    heroImageId: "zone-seine-et-marne-77",
 
     intro: {
       title: "Surveiller de grands périmètres : mobilité, dissuasion et pilotage.",
@@ -712,7 +712,7 @@ export const locationsData: Location[] = [
       "sécurité laboratoire",
     ],
 
-    heroImageId: "zones-hub",
+    heroImageId: "zone-essonne-91",
 
     intro: {
       title: "Protéger l’innovation : procédures, accès maîtrisés et traçabilité.",
