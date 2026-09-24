@@ -1,485 +1,53 @@
-// src/app/a-propos/page.tsx
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-
+import { ArrowDown, ArrowUpRight, ClipboardCheck, Eye, MapPin, Phone, ShieldCheck } from "lucide-react";
 import { siteConfig } from "@/lib/config";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import {
-  HeroSection,
-  Breadcrumbs,
-  AnimateOnScroll,
-  CTASection,
-} from "@/components/shared";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import {
-  Award,
-  ShieldCheck,
-  Users,
-  Eye,
-  Target,
-  ClipboardCheck,
-  Building2,
-  MapPin,
-  Phone,
-} from "lucide-react";
-
-function toCanonical(path: string) {
-  const base = siteConfig?.url?.replace(/\/$/, "") || "";
-  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
-}
-
+const title = "À propos — L’exigence de la sérénité";
+const description = "Découvrez Basic Protection Privée, agence de sécurité à Plaisir : une approche humaine, des dispositifs sur mesure et un suivi rigoureux en Île-de-France.";
 export const metadata: Metadata = {
-  title: "À propos | Basic Protection Privée",
-  description:
-    "Basic Protection Privée : une agence de sécurité privée en Île-de-France, fondée sur la rigueur opérationnelle, la discrétion et la confiance. Découvrez notre mission, nos valeurs et notre méthode.",
-  alternates: {
-    canonical: toCanonical("/a-propos"),
-  },
-  openGraph: {
-    title: "À propos | Basic Protection Privée",
-    description:
-      "Une sécurité maîtrisée : rigueur, discrétion, confiance. Découvrez notre vision, notre méthode et nos engagements en Île-de-France.",
-    url: toCanonical("/a-propos"),
-    siteName: siteConfig?.name || "Basic Protection Privée",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "À propos | Basic Protection Privée",
-    description:
-      "Rigueur, discrétion, confiance : découvrez l’agence et sa méthode.",
-  },
+  title, description,
+  alternates: { canonical: `${siteConfig.url}/a-propos` },
+  openGraph: { title, description, url: `${siteConfig.url}/a-propos`, siteName: siteConfig.name, type: "website", images: [{ url: "/images/a-propos-basic-protection.webp", alt: "Basic Protection Privée — une relation de confiance" }] },
+  twitter: { card: "summary_large_image", title, description, images: ["/images/a-propos-basic-protection.webp"] },
 };
 
-const StatCard = ({
-  icon,
-  value,
-  label,
-}: {
-  icon: React.ReactNode;
-  value: string;
-  label: string;
-}) => (
-  <Card className="text-center bg-muted/30 border-0">
-    <CardHeader className="items-center">
-      <div className="bg-primary/10 rounded-full p-3 mb-2">{icon}</div>
-      <p className="text-4xl font-bold font-headline text-primary">{value}</p>
-    </CardHeader>
-    <CardContent>
-      <p className="text-muted-foreground">{label}</p>
-    </CardContent>
-  </Card>
-);
-
-const Feature = ({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) => (
-  <div className="flex gap-4">
-    <div className="shrink-0 mt-1">
-      <div className="bg-primary/10 rounded-xl p-3">{icon}</div>
-    </div>
-    <div>
-      <h3 className="font-semibold text-foreground">{title}</h3>
-      <p className="text-muted-foreground mt-1">{description}</p>
-    </div>
-  </div>
-);
+const values = [
+  { title: "La rigueur.", subtitle: "Dans chaque détail.", icon: ShieldCheck, text: "Des consignes précises, des équipes préparées et une mission encadrée. Nous accordons autant d’importance à la préparation qu’à la présence sur le terrain.", detail: "Préparer · Encadrer · Contrôler" },
+  { title: "La discrétion.", subtitle: "Dans chaque présence.", icon: Eye, text: "Une posture adaptée à vos lieux, à vos publics et à votre activité. Protéger efficacement, tout en respectant le fonctionnement et l’image de votre organisation.", detail: "Observer · S’adapter · Préserver" },
+  { title: "La confiance.", subtitle: "Dans chaque échange.", icon: ClipboardCheck, text: "Un dialogue clair, des informations utiles et un suivi régulier. Vous comprenez le dispositif mis en place et vous gardez une visibilité sur la mission.", detail: "Écouter · Informer · Accompagner" },
+];
+const steps = [
+  { title: "Écouter avant d’agir", text: "Nous prenons le temps de comprendre votre activité, vos horaires, vos accès et les points sensibles de votre environnement.", result: "Un besoin clairement défini" },
+  { title: "Concevoir le bon dispositif", text: "Nous déterminons les moyens humains, les postes et les procédures adaptés. Les consignes et les modalités de suivi sont formalisées.", result: "Une proposition lisible et adaptée" },
+  { title: "Être présents, avec méthode", text: "Les équipes sont briefées sur leur mission. L’encadrement accompagne la mise en place et les ajustements nécessaires sur le terrain.", result: "Une exécution encadrée" },
+  { title: "Suivre et faire progresser", text: "Les remontées terrain et vos retours permettent de faire le point sur la prestation et d’adapter le dispositif dans la durée.", result: "Un suivi qui fait la différence" },
+];
 
 export default function AboutPage() {
-  const heroImage =
-    PlaceHolderImages.find((p) => p.id === "about-hero") ||
-    PlaceHolderImages.find((p) => p.id === "security-hero");
-  const founderImage =
-    PlaceHolderImages.find((p) => p.id === "founder-portrait") ||
-    PlaceHolderImages.find((p) => p.id === "portrait");
-
-  const breadcrumbItems = [
-    { label: "Accueil", href: "/" },
-    { label: "À propos", href: "/a-propos" },
-  ];
-
-  const values = [
-    {
-      icon: <ShieldCheck className="w-7 h-7 text-primary" />,
-      title: "Rigueur",
-      description:
-        "Cadrage précis, consignes claires, exécution maîtrisée et traçabilité. La sécurité ne tolère pas l’approximation.",
-    },
-    {
-      icon: <Eye className="w-7 h-7 text-primary" />,
-      title: "Discrétion",
-      description:
-        "Protéger sans exposer. Des postures adaptées, une présence efficace et non intrusive, selon le contexte et le public.",
-    },
-    {
-      icon: <Users className="w-7 h-7 text-primary" />,
-      title: "Confiance",
-      description:
-        "Transparence, communication et continuité de service. Un partenaire fiable sur qui vous pouvez compter.",
-    },
-  ];
-
-  const methodSteps = [
-    {
-      icon: <Target className="w-6 h-6 text-primary" />,
-      title: "1. Analyse du besoin",
-      description:
-        "Objectifs, contraintes, risques, flux, horaires, points sensibles : on cartographie avant d’agir.",
-    },
-    {
-      icon: <ClipboardCheck className="w-6 h-6 text-primary" />,
-      title: "2. Dispositif & consignes",
-      description:
-        "Plan d’action, positionnements, procédures, contrôles, main courante et modalités de reporting.",
-    },
-    {
-      icon: <ShieldCheck className="w-6 h-6 text-primary" />,
-      title: "3. Mise en place terrain",
-      description:
-        "Agents qualifiés, brief clair, supervision opérationnelle et ajustements en temps réel si besoin.",
-    },
-    {
-      icon: <Award className="w-6 h-6 text-primary" />,
-      title: "4. Suivi & amélioration",
-      description:
-        "Bilan, KPI, retours clients, recommandations : on améliore le dispositif mission après mission.",
-    },
-  ];
-
   return (
-    <div className="bg-background">
-      <HeroSection
-        title="Une agence à taille humaine, une exigence de grand compte."
-        description="Basic Protection Privée accompagne entreprises, commerces et événements en Île-de-France avec une sécurité pensée, pilotée et traçable. Notre différence : la rigueur opérationnelle, la discrétion terrain et la qualité du suivi."
-        cta1={{ label: "Nos services", href: "/services" }}
-        cta2={{
-          label: "Demander un devis",
-          href: "/devis",
-          variant: "secondary",
-        }}
-        imageUrl={heroImage?.imageUrl}
-        imageAlt="Agents de sécurité Basic Protection Privée"
-        imageHint={heroImage?.imageHint}
-        breadcrumbs={<Breadcrumbs items={breadcrumbItems} />}
-      />
-
-      {/* Intro / Mission */}
-      <AnimateOnScroll>
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4">
-            <div className="max-w-3xl mx-auto text-center">
-              <Badge variant="secondary" className="mb-4">
-                Notre mission
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
-                Une sécurité maîtrisée, du cadrage au reporting.
-              </h2>
-              <p className="mt-5 text-lg text-muted-foreground">
-                Nous avons créé Basic Protection Privée pour répondre à une
-                exigence simple : des dispositifs fiables, encadrés et adaptés
-                aux réalités du terrain. Chaque mission est pensée comme un
-                projet : objectifs, consignes, supervision et compte-rendu.
-              </p>
-
-              <div className="mt-10 grid gap-6 sm:grid-cols-2 text-left">
-                <Feature
-                  icon={<Building2 className="w-6 h-6 text-primary" />}
-                  title="Une approche sur-mesure"
-                  description="Chaque site est différent : accès, public, flux, horaires, niveau de risque. On s’adapte, on documente, on sécurise."
-                />
-                <Feature
-                  icon={<ClipboardCheck className="w-6 h-6 text-primary" />}
-                  title="Méthode & traçabilité"
-                  description="Consignes claires, main courante, points de contrôle et reporting : vous savez ce qui est fait, quand, et comment."
-                />
-              </div>
-            </div>
+    <>
+      <section className="about-intro border-b" aria-labelledby="about-title">
+        <div className="premium-shell">
+          <nav aria-label="Fil d’Ariane" className="flex items-center gap-3 pt-8 text-[11px] text-muted-foreground"><Link href="/" className="hover:text-foreground">Accueil</Link><span aria-hidden="true">/</span><span aria-current="page">À propos</span></nav>
+          <div className="about-hero-grid">
+            <div className="about-hero-copy"><p className="premium-eyebrow text-[#9c8056]">Basic Protection Privée · Notre identité</p><h1 id="about-title" className="mt-7 font-headline text-[clamp(2.5rem,4.3vw,4.3rem)] font-medium leading-[1.06] tracking-[-0.055em]">La sécurité est<br />notre métier.<br /><span className="premium-serif">La confiance,<br />notre engagement.</span></h1><p className="mt-8 max-w-md text-base leading-relaxed text-muted-foreground">Une agence à taille humaine, portée par une conviction : votre tranquillité se construit par la qualité de notre présence.</p><a href="#engagements" className="premium-text-link mt-9">Découvrir ce qui nous anime <ArrowDown size={16} /></a></div>
+            <div className="relative"><div className="about-hero-photo"><Image src="/images/a-propos-basic-protection.webp" alt="Une poignée de main, symbole d’une relation de confiance" fill priority sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-[#101c2d]/60 via-transparent to-transparent" /><div className="absolute bottom-7 left-7 right-7 text-white"><p className="premium-eyebrow text-white/70">Notre façon d’être</p><p className="mt-3 font-headline text-2xl tracking-tight">Un partenaire.<br />Avant tout.</p></div></div><div className="about-image-note"><span className="h-px w-7 bg-[#b79c73]" /><span>Rigueur. Discrétion. Confiance.</span></div></div>
           </div>
-        </section>
-      </AnimateOnScroll>
+        </div>
+      </section>
 
-      {/* Values */}
-      <AnimateOnScroll>
-        <section className="py-16 md:py-24 bg-muted/20">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <Badge variant="secondary" className="mb-4">
-                Nos valeurs
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
-                Rigueur. Discrétion. Confiance.
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground">
-                Trois principes simples qui guident notre recrutement, notre
-                organisation et nos interventions.
-              </p>
-            </div>
+      <section className="premium-shell premium-section" aria-labelledby="conviction-title"><div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24"><div><p className="premium-eyebrow text-muted-foreground">01 — Notre conviction</p><h2 id="conviction-title" className="mt-6 font-headline text-xl font-medium leading-snug">Bien protéger,<br />c’est d’abord bien comprendre.</h2></div><div><p className="font-headline text-[clamp(1.6rem,2.8vw,2.6rem)] font-medium leading-snug tracking-[-0.035em]">Derrière chaque lieu à sécuriser,<br className="hidden md:block" /> il y a des personnes, une activité<br className="hidden md:block" /> et une confiance à préserver.</p><div className="mt-8 grid gap-6 text-sm leading-relaxed text-muted-foreground sm:grid-cols-2"><p>Basic Protection Privée accompagne les entreprises, commerces, gestionnaires de sites et organisateurs d’événements en Île-de-France. Chaque mission commence par une lecture attentive de votre environnement.</p><p>Notre rôle : transformer vos besoins en une organisation concrète. Des moyens adaptés, des consignes compréhensibles et un suivi qui vous permet d’avancer sereinement.</p></div></div></div></section>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {values.map((v) => (
-                <Card key={v.title} className="text-center shadow-lg">
-                  <CardHeader className="items-center">
-                    <div className="bg-primary/10 rounded-full p-4 mb-4">
-                      {v.icon}
-                    </div>
-                    <CardTitle className="text-xl font-headline">
-                      {v.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{v.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-      </AnimateOnScroll>
+      <section id="engagements" className="premium-dark premium-section" aria-labelledby="values-title"><div className="premium-shell"><div className="flex flex-col justify-between gap-6 lg:flex-row lg:items-end"><div><p className="premium-eyebrow text-[#d9c6a3]">02 — Ce qui nous anime</p><h2 id="values-title" className="premium-title mt-6 text-white">Trois exigences.<br /><span className="premium-serif text-[#d9c6a3]">Une même ligne de conduite.</span></h2></div><p className="max-w-sm text-sm leading-relaxed text-white/60">Des principes qui prennent leur sens dans la préparation, l’intervention et la relation avec vous.</p></div><div className="mt-14 grid gap-10 md:grid-cols-3 md:gap-9">{values.map(({ title: valueTitle, subtitle, text, detail, icon: Icon }, index) => <article key={valueTitle} className="flex flex-col border-t border-white/20 pt-7"><div className="flex items-center justify-between text-[#d9c6a3]"><span className="text-xs">0{index + 1}</span><Icon size={25} strokeWidth={1.2} aria-hidden="true" /></div><h3 className="mt-9 font-headline text-3xl font-medium tracking-tight">{valueTitle}</h3><p className="premium-serif mt-1 text-xl text-[#d9c6a3]">{subtitle}</p><p className="mt-6 text-sm leading-relaxed text-white/65">{text}</p><p className="mt-auto pt-9 text-[10px] uppercase tracking-[0.13em] text-white/45">{detail}</p></article>)}</div></div></section>
 
-      {/* Method */}
-      <AnimateOnScroll>
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <Badge variant="secondary" className="mb-4">
-                Notre méthode
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
-                Une exécution terrain, pilotée comme un dispositif.
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground">
-                Objectif : limiter l’imprévu. On anticipe, on formalise, on
-                supervise. Et on améliore à chaque mission.
-              </p>
-            </div>
+      <section className="premium-shell premium-section" aria-labelledby="method-title"><div className="grid gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24"><div><p className="premium-eyebrow text-muted-foreground">03 — Notre façon de travailler</p><h2 id="method-title" className="premium-title mt-6">Une présence humaine.<br /><span className="premium-serif">Une méthode précise.</span></h2><p className="mt-6 max-w-sm leading-relaxed text-muted-foreground">Une prestation de sécurité se prépare, s’encadre et se suit. Nous vous accompagnons à chacune de ces étapes.</p><Link href="/services" className="premium-text-link mt-8">Explorer nos expertises <ArrowUpRight size={17} /></Link></div><ol>{steps.map((step, index) => <li key={step.title} className="grid grid-cols-[2rem_1fr] gap-5 border-t py-7 sm:gap-8"><span className="pt-1 font-headline text-lg text-[#9c8056]">0{index + 1}</span><div><h3 className="font-headline text-xl font-medium tracking-tight">{step.title}</h3><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{step.text}</p><p className="mt-4 inline-flex items-center gap-2 text-xs font-medium"><span className="h-px w-4 bg-[#b79c73]" />{step.result}</p></div></li>)}</ol></div></section>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {methodSteps.map((s) => (
-                <Card key={s.title} className="border bg-card">
-                  <CardHeader className="flex flex-row items-start gap-4">
-                    <div className="bg-primary/10 rounded-xl p-3">{s.icon}</div>
-                    <div>
-                      <CardTitle className="text-lg">{s.title}</CardTitle>
-                      <p className="text-muted-foreground mt-1">
-                        {s.description}
-                      </p>
-                    </div>
-                  </CardHeader>
-                </Card>
-              ))}
-            </div>
+      <section className="border-y bg-card premium-section" aria-labelledby="presence-title"><div className="premium-shell grid gap-10 lg:grid-cols-2 lg:items-center lg:gap-20"><div className="relative aspect-[5/4] overflow-hidden bg-muted"><Image src="/images/zones/securite-privee-hauts-de-seine.webp" alt="La Défense, au cœur du territoire francilien" fill sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover" /><div className="absolute bottom-0 left-0 flex items-center gap-3 bg-[#101c2d] px-6 py-5 text-white"><MapPin size={17} className="text-[#d9c6a3]" /><span className="text-sm">Notre terrain : l’Île-de-France.</span></div></div><div><p className="premium-eyebrow text-muted-foreground">04 — Notre ancrage</p><h2 id="presence-title" className="premium-title mt-6">À Plaisir.<br /><span className="premium-serif">À vos côtés.</span></h2><p className="mt-6 leading-relaxed text-muted-foreground">Installés dans les Yvelines, nous intervenons dans les huit départements d’Île-de-France. Cette implantation nous permet d’accompagner des environnements variés, des sites résidentiels aux lieux de réception, des bureaux aux chantiers.</p><div className="mt-7 border-l border-[#b79c73] pl-5"><p className="text-sm font-medium">{siteConfig.name}</p><p className="mt-2 text-sm leading-relaxed text-muted-foreground">{siteConfig.business.address.street}<br />{siteConfig.business.address.postalCode} {siteConfig.business.address.city}</p></div><Link href="/zones" className="premium-text-link mt-8">Découvrir notre présence <ArrowUpRight size={17} /></Link></div></div></section>
 
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Button asChild>
-                <Link href="/devis">Demander un devis</Link>
-              </Button>
-              <Button asChild variant="outline">
-                <Link href="/services">Voir nos services</Link>
-              </Button>
-            </div>
-          </div>
-        </section>
-      </AnimateOnScroll>
-
-      {/* Founder / Story */}
-      <AnimateOnScroll>
-        <section className="py-16 md:py-24 bg-muted/20">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-              <div className="prose prose-lg dark:prose-invert max-w-none">
-                <Badge variant="secondary" className="not-prose mb-4">
-                  Notre histoire
-                </Badge>
-                <h2 className="text-primary !mb-2">Une expérience terrain, une vision claire.</h2>
-                <p className="text-muted-foreground !mt-0 !mb-6">
-                  Une structure à taille humaine, conçue pour être réactive et
-                  fiable, sans compromis sur l’encadrement.
-                </p>
-
-                <blockquote>
-                  “La meilleure sécurité n’est pas la plus visible : c’est la
-                  mieux pensée. Une consigne utile, un agent bien briefé, une
-                  supervision active… et un client serein.”
-                </blockquote>
-
-                <p>
-                  Notre objectif est simple : apporter une sécurité qui rassure
-                  réellement. Cela passe par une préparation sérieuse, une
-                  présence adaptée, et un suivi transparent. Nous privilégions
-                  la qualité des équipes, la stabilité des missions et la
-                  continuité de service.
-                </p>
-
-                <div className="not-prose mt-8 flex flex-col sm:flex-row gap-3">
-                  <Button asChild>
-                    <Link href="/contact">Nous contacter</Link>
-                  </Button>
-                  <Button asChild variant="outline">
-                    <Link href="/devis">Obtenir une proposition</Link>
-                  </Button>
-                </div>
-              </div>
-
-              <div className="order-first md:order-last">
-                {founderImage ? (
-                  <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
-                    <Image
-                      src={founderImage.imageUrl}
-                      alt="Dirigeant Basic Protection Privée"
-                      fill
-                      className="object-cover"
-                      data-ai-hint={founderImage.imageHint}
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/50 via-transparent to-transparent" />
-                  </div>
-                ) : (
-                  <Card className="p-8">
-                    <p className="text-muted-foreground">
-                      Ajoute une image “founder-portrait” dans PlaceHolderImages
-                      pour afficher le portrait ici.
-                    </p>
-                  </Card>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
-      </AnimateOnScroll>
-
-      {/* Stats */}
-      <AnimateOnScroll>
-        <section className="py-16 md:py-24">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <Badge variant="secondary" className="mb-4">
-                Indicateurs
-              </Badge>
-              <h2 className="text-3xl md:text-4xl font-headline font-bold text-primary">
-                Des engagements mesurables.
-              </h2>
-              <p className="mt-4 text-lg text-muted-foreground">
-                Ces chiffres peuvent être ajustés selon ta réalité (ou remplacés
-                par des preuves : avis, logos clients, études de cas).
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-              <StatCard
-                icon={<ShieldCheck className="w-8 h-8 text-primary" />}
-                value="500+"
-                label="Missions réalisées"
-              />
-              <StatCard
-                icon={<Users className="w-8 h-8 text-primary" />}
-                value="50+"
-                label="Clients accompagnés"
-              />
-              <StatCard
-                icon={<Award className="w-8 h-8 text-primary" />}
-                value="100%"
-                label="Agents agréés CNAPS"
-              />
-              <StatCard
-                icon={<ClipboardCheck className="w-8 h-8 text-primary" />}
-                value="98%"
-                label="Satisfaction (interne)"
-              />
-            </div>
-          </div>
-        </section>
-      </AnimateOnScroll>
-
-      {/* Local / Contact strip (SEO local + conversion) */}
-      <AnimateOnScroll>
-        <section className="py-16 md:py-24 bg-muted/20">
-          <div className="container mx-auto px-4 max-w-6xl">
-            <Card className="overflow-hidden border bg-card">
-              <div className="grid grid-cols-1 lg:grid-cols-3">
-                <div className="p-8 lg:col-span-2">
-                  <h2 className="text-2xl md:text-3xl font-headline font-bold text-primary">
-                    Intervention en Île-de-France
-                  </h2>
-                  <p className="mt-3 text-muted-foreground">
-                    Gardiennage, sécurité événementielle, rondes, contrôle
-                    d’accès : nous construisons un dispositif adapté à votre
-                    site, vos horaires et vos contraintes.
-                  </p>
-
-                  <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                    <div className="flex items-center gap-3">
-                      <div className="bg-primary/10 rounded-xl p-3">
-                        <MapPin className="w-5 h-5 text-primary" />
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Paris • 92 • 93 • 94 • IDF
-                      </p>
-                    </div>
-
-                    <div className="flex items-center gap-3">
-                      <div className="bg-primary/10 rounded-xl p-3">
-                        <Phone className="w-5 h-5 text-primary" />
-                      </div>
-                      <p className="text-sm text-muted-foreground">
-                        Réponse rapide • Devis clair • Suivi de mission
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                    <Button asChild>
-                      <Link href="/devis">Demander un devis</Link>
-                    </Button>
-                    <Button asChild variant="outline">
-                      <Link href="/services">Découvrir nos prestations</Link>
-                    </Button>
-                  </div>
-                </div>
-
-                <div className="bg-muted/30 p-8 flex items-center">
-                  <div className="w-full">
-                    <p className="text-sm font-medium text-foreground">
-                      Besoin d’un dispositif adapté ?
-                    </p>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Donne-nous le contexte (site, horaires, public, enjeux).
-                      On te propose un cadrage simple et une mise en place
-                      sécurisée.
-                    </p>
-                    <div className="mt-6">
-                      <Button asChild variant="secondary" className="w-full">
-                        <Link href="/contact">Parler à un responsable</Link>
-                      </Button>
-                    </div>
-                    <p className="mt-3 text-xs text-muted-foreground text-center">
-                      Réponse sous 24h ouvrées (ajuste si besoin)
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-        </section>
-      </AnimateOnScroll>
-
-      <AnimateOnScroll>
-        <CTASection
-          title="Prêt à travailler avec un partenaire fiable ?"
-          description="Expliquez votre besoin : nous construisons un dispositif clair, piloté, et adapté à votre site."
-          cta={{ label: "Demander un devis", href: "/devis" }}
-        />
-      </AnimateOnScroll>
-    </div>
+      <section className="premium-shell py-16 text-center md:py-24" aria-label="Notre engagement"><p className="premium-eyebrow justify-center text-[#9c8056]">L’exigence de la sérénité</p><p className="mx-auto mt-7 max-w-4xl font-headline text-[clamp(1.8rem,3.8vw,3.5rem)] font-medium leading-tight tracking-[-0.04em]">Être présents pour que vous puissiez<br className="hidden md:block" /><span className="premium-serif"> vous consacrer à l’essentiel.</span></p></section>
+      <section className="premium-dark border-b border-white/10 py-16 md:py-24"><div className="premium-shell flex flex-col justify-between gap-10 lg:flex-row lg:items-center"><div><p className="premium-eyebrow text-[#d9c6a3]">Faisons connaissance</p><h2 className="premium-title mt-5 text-white">La confiance commence<br />par une conversation.</h2><p className="mt-5 max-w-lg text-sm leading-relaxed text-white/60">Parlez-nous de votre site, de votre événement ou de vos enjeux. Construisons ensemble une réponse adaptée.</p></div><div className="flex shrink-0 flex-col items-start gap-6"><Link href="/contact" className="premium-button premium-button-gold">Rencontrons-nous <ArrowUpRight size={18} /></Link><a href={`tel:${siteConfig.contact.phoneE164}`} className="flex items-center gap-3 text-sm text-white/80 hover:text-[#d9c6a3]"><Phone size={16} />{siteConfig.contact.phone}</a></div></div></section>
+    </>
   );
 }

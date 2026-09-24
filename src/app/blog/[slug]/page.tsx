@@ -1,341 +1,78 @@
 import { notFound } from "next/navigation";
+import { cache } from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-
-import { siteConfig } from "@/lib/config";
-import { getPostBySlug, getPostFilePaths, getSimilarPosts } from "@/lib/blog";
-import { MDXRemote } from "next-mdx-remote/rsc";
-
+import { ArrowLeft, ArrowUpRight, Clock3 } from "lucide-react";
+import { compileMDX } from "next-mdx-remote/rsc";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-
+import { siteConfig } from "@/lib/config";
+import { getPostBySlug, getPostFilePaths, getSimilarPosts } from "@/lib/blog";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import ArticleJsonLd from "@/components/seo/article-json-ld";
-import { TableOfContents } from "@/components/blog/table-of-contents";
-import { Tag } from "@/components/blog/tag";
-import { AnimateOnScroll, Breadcrumbs } from "@/components/shared";
+import { Breadcrumbs } from "@/components/shared/breadcrumbs";
 import { useMDXComponents } from "@/mdx-components";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { EventChecklist } from "@/components/blog/event-checklist";
+import { ArticleOverview, ArticlePhoto, ArticleWorkflow, ArticleTip } from "@/components/blog/article-blocks";
+import styles from "./article.module.css";
 
-type BlogPageProps = {
-  params: { slug: string };
-};
-
-function toAbsolute(path: string) {
-  const base = (siteConfig?.url || "").replace(/\/$/, "");
-  if (!base) return path.startsWith("/") ? path : `/${path}`;
-  return `${base}${path.startsWith("/") ? path : `/${path}`}`;
+type PageProps = { params: Promise<{ slug: string }> };
+type HeadingNode = { type: string; tagName?: string; value?: string; properties?: { id?: string }; children?: HeadingNode[] };
+const loadPost = cache((slug: string) => {
+  if (!getPostFilePaths().includes(`${slug}.mdx`)) notFound();
+  return getPostBySlug(slug);
+});
+function imageFor(image: string) {
+  return PlaceHolderImages.find(item => item.id === image)?.imageUrl ?? (image.startsWith("/images/") ? image : "/images/blog/choir-agence-securite.webp");
 }
-
-export async function generateStaticParams() {
-  return getPostFilePaths().map((path) => ({
-    slug: path.replace(/\.mdx$/, ""),
-  }));
+function dateLabel(date: string) {
+  return Number.isNaN(Date.parse(date)) ? null : format(new Date(date), "d MMMM yyyy", { locale: fr });
 }
-
-function readingTimeFromText(text: string) {
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
-  if (!words) return null;
-  const minutes = Math.max(3, Math.round(words / 200));
-  return `${minutes} min`;
+export function generateStaticParams() { return getPostFilePaths().map(file => ({ slug: file.replace(/\.mdx$/, "") })); }
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const { data } = loadPost(slug);
+  const image = new URL(imageFor(data.image), siteConfig.url).href;
+  return {
+    title: data.title, description: data.description, alternates: { canonical: `/blog/${slug}` }, authors: [{ name: data.author }],
+    openGraph: { type: "article", title: data.title, description: data.description, url: `/blog/${slug}`, locale: "fr_FR", siteName: siteConfig.name, publishedTime: data.date, modifiedTime: data.updatedAt ?? data.date, authors: [data.author], tags: data.tags, images: [{ url: image, alt: data.title }] },
+    twitter: { card: "summary_large_image", title: data.title, description: data.description, images: [image] },
+  };
 }
-
-function canonicalFor(slug: string) {
-  return `/blog/${slug}`;
-}
-
-export async function generateMetadata({ params }: BlogPageProps): Promise<Metadata> {
-  try {
-    const { data } = getPostBySlug(params.slug);
-
-    const title = data.title;
-    const description = data.description || "";
-    const canonicalPath = canonicalFor(params.slug);
-    const canonicalAbs = toAbsolute(canonicalPath);
-
-    const postImage = PlaceHolderImages.find((p) => p.id === data.image);
-    const ogImageAbs = postImage?.imageUrl
-      ? (postImage.imageUrl.startsWith("http") ? postImage.imageUrl : toAbsolute(postImage.imageUrl))
-      : undefined;
-
-    return {
-      title,
-      description,
-      alternates: { canonical: canonicalAbs },
-      openGraph: {
-        type: "article",
-        title,
-        description,
-        url: canonicalAbs,
-        images: ogImageAbs ? [{ url: ogImageAbs }] : undefined,
-      },
-      twitter: {
-        card: ogImageAbs ? "summary_large_image" : "summary",
-        title,
-        description,
-        images: ogImageAbs ? [ogImageAbs] : undefined,
-      },
+export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params;
+  const { data, content } = loadPost(slug);
+  const headings: { id: string; text: string; level: number }[] = [];
+  function collectHeadings() {
+    return (tree: HeadingNode) => {
+      const text = (node: HeadingNode): string => node.type === "text" ? node.value ?? "" : (node.children ?? []).map(text).join("");
+      const walk = (node: HeadingNode) => {
+        if ((node.tagName === "h2" || node.tagName === "h3") && node.properties?.id) headings.push({ id: node.properties.id, text: text(node), level: node.tagName === "h2" ? 2 : 3 });
+        node.children?.forEach(walk);
+      };
+      walk(tree);
     };
-  } catch {
-    return {};
   }
-}
-
-export default async function BlogPostPage({ params }: BlogPageProps) {
-  const { slug } = params;
-
-  try {
-    const { data, content } = getPostBySlug(slug);
-
-    const postImage = PlaceHolderImages.find((p) => p.id === data.image);
-    const dateLabel = format(new Date(data.date), "dd MMMM yyyy", { locale: fr });
-    const readingTime = readingTimeFromText(content);
-    const similarPosts = getSimilarPosts(slug, data.tags);
-
-    const breadcrumbItems = [
-      { label: "Accueil", href: "/" },
-      { label: "Blog", href: "/blog" },
-      { label: data.title, href: `/blog/${slug}` },
-    ];
-
-    return (
-      <>
-        <ArticleJsonLd post={data} slug={slug} />
-
-        <div className="bg-background text-foreground">
-          {/* HERO */}
-          <header className="relative overflow-hidden border-b border-border">
-            <div className="absolute inset-0 -z-10">
-              <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
-              <div className="absolute -top-28 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-muted/40 blur-3xl" />
-            </div>
-
-            <div className="container mx-auto max-w-6xl px-4 py-10 md:py-14">
-              <Breadcrumbs items={breadcrumbItems} className="p-0 mb-6" />
-
-              <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
-                <div>
-                  <div className="flex flex-wrap gap-2">
-                    {Array.isArray(data.tags) && data.tags.map((tag: string) => (
-                      <Tag key={tag} tag={tag} />
-                    ))}
-                  </div>
-
-                  <h1 className="mt-4 font-headline text-4xl font-bold tracking-tight md:text-5xl">
-                    {data.title}
-                  </h1>
-
-                  {data.description ? (
-                    <p className="mt-4 max-w-2xl text-base text-muted-foreground md:text-lg">
-                      {data.description}
-                    </p>
-                  ) : null}
-
-                  <div className="mt-6 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                    <span>
-                      Par <span className="font-medium text-foreground">{data.author}</span>
-                    </span>
-                    <span className="opacity-40">•</span>
-                    <span>{dateLabel}</span>
-                    {readingTime ? (
-                      <>
-                        <span className="opacity-40">•</span>
-                        <span>{readingTime}</span>
-                      </>
-                    ) : null}
-                  </div>
-                </div>
-
-                <div className="rounded-3xl border border-border bg-background/70 p-6 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-                  <div className="text-sm font-semibold">En bref</div>
-                  <p className="mt-2 text-sm text-muted-foreground">
-                    Vous avez un besoin concret (site, horaires, contraintes) ? On peut cadrer une solution rapidement.
-                  </p>
-
-                  <div className="mt-4 flex flex-col gap-2">
-                    <Link
-                      href="/devis"
-                      className="inline-flex h-11 items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-90"
-                    >
-                      Demander un devis
-                    </Link>
-                    <Link
-                      href="/services"
-                      className="inline-flex h-11 items-center justify-center rounded-xl border border-border bg-background px-4 text-sm font-medium hover:bg-muted/30"
-                    >
-                      Voir nos services
-                    </Link>
-                  </div>
-
-                  <div className="mt-5 rounded-2xl border border-border bg-muted/10 p-4">
-                    <div className="text-sm font-semibold">Conseil</div>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                      Plus votre contexte est précis, plus la proposition est rapide et pertinente.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {postImage ? (
-                <div className="mt-10">
-                  <div className="relative aspect-[16/9] w-full overflow-hidden rounded-3xl border border-border bg-muted/20">
-                    <Image
-                      src={postImage.imageUrl}
-                      alt={data.title}
-                      fill
-                      priority
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 1200px"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/45 via-transparent to-transparent" />
-                  </div>
-                </div>
-              ) : null}
-            </div>
-          </header>
-
-          {/* BODY */}
-          <main className="container mx-auto max-w-6xl px-4 py-10 md:py-14">
-            <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
-              <article className="min-w-0">
-                <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
-                  <div className="text-sm text-muted-foreground">Lecture & analyse</div>
-                  <div className="flex items-center gap-2">
-                    <Link
-                      href="/blog"
-                      className="rounded-full border border-border px-4 py-2 text-sm hover:bg-muted/30"
-                    >
-                      ← Retour au blog
-                    </Link>
-                  </div>
-                </div>
-
-                <div className="prose prose-lg dark:prose-invert max-w-none">
-                  <MDXRemote source={content} components={useMDXComponents({})} />
-                </div>
-
-                <div className="mt-10 rounded-3xl border border-border bg-muted/10 p-6">
-                  <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                    <div>
-                      <div className="text-sm font-semibold">Besoin d’un dispositif ?</div>
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        Dites-nous le lieu, les horaires, les accès et les contraintes : réponse structurée.
-                      </p>
-                    </div>
-
-                    <div className="flex gap-2">
-                      <Link
-                        href="/devis"
-                        className="inline-flex h-11 items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-90"
-                      >
-                        Demander un devis
-                      </Link>
-                      <Link
-                        href="/services"
-                        className="inline-flex h-11 items-center justify-center rounded-xl border border-border bg-background px-4 text-sm font-medium hover:bg-muted/30"
-                      >
-                        Services
-                      </Link>
-                    </div>
-                  </div>
-
-                  {Array.isArray(data.tags) && data.tags.length > 0 ? (
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {data.tags.map((tag: string) => (
-                        <Tag key={tag} tag={tag} />
-                      ))}
-                    </div>
-                  ) : null}
-                </div>
-              </article>
-
-              {/* TOC */}
-              <aside className="hidden lg:block">
-                <div className="sticky top-24 space-y-4">
-                  <div className="rounded-3xl border border-border bg-background p-5">
-                    <div className="text-sm font-semibold">Sommaire</div>
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Naviguez rapidement dans l’article.
-                    </p>
-                    <div className="mt-4">
-                      <TableOfContents />
-                    </div>
-                  </div>
-
-                  <div className="rounded-3xl border border-border bg-background p-5">
-                    <div className="text-sm font-semibold">Contact rapide</div>
-                    <p className="mt-2 text-sm text-muted-foreground">
-                      Un besoin urgent ou ponctuel ? Un cadrage rapide suffit souvent.
-                    </p>
-                    <Link
-                      href="/devis"
-                      className="mt-4 inline-flex h-11 w-full items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground hover:opacity-90"
-                    >
-                      Demander un devis
-                    </Link>
-                  </div>
-                </div>
-              </aside>
-            </div>
-          </main>
-
-          {/* Similar posts */}
-          {similarPosts.length > 0 && (
-            <AnimateOnScroll>
-              <section className="border-t bg-muted/20 py-16 md:py-24">
-                <div className="container mx-auto max-w-6xl px-4">
-                  <div className="mx-auto mb-12 max-w-3xl text-center">
-                    <h2 className="font-headline text-3xl font-bold md:text-4xl">
-                      Articles similaires
-                    </h2>
-                    <p className="mt-4 text-lg text-muted-foreground">
-                      Ces lectures pourraient également vous intéresser.
-                    </p>
-                  </div>
-
-                  <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    {similarPosts.map((post) => {
-                      const img = PlaceHolderImages.find((p) => p.id === post.frontmatter.image);
-                      const d = format(new Date(post.frontmatter.date), "dd MMMM yyyy", { locale: fr });
-
-                      return (
-                        <Link href={`/blog/${post.slug}`} key={post.slug} className="group block">
-                          <Card className="h-full overflow-hidden rounded-3xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
-                            <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
-                              {img ? (
-                                <Image
-                                  src={img.imageUrl}
-                                  alt={post.frontmatter.title}
-                                  fill
-                                  className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                                  sizes="(max-width: 768px) 100vw, 33vw"
-                                />
-                              ) : (
-                                <div className="absolute inset-0 bg-muted/30" />
-                              )}
-                              <div className="absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
-                            </div>
-                            <CardHeader className="p-6">
-                              <p className="text-sm text-muted-foreground">{d}</p>
-                              <CardTitle className="mt-2 leading-snug">
-                                {post.frontmatter.title}
-                              </CardTitle>
-                            </CardHeader>
-                          </Card>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              </section>
-            </AnimateOnScroll>
-          )}
-        </div>
-      </>
-    );
-  } catch (error) {
-    console.error(error);
-    notFound();
-  }
+  const { content: article } = await compileMDX({ source: content, components: useMDXComponents({ ArticleOverview, ArticlePhoto, ArticleWorkflow, EventChecklist, blockquote: ArticleTip }), options: { mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [rehypeSlug, collectHeadings] } } });
+  const navigationHeadings = headings.length > 14 ? headings.filter(heading => heading.level === 2) : headings;
+  const plain = content.replace(/```[\s\S]*?```/g, "").replace(/!?\[([^\]]*)\]\([^)]*\)/g, "$1").replace(/<[^>]*>/g, "").replace(/[#*_>`~|]/g, " ");
+  const minutes = Math.max(1, Math.ceil(plain.trim().split(/\s+/).filter(Boolean).length / 200));
+  const similar = getSimilarPosts(slug, data.tags, 30).filter((post, index, all) => post.frontmatter.title !== data.title && all.findIndex(item => item.frontmatter.title === post.frontmatter.title) === index).slice(0, 3);
+  const published = dateLabel(data.date);
+  const updated = data.updatedAt && data.updatedAt !== data.date ? dateLabel(data.updatedAt) : null;
+  const breadcrumb = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ name: "Accueil", url: "/" }, { name: "Le journal", url: "/blog" }, { name: data.title, url: `/blog/${slug}` }].map((item, index) => ({ "@type": "ListItem", position: index + 1, name: item.name, item: new URL(item.url, siteConfig.url).href })) };
+  return <div className={styles.page}>
+    <ArticleJsonLd post={data} slug={slug} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb).replace(/</g,"\\u003c") }} />
+    <header className={styles.hero}><div className="premium-shell"><Breadcrumbs items={[{label:"Accueil",href:"/"},{label:"Le journal",href:"/blog"},{label:"L’article"}]} variant="onDark" /><div className={styles.heroLayout}><div><p className="premium-eyebrow text-[#d9c6a3]">Le journal · Conseils & analyses</p><div className={styles.tags}>{data.tags.map(tag=><Link key={tag} href={`/blog/tags/${tag.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`}>{tag}</Link>)}</div><h1>{data.title}</h1><p className={styles.description}>{data.description}</p><div className={styles.byline}><span>Par <strong>{data.author}</strong></span>{published && <time dateTime={data.date}>{published}</time>}<span className="inline-flex items-center gap-2"><Clock3 size={14} aria-hidden="true" />{minutes} min de lecture</span>{updated && <span>Mis à jour le <time dateTime={data.updatedAt}>{updated}</time></span>}</div></div><div className={styles.heroImage}><Image src={imageFor(data.image)} alt={data.title} fill priority sizes="(max-width: 767px) 100vw, 45vw" className="object-cover" /><span>Le regard Basic Protection</span></div></div></div></header>
+    <div className="premium-shell"><div className={styles.readingLayout}>
+      <aside className={styles.sidebar}>{headings.length > 0 && <details open className={styles.contents}><summary>Dans cet article <span aria-hidden="true">↕</span></summary><nav aria-label="Sommaire de l’article"><ol>{navigationHeadings.map((heading,index)=><li key={heading.id} className={heading.level===3 ? styles.subheading : undefined}><a href={`#${heading.id}`}><span>{String(index+1).padStart(2,"0")}</span>{heading.text}</a></li>)}</ol></nav></details>}<div className={styles.advice}><p className="premium-eyebrow text-[#d9c6a3]">Du conseil au terrain</p><h2>Et pour<br /><span className="premium-serif">votre projet ?</span></h2><p>Échangeons sur vos lieux, vos contraintes et les moyens de protection adaptés.</p><Link href="/devis" className="premium-text-link text-[#d9c6a3]">Parlons de votre besoin <ArrowUpRight size={16} aria-hidden="true" /></Link></div></aside>
+      <div className={styles.articleColumn}><article aria-label={data.title} className={styles.article}>{article}</article><div className={styles.articleEnd}><span>Un éclairage de {data.author}</span><Link href="/blog" className="premium-text-link"><ArrowLeft size={16} aria-hidden="true" />Retour au journal</Link><a href="#" className="premium-text-link">Haut de page ↑</a></div></div>
+    </div></div>
+    <section className={styles.cta} aria-labelledby="article-project"><div className="premium-shell"><div><p className="premium-eyebrow text-[#d9c6a3]">Passons de la réflexion à l’action</p><h2 id="article-project" className="premium-title mt-5">Votre contexte est unique.<br /><span className="premium-serif text-[#d9c6a3]">Sa protection aussi.</span></h2></div><div><p>Définissons ensemble une réponse adaptée à votre site, vos horaires et vos priorités.</p><Link href="/devis" className="premium-button premium-button-gold mt-6">Étudier mon projet <ArrowUpRight size={18} aria-hidden="true" /></Link></div></div></section>
+    {similar.length>0 && <section className="premium-shell premium-section" aria-labelledby="related-posts"><div className={styles.relatedHeading}><div><p className="premium-eyebrow text-muted-foreground">Pour prolonger la réflexion</p><h2 id="related-posts" className="premium-title mt-5">D’autres regards.<br /><span className="premium-serif">Les mêmes exigences.</span></h2></div><Link href="/blog" className="premium-text-link">Tout le journal <ArrowUpRight size={17} aria-hidden="true" /></Link></div><div className={styles.related}>{similar.map(post=><Link href={`/blog/${post.slug}`} key={post.slug} className={styles.relatedCard}><div className={styles.relatedImage}><Image src={imageFor(post.frontmatter.image)} alt={post.frontmatter.title} fill sizes="(max-width: 639px) 100vw, 33vw" className="object-cover" /><ArrowUpRight size={36} aria-hidden="true" /></div><p className={styles.relatedTag}>{post.frontmatter.tags[0] ?? "Le journal"}</p><h3>{post.frontmatter.title}</h3><p>{post.frontmatter.description}</p></Link>)}</div></section>}
+  </div>;
 }

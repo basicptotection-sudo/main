@@ -613,26 +613,26 @@ export const locationsData: Location[] = [
     slug: "seine-et-marne-77",
     name: "Seine-et-Marne (77)",
 
-    title: "Sécurité & gardiennage en Seine-et-Marne (77) | Grands sites, logistique, périmètres étendus",
+    title: "Sécurité & Gardiennage en Seine-et-Marne (77) | Logistique, Industrie & Sites Étendus",
     description:
-      "Sécurité privée dans le 77 : surveillance de grands sites, plateformes logistiques, sites isolés et zones touristiques. Rondes véhiculées, cynophile selon besoins, contrôle d’accès et reporting.",
+      "Agence de sécurité en Seine-et-Marne (77) : gardiennage, rondes, contrôle d'accès et solutions pour plateformes logistiques, sites industriels et chantiers. Devis rapide pour Meaux, Melun, Marne-la-Vallée.",
     keywords: [
       "sécurité seine-et-marne",
       "gardiennage 77",
-      "sécurité plateforme logistique 77",
+      "sécurité logistique 77",
+      "gardiennage meaux",
+      "gardiennage melun",
       "agent cynophile 77",
       "surveillance site isolé",
       "sécurité marne-la-vallée",
-      "sécurité meaux",
-      "sécurité melun",
     ],
 
     heroImageId: "zone-seine-et-marne-77",
 
     intro: {
-      title: "Surveiller de grands périmètres : mobilité, dissuasion et pilotage.",
+      title: "Sécuriser les grands axes de la Seine-et-Marne (77) : logistique, industrie, chantiers.",
       content:
-        "La Seine-et-Marne se distingue par ses surfaces : grands entrepôts, plateformes logistiques, sites industriels parfois isolés, et zones de loisirs. La sécurité efficace repose sur une stratégie mixte : postes aux points clés, rondes véhiculées, rondes cynophiles si nécessaire, levées de doute rapides et traçabilité. Nous construisons un plan opérationnel qui couvre réellement le terrain, pas seulement sur le papier.",
+        "Avec ses plateformes logistiques XXL (Sénart, Val d'Europe), ses parcs industriels et ses chantiers, la Seine-et-Marne exige une sécurité mobile, dissuasive et réactive. Nous déployons des dispositifs adaptés : contrôle des flux camions, rondes sur de grands périmètres, et sécurisation des stocks pour protéger vos actifs 24/7.",
     },
 
     services: allServices,
@@ -640,21 +640,21 @@ export const locationsData: Location[] = [
     useCases: [
       {
         icon: "Truck",
-        title: "Plateformes logistiques XXL",
+        title: "Plateformes logistiques (Sénart, Meaux...)",
         content:
-          "Postes aux accès, rondes périmétriques, sécurisation zones extérieures de stockage, levées de doute et reporting exploitable.",
+          "Contrôle d’accès véhicules, surveillance des quais et entrepôts, rondes périmétriques pour prévenir les intrusions et vols.",
       },
       {
-        icon: "Map",
-        title: "Sites étendus / isolés",
+        icon: "Factory",
+        title: "Sites industriels & carrières",
         content:
-          "Rondes mobiles et dissuasion renforcée, plan de passage imprévisible, sécurisation des accès secondaires.",
+          "Sécurisation des périmètres, contrôle des accès prestataires, et prévention des risques sur des sites étendus, parfois isolés.",
       },
       {
-        icon: "Castle",
-        title: "Renforts sur sites touristiques et événements",
+        icon: "HardHat",
+        title: "Chantiers & BTP",
         content:
-          "Gestion des flux, sécurisation des parkings et zones sensibles, posture “sécurité-service” pour préserver l’expérience visiteur.",
+          "Protection des matériaux et engins, surveillance nocturne et week-end, et filtrage des accès pour limiter les vols.",
       },
     ],
 

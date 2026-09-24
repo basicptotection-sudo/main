@@ -6,9 +6,10 @@ import { servicesData } from '@/lib/services-data';
 import { locationsData } from '@/lib/locations-data';
 import { getAllPosts } from '@/lib/blog';
 import { sectorsData } from '@/lib/secteurs-data';
+import { citiesData } from '@/lib/cities-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ['', '/a-propos', '/devis', '/merci', '/services', '/secteurs', '/zones', '/contact', '/blog'];
+  const staticRoutes = ['', '/a-propos', '/devis', '/merci', '/services', '/secteurs', '/zones', '/villes', '/contact', '/blog'];
 
   const now = new Date();
 
@@ -40,6 +41,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9
   }));
 
+  const citiesEntries: MetadataRoute.Sitemap = citiesData.map(city => ({
+    url: `${siteConfig.url}/villes/${city.slug}`,
+    lastModified: now.toISOString(),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
   const blogEntries: MetadataRoute.Sitemap = getAllPosts().map(post => ({
       url: `${siteConfig.url}/blog/${post.slug}`,
       lastModified: new Date(post.frontmatter.date).toISOString(),
@@ -55,5 +63,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...servicesEntries, ...sectorsEntries, ...locationsEntries, ...blogEntries, ...tagEntries];
+  return [...staticEntries, ...servicesEntries, ...sectorsEntries, ...locationsEntries, ...citiesEntries, ...blogEntries, ...tagEntries];
 }

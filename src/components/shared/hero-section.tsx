@@ -1,3 +1,4 @@
+
 import type React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,8 +27,8 @@ type HeroHighlight = {
 type HeroSectionProps = {
   title: string | React.ReactNode;
   description: string;
-  cta1: CTA;
-  cta2: CTA;
+  cta1?: CTA;
+  cta2?: CTA;
 
   imageUrl?: string;
   imageAlt?: string;
@@ -41,6 +42,7 @@ type HeroSectionProps = {
 
   highlights?: HeroHighlight[];
   align?: "left" | "center";
+  contentVerticalAlign?: "center" | "bottom";
 };
 
 export function HeroSection({
@@ -56,16 +58,22 @@ export function HeroSection({
   stats,
   highlights,
   align = "left",
+  contentVerticalAlign = "bottom",
 }: HeroSectionProps) {
   const hasStats = Boolean(stats);
 
   return (
-    <section className="relative w-full overflow-visible text-white">
+    <section
+      className={cn(
+        "relative w-full text-white",
+        hasStats ? "overflow-visible" : "overflow-hidden"
+      )}
+    >
       <div
         className={cn(
-          "relative flex flex-col h-[70vh] min-h-[680px] md:h-[65vh] md:min-h-[700px]",
-          hasStats ? "pb-40 md:pb-48" : "pb-20 md:pb-24"
-
+          "relative flex flex-col",
+          "min-h-[70vh] md:min-h-[75vh]", // Use min-height with vh to allow growth
+          hasStats ? "pb-32 md:pb-48" : "pb-20 md:pb-24"
         )}
       >
         {/* Background image */}
@@ -91,8 +99,14 @@ export function HeroSection({
         {/* ✅ SUPPRIMÉ : le glow oblong bleu */}
 
         {/* Content */}
-        <div className="relative z-10 flex flex-1 flex-col justify-end pt-16 md:pt-20">
-
+        <div
+          className={cn(
+            "relative z-10 flex flex-1 flex-col",
+            contentVerticalAlign === "center"
+              ? "justify-center pt-20 md:pt-24"
+              : "justify-end pt-28 md:pt-36"
+          )}
+        >
           <div className="container mx-auto px-4">
             <div
               className={cn(
@@ -146,38 +160,44 @@ export function HeroSection({
               ) : null}
 
               {/* CTA */}
-              <div
-                className={cn(
-                  "mt-10 flex flex-wrap gap-4",
-                  align === "center" ? "justify-center" : "justify-start"
-                )}
-              >
-                <Link
-                  href={cta1.href}
-                  aria-label={cta1.ariaLabel ?? cta1.label}
+              {(cta1 || cta2) && (
+                <div
                   className={cn(
-                    buttonVariants({ variant: cta1.variant }),
-                    "font-bold rounded-full h-14 px-10 text-base",
-                    "shadow-lg shadow-black/20",
-                    cta1.className
+                    "mt-10 flex flex-wrap gap-4",
+                    align === "center" ? "justify-center" : "justify-start"
                   )}
                 >
-                  {cta1.label}
-                </Link>
+                  {cta1 && (
+                    <Link
+                      href={cta1.href}
+                      aria-label={cta1.ariaLabel ?? cta1.label}
+                      className={cn(
+                        buttonVariants({ variant: cta1.variant }),
+                        "font-bold rounded-full h-14 px-10 text-base",
+                        "shadow-lg shadow-black/20",
+                        cta1.className
+                      )}
+                    >
+                      {cta1.label}
+                    </Link>
+                  )}
 
-                <Link
-                  href={cta2.href}
-                  aria-label={cta2.ariaLabel ?? cta2.label}
-                  className={cn(
-                    buttonVariants({ variant: cta2.variant }),
-                    "font-bold rounded-full h-14 px-10 text-base",
-                    "bg-white/15 border-white/20 text-white backdrop-blur hover:bg-white/25",
-                    cta2.className
+                  {cta2 && (
+                    <Link
+                      href={cta2.href}
+                      aria-label={cta2.ariaLabel ?? cta2.label}
+                      className={cn(
+                        buttonVariants({ variant: cta2.variant }),
+                        "font-bold rounded-full h-14 px-10 text-base",
+                        "bg-white/15 border-white/20 text-white backdrop-blur hover:bg-white/25",
+                        cta2.className
+                      )}
+                    >
+                      {cta2.label}
+                    </Link>
                   )}
-                >
-                  {cta2.label}
-                </Link>
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

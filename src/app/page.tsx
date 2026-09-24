@@ -1,569 +1,88 @@
-
-
-import type React from "react";
 import type { Metadata } from "next";
-
-import Link from "next/link";
 import Image from "next/image";
-
-import { getAllPosts } from "@/lib/blog";
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
-
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { siteConfig } from "@/lib/config";
-import { servicesData } from "@/lib/services-data";
-import { locationsData } from "@/lib/locations-data";
-
-import {
-  TrustElements,
-  ServicesGrid,
-  ProcessSteps,
-  SectorsGrid,
-  CoverageSection,
-  Testimonials,
-  FAQAccordion,
-  CTASection,
-  StickyMobileCallButton,
-  AnimateOnScroll,
-  HeroSection,
-} from "@/components/shared";
-
-import {
-  trustElements,
-  processSteps,
-  sectors,
-  testimonials,
-  faqItems,
-} from "@/lib/homepage-data";
-
-import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { ShieldCheck, ArrowRight, BadgeCheck, Clock, MapPin, CheckCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { getLucideIcon } from "@/lib/icons";
+import Link from "next/link";
+import { ArrowUpRight, ShieldCheck, MapPin, ClipboardCheck } from "lucide-react";
+import HomeHeroPremium from "@/components/home/home-hero-premium";
 import HomeJsonLd from "@/components/seo/home-json-ld";
+import { FAQAccordion } from "@/components/shared/faq-accordion";
+import { siteConfig } from "@/lib/config";
+import { locationsData } from "@/lib/locations-data";
+import { faqItems } from "@/lib/homepage-data";
+import { getAllPosts } from "@/lib/blog";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
-const title = "Agence de Sécurité Privée en Île-de-France | Gardiennage, Rondes, Événementiel";
-const description =
-  "Agence de sécurité privée basée à Plaisir (78). Contrôle d’accès, gardiennage, rondes, sécurité événementielle, SSIAP et solutions sur mesure à Paris et en Île-de-France. Devis rapide.";
-
+const title = "Sécurité privée en Île-de-France | Basic Protection Privée";
+const description = "Gardiennage, sécurité événementielle, SSIAP, rondes et audit de sûreté. Une protection sur mesure, depuis Plaisir et dans toute l’Île-de-France.";
 export const metadata: Metadata = {
-  title: {
-    default: title,
-    template: `%s | ${siteConfig.name ?? "Sécurité Privée"}`,
-  },
-  description,
-  alternates: {
-    canonical: `${siteConfig.url}/`,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
-  },
-  openGraph: {
-    type: "website",
-    locale: "fr_FR",
-    url: `${siteConfig.url}/`,
-    siteName: siteConfig.name ?? "Sécurité Privée",
-    title,
-    description,
-    images: [
-      {
-        url: `${siteConfig.url}/og/home.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "Agence de sécurité privée en Île-de-France",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title,
-    description,
-    images: [`${siteConfig.url}/og/home.jpg`],
-  },
+  title: { absolute: title }, description,
+  alternates: { canonical: "/" },
+  openGraph: { title, description, url: siteConfig.url, type: "website", locale: "fr_FR", images: [{ url: "/images/securite-privee-gardiennage.webp", alt: "Basic Protection Privée — sécurité en Île-de-France" }] },
+  twitter: { card: "summary_large_image", title, description, images: ["/images/securite-privee-gardiennage.webp"] },
 };
 
-function Stat({
-  Icon,
-  label,
-  value,
-}: {
-  Icon: React.ComponentType<{ className?: string }>;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "flex items-center gap-4 rounded-2xl border px-5 py-4",
-        "border-border bg-card text-card-foreground shadow-lg"
-      )}
-    >
-      <div
-        className={cn(
-          "flex h-10 w-10 items-center justify-center rounded-xl",
-          "bg-primary/10"
-        )}
-      >
-        <Icon
-          className={cn(
-            "h-5 w-5",
-            "text-primary"
-          )}
-        />
-      </div>
-      <div className="min-w-0">
-        <div
-          className={cn(
-            "text-xl font-bold leading-none",
-            "text-primary"
-          )}
-        >
-          {value}
-        </div>
-        <div
-          className={cn(
-            "mt-1 text-sm",
-            "text-muted-foreground"
-          )}
-        >
-          {label}
-        </div>
-      </div>
-    </div>
-  );
-}
-
+const expertise = [
+  { title: "Gardiennage & surveillance", text: "Une présence attentive pour protéger vos sites, vos biens et vos collaborateurs.", slug: "agent-securite-qualifie", image: "/images/securite-privee-gardiennage.webp", tag: "Protection des sites" },
+  { title: "Sécurité événementielle", text: "Des accès maîtrisés. Des équipes discrètes. Un événement qui se déroule sereinement.", slug: "securite-evenementielle", image: "/images/service-securite-evenementielle.webp", tag: "Événements & réceptions" },
+  { title: "Audit & conseil en sûreté", text: "Comprendre vos risques pour concevoir un dispositif adapté à votre réalité.", slug: "audit-conseil-surete", image: "/images/service-audit-conseil.webp", tag: "Analyse & stratégie" },
+];
+const complementary = [
+  { title: "Sécurité incendie · SSIAP", slug: "agent-incendie-ssiap" },
+  { title: "Agents cynophiles", slug: "agent-cynophile" },
+  { title: "Rondes & surveillance mobile", slug: "agent-rondier" },
+];
+const steps = [
+  { title: "Comprendre", text: "Nous écoutons vos besoins et analysons les contraintes de votre site, de vos équipes ou de votre événement." },
+  { title: "Concevoir", text: "Nous définissons les moyens humains, les horaires et les consignes dans une proposition claire." },
+  { title: "Protéger", text: "Nos équipes assurent la mission avec un encadrement de proximité et un suivi régulier." },
+];
 
 export default function Home() {
-  const heroImage = PlaceHolderImages.find((p) => p.id === "hero");
-
-  const terrainServices = servicesData
-    .filter((s) =>
-      [
-        "agent-securite-qualifie",
-        "agent-cynophile",
-        "agent-incendie-ssiap",
-        "agent-rondier",
-      ].includes(s.slug)
-    )
-    .map((service) => ({
-      icon: service.icon,
-      title: service.title,
-      description: service.shortDescription,
-      href: `/services/${service.slug}`,
-    }));
-
-  const serviceEvenementiel = servicesData.find(s => s.slug === 'securite-evenementielle');
-  const serviceAudit = servicesData.find(s => s.slug === 'audit-conseil-surete');
-  const eventImage = PlaceHolderImages.find((p) => p.id === "service-evenementiel");
-  const auditImage = PlaceHolderImages.find((p) => p.id === "service-audit-conseil");
-
-  const coverageZones = locationsData.map((loc) => ({
-    name: loc.name,
-    href: `/zones/${loc.slug}`,
-  }));
-
-  const latestPosts = getAllPosts().slice(0, 3);
-
-  const phoneHref = `tel:${(siteConfig.contact.phoneE164 ?? siteConfig.contact.phone)
-    .replace(/\s/g, "")
-    .trim()}`;
-
-  const StatShieldCheck = getLucideIcon("ShieldCheck");
-  const StatBadgeCheck = getLucideIcon("BadgeCheck");
-  const StatClock = getLucideIcon("Clock");
-  const StatMapPin = getLucideIcon("MapPin");
-
+  const allPosts = getAllPosts();
+  const posts = allPosts.filter((post, index) => allPosts.findIndex(item => item.frontmatter.title === post.frontmatter.title) === index).slice(0, 3);
   return (
     <>
-      <HomeJsonLd
-        brandName="Basic Protection"
-        phone={siteConfig.business.telephone}
-        email={siteConfig.business.email}
-        streetAddress={siteConfig.business.address.street}
-        postalCode={siteConfig.business.address.postalCode}
-        addressLocality={siteConfig.business.address.city}
-        addressRegion="Île-de-France"
-        addressCountry="FR"
-      />
-      <div className="flex min-h-screen flex-col overflow-hidden">
-        <HeroSection
-          title="Votre sécurité est notre mission."
-          description="Nous concevons des dispositifs de sécurité privée sur-mesure pour protéger vos actifs, vos équipes et votre réputation. Rigueur, discrétion et pilotage pour une tranquillité d'esprit totale."
-          cta1={{
-            label: "Obtenir une proposition",
-            href: "/devis",
-            className: "bg-[#2F8FD8] hover:bg-[#2F8FD8]/90",
-          }}
-          cta2={{
-            label: "Nos services",
-            href: "#services",
-            variant: "outline",
-          }}
-          imageUrl={heroImage?.imageUrl}
-          imageAlt={heroImage?.description ?? "Sécurité privée en Île-de-France"}
-          imageHint={heroImage?.imageHint}
-          breadcrumbs={
-            <div className="inline-flex pt-40 items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 text-sm text-white shadow-sm backdrop-blur">
-              <ShieldCheck className="h-4 w-4 text-[#2F8FD8]" />
-              <span className="font-medium">
-                Sécurité privée • Encadrement • Discrétion
-              </span>
-            </div>
-          }
-          stats={
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              <Stat
-                Icon={StatShieldCheck}
-                value="24/7"
-                label="Disponibilité & astreinte"
-              />
-              <Stat
-                Icon={StatBadgeCheck}
-                value="Encadré"
-                label="Supervision & reporting"
-              />
-              <Stat
-                Icon={StatClock}
-                value="< 24h"
-                label="Déploiement possible"
-              />
-              <Stat
-                Icon={StatMapPin}
-                value="IDF"
-                label="Couverture régionale"
-              />
-            </div>
-          }
-        />
-
-        {/* TRUST / ABOUT */}
-        <AnimateOnScroll>
-          <section id="about" className="bg-card pt-28 md:pt-36 pb-20 md:pb-28">
-            <div className="container mx-auto px-4">
-              <div className="grid lg:grid-cols-2 lg:gap-16 items-center">
-                {/* Left side */}
-                <div className="mb-12 lg:mb-0">
-                  <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-                    BASIC PROTECTION
-                  </p>
-                  <h2 className="mt-3 font-headline text-3xl md:text-4xl font-bold tracking-tight text-primary">
-                    L’exigence, sans compromis.
-                  </h2>
-                  <p className="mt-4 text-lg text-muted-foreground">
-                    Plus qu’un prestataire : un partenaire de confiance, avec une
-                    exécution propre, des équipes encadrées et une coordination
-                    réactive.
-                  </p>
-                  <div className="mt-8">
-                    <Button
-                      asChild
-                      size="lg"
-                      className="rounded-xl"
-                    >
-                      <Link href="/devis">Obtenir une proposition</Link>
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Right side - 2x2 Grid */}
-                <div className="grid sm:grid-cols-2 gap-8">
-                  {trustElements.map((el, index) => {
-                    const Icon = getLucideIcon(el.icon);
-                    return (
-                      <div key={index}>
-                        <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10">
-                          <Icon className="h-6 w-6 text-primary" />
-                        </div>
-                        <h3 className="mt-5 text-lg font-semibold text-foreground">
-                          {el.title}
-                        </h3>
-                        <p className="mt-2 text-sm text-muted-foreground">
-                          {el.description}
-                        </p>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </section>
-        </AnimateOnScroll>
-
-        {/* SERVICES */}
-        <div id="services">
-          <AnimateOnScroll>
-            <ServicesGrid
-              title="Protection opérationnelle"
-              description="Sécuriser un site au quotidien : présence, contrôle, rondes, prévention. Simple, robuste, efficace."
-              services={terrainServices}
-              className="bg-background"
-            />
-          </AnimateOnScroll>
-          
-          <AnimateOnScroll>
-            <section id="sûrete-haut-niveau" className="bg-card py-16 md:py-24">
-              <div className="container mx-auto max-w-5xl px-4">
-                <header className="mx-auto max-w-3xl text-center">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-                    Sûreté haut niveau
-                  </p>
-                  <h2 className="mt-3 font-headline text-3xl font-bold tracking-tight text-primary md:text-4xl">
-                    Une expertise pointue pour les contextes sensibles
-                  </h2>
-                  <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-                    De l'analyse stratégique du risque à la sécurisation d'événements de prestige, nous apportons une réponse structurée et discrète.
-                  </p>
-                </header>
-
-                <div className="mt-16 space-y-16">
-                  {/* Feature 1: Événementiel */}
-                  {serviceEvenementiel && eventImage && (
-                    <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-center">
-                      <div className="md:w-2/5">
-                        <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-lg">
-                          <Image
-                            src={eventImage.imageUrl}
-                            alt={eventImage.description}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 40vw"
-                            data-ai-hint={eventImage.imageHint}
-                          />
-                        </div>
-                      </div>
-                      <div className="md:w-3/5">
-                        <Badge variant="secondary">Événementiel</Badge>
-                        <h3 className="mt-4 text-2xl lg:text-3xl font-bold font-headline text-primary">
-                          {serviceEvenementiel.title}
-                        </h3>
-                        <p className="mt-4 text-muted-foreground">
-                          Dispositifs sur-mesure pour galas, lancements, et événements corporate. Nous assurons la gestion des accès et la sûreté des zones sensibles avec une posture premium qui valorise votre image.
-                        </p>
-                        <ul className="mt-6 space-y-3 text-sm">
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">Contrôle d'accès & gestion des flux</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">Sûreté des zones VIP & techniques</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">Coordination terrain & chef de dispositif</span>
-                          </li>
-                        </ul>
-                        <Button asChild variant="outline" className="mt-8">
-                          <Link href={`/services/${serviceEvenementiel.slug}`}>Découvrir le service</Link>
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Feature 2: Audit */}
-                  {serviceAudit && auditImage && (
-                    <div className="flex flex-col md:flex-row-reverse gap-8 lg:gap-12 items-center">
-                      <div className="md:w-2/5">
-                        <div className="relative aspect-[4/5] rounded-2xl overflow-hidden shadow-lg">
-                          <Image
-                            src={auditImage.imageUrl}
-                            alt={auditImage.description}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, 40vw"
-                            data-ai-hint={auditImage.imageHint}
-                          />
-                        </div>
-                      </div>
-                      <div className="md:w-3/5">
-                        <Badge variant="secondary">Stratégie</Badge>
-                        <h3 className="mt-4 text-2xl lg:text-3xl font-bold font-headline text-primary">
-                          {serviceAudit.title}
-                        </h3>
-                        <p className="mt-4 text-muted-foreground">
-                          Transformez votre sécurité en un investissement stratégique. Nous analysons vos infrastructures et procédures pour identifier les failles et proposer un plan d'action pragmatique.
-                        </p>
-                        <ul className="mt-6 space-y-3 text-sm">
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">Analyse des risques et vulnérabilités (360°)</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">Recommandations priorisées et budgétisées</span>
-                          </li>
-                          <li className="flex items-start gap-3">
-                            <CheckCircle className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                            <span className="text-muted-foreground">Aide à la rédaction de cahier des charges</span>
-                          </li>
-                        </ul>
-                        <Button asChild variant="outline" className="mt-8">
-                          <Link href={`/services/${serviceAudit.slug}`}>Découvrir le service</Link>
-                        </Button>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </section>
-          </AnimateOnScroll>
+      <HomeJsonLd brandName={siteConfig.name} phone={siteConfig.business.telephone} email={siteConfig.business.email} streetAddress={siteConfig.business.address.street} postalCode={siteConfig.business.address.postalCode} addressLocality={siteConfig.business.address.city} addressRegion="Île-de-France" addressCountry="FR" />
+      <HomeHeroPremium />
+      <div className="border-b bg-card">
+        <div className="premium-shell grid gap-6 py-7 md:grid-cols-3 md:gap-10">
+          {[{ icon: ShieldCheck, title: "Des agents qualifiés", text: "Des compétences adaptées à chaque mission" }, { icon: ClipboardCheck, title: "Un dispositif sur mesure", text: "Des consignes claires, un suivi structuré" }, { icon: MapPin, title: "Un partenaire de proximité", text: "Basés à Plaisir, présents en Île-de-France" }].map(({ icon: Icon, title: label, text }) => <div key={label} className="flex items-center gap-4"><Icon className="h-7 w-7 shrink-0 text-[#9c8056]" strokeWidth={1.3} /><div><p className="text-sm font-semibold">{label}</p><p className="mt-1 text-xs leading-relaxed text-muted-foreground">{text}</p></div></div>)}
         </div>
-
-        {/* PROCESS */}
-        <AnimateOnScroll>
-          <ProcessSteps
-            title="Une méthode claire, un pilotage précis"
-            description="Du cadrage à l’exécution : un dispositif pensé, déployé, puis supervisé pour maintenir un niveau constant."
-            steps={processSteps}
-            className="bg-background"
-          />
-        </AnimateOnScroll>
-
-        {/* SECTORS */}
-        <AnimateOnScroll>
-          <SectorsGrid sectors={sectors} className="bg-card" />
-        </AnimateOnScroll>
-
-        {/* COVERAGE */}
-        <AnimateOnScroll>
-          <CoverageSection
-            title="Île-de-France : présence et mobilité"
-            description="Basés à Plaisir (78), nous intervenons sur toute l’Île-de-France grâce à une organisation structurée et des équipes mobiles."
-            zones={coverageZones}
-            className="bg-background"
-          >
-            <div className="mt-10 text-center">
-              <Button
-                asChild
-                className={cn(
-                  "rounded-full px-6",
-                  "bg-[#1F2A44] text-white hover:bg-[#1F2A44]/90"
-                )}
-              >
-                <Link href="/zones">Voir toutes les zones d’intervention</Link>
-              </Button>
-            </div>
-          </CoverageSection>
-        </AnimateOnScroll>
-
-        {/* TESTIMONIALS */}
-        <AnimateOnScroll>
-          <Testimonials testimonials={testimonials} className="bg-card" />
-        </AnimateOnScroll>
-
-        {/* LATEST ARTICLES */}
-        <AnimateOnScroll>
-          <section id="blog" className="bg-background py-16 md:py-24">
-            <div className="container mx-auto px-4">
-              <header className="mx-auto max-w-3xl text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
-                  Analyses & Conseils
-                </p>
-                <h2 className="mt-3 font-headline text-3xl font-bold tracking-tight text-primary md:text-4xl">
-                  Nos derniers articles
-                </h2>
-                <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
-                  Retrouvez nos dernières analyses, conseils et retours d'expérience sur la sécurité privée.
-                </p>
-              </header>
-
-              <div className="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {latestPosts.map((post) => {
-                  const postImage = PlaceHolderImages.find(
-                    (p) => p.id === post.frontmatter.image
-                  );
-                  const dateLabel = format(
-                    new Date(post.frontmatter.date),
-                    "dd MMMM yyyy",
-                    { locale: fr }
-                  );
-
-                  return (
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      key={post.slug}
-                      className="group block"
-                    >
-                      <Card className="h-full overflow-hidden rounded-2xl border-border bg-card transition-all hover:-translate-y-0.5 hover:shadow-lg">
-                        <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
-                          {postImage ? (
-                            <Image
-                              src={postImage.imageUrl}
-                              alt={post.frontmatter.title}
-                              fill
-                              className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-                              sizes="(max-width: 768px) 100vw, 33vw"
-                            />
-                          ) : (
-                            <div className="absolute inset-0 bg-muted/30" />
-                          )}
-                          <div className="absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
-                        </div>
-
-                        <CardHeader className="p-6">
-                          <p className="text-sm text-muted-foreground">
-                            {dateLabel}
-                          </p>
-                          <CardTitle className="mt-2 text-lg leading-snug">
-                            {post.frontmatter.title}
-                          </CardTitle>
-                        </CardHeader>
-
-                        <CardContent>
-                          <div className="mt-4 flex items-center text-sm font-medium text-primary">
-                            Lire l'article
-                            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  );
-                })}
-              </div>
-
-              <div className="mt-12 text-center">
-                <Button asChild variant="outline">
-                  <Link href="/blog">Voir tous les articles</Link>
-                </Button>
-              </div>
-            </div>
-          </section>
-        </AnimateOnScroll>
-
-        {/* FAQ */}
-        <AnimateOnScroll>
-          <FAQAccordion
-            title="Questions fréquentes"
-            description="Délais, modalités, périmètre, encadrement : les réponses essentielles avant de démarrer."
-            items={faqItems}
-            className="bg-card"
-          />
-        </AnimateOnScroll>
-
-        {/* CTA */}
-        <AnimateOnScroll>
-          <CTASection
-            title="Prêt à définir votre stratégie de sûreté ?"
-            description="Contactez nos experts pour une analyse confidentielle de vos besoins. Recevez une proposition sur-mesure et un devis structuré."
-            cta={{ label: "Obtenir votre devis", href: "/devis" }}
-            className="bg-background"
-          />
-        </AnimateOnScroll>
-
-        <StickyMobileCallButton phoneNumber={siteConfig.contact.phone} />
       </div>
+
+      <section className="premium-shell premium-section" aria-labelledby="approach-title">
+        <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
+          <div><p className="premium-eyebrow text-muted-foreground">01 — Notre conviction</p><h2 id="approach-title" className="premium-title mt-6">La confiance se construit.<br /><span className="premium-serif">Sur le terrain.</span></h2></div>
+          <div className="lg:pt-10"><p className="text-xl leading-relaxed tracking-tight md:text-2xl">La meilleure protection est celle qui vous permet d’avancer l’esprit libre.</p><p className="mt-6 max-w-xl leading-relaxed text-muted-foreground">Chez Basic Protection Privée, chaque mission commence par une compréhension précise de vos enjeux. Nous associons présence humaine, préparation et suivi pour vous apporter une sécurité discrète, cohérente et adaptée.</p><Link href="/a-propos" className="premium-text-link mt-8">Découvrir notre engagement <ArrowUpRight size={18} /></Link></div>
+        </div>
+      </section>
+
+      <section id="expertises" className="premium-section border-y bg-card" aria-labelledby="expertise-title">
+        <div className="premium-shell">
+          <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p className="premium-eyebrow text-muted-foreground">02 — Nos expertises</p><h2 id="expertise-title" className="premium-title mt-5">À chaque enjeu,<br />une protection adaptée.</h2></div><Link href="/services" className="premium-text-link">Toutes nos expertises <ArrowUpRight size={18} /></Link></div>
+          <div className="grid gap-8 md:grid-cols-3">
+            {expertise.map((service, i) => <Link key={service.slug} href={`/services/${service.slug}`} className="expertise-card group"><div className="relative aspect-[4/5] overflow-hidden bg-muted"><Image src={service.image} alt={service.title} fill sizes="(max-width: 767px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105" /><div className="absolute inset-0 bg-gradient-to-t from-[#101c2d]/80 via-transparent to-transparent" /><span className="absolute left-6 top-6 text-xs tracking-[0.2em] text-white/80">0{i + 1}</span><span className="absolute bottom-6 left-6 text-xs uppercase tracking-[0.14em] text-white">{service.tag}</span><span className="absolute bottom-5 right-5 flex h-11 w-11 items-center justify-center rounded-full border border-white/40 text-white transition-colors group-hover:bg-white group-hover:text-[#101c2d]"><ArrowUpRight size={20} /></span></div><h3 className="mt-6 font-headline text-xl font-medium tracking-tight">{service.title}</h3><p className="mt-3 text-sm leading-relaxed text-muted-foreground">{service.text}</p></Link>)}
+          </div>
+          <div className="mt-12 grid border-t md:grid-cols-3">{complementary.map(service => <Link href={`/services/${service.slug}`} key={service.slug} className="group flex items-center justify-between gap-3 border-b py-6 text-sm font-medium md:pr-7">{service.title}<ArrowUpRight size={17} className="text-muted-foreground transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></Link>)}</div>
+        </div>
+      </section>
+
+      <section className="premium-dark premium-section" aria-labelledby="method-title">
+        <div className="premium-shell grid gap-14 lg:grid-cols-2 lg:gap-24">
+          <div className="relative min-h-[360px] lg:min-h-[550px]"><Image src="/images/a-propos-basic-protection.webp" alt="L’expertise humaine au service de votre sécurité" fill sizes="(max-width: 1023px) 100vw, 50vw" className="object-cover" /><div className="absolute inset-0 bg-gradient-to-t from-[#101c2d]/80 to-transparent" /><p className="absolute bottom-8 left-8 right-8 font-headline text-2xl leading-snug text-white">Une présence humaine.<br />Une exigence quotidienne.</p></div>
+          <div className="py-2"><p className="premium-eyebrow text-[#d9c6a3]">03 — Notre méthode</p><h2 id="method-title" className="premium-title mt-6 text-white">La rigueur à chaque étape.</h2><div className="mt-10">{steps.map((step, i) => <div key={step.title} className="grid grid-cols-[2.5rem_1fr] gap-5 border-t border-white/15 py-7"><span className="pt-1 text-xs text-[#d9c6a3]">0{i + 1}</span><div><h3 className="font-headline text-xl text-white">{step.title}</h3><p className="mt-3 text-sm leading-relaxed text-white/60">{step.text}</p></div></div>)}</div><Link href="/devis" className="premium-text-link mt-3 text-[#d9c6a3]">Construisons votre dispositif <ArrowUpRight size={18} /></Link></div>
+        </div>
+      </section>
+
+      <section className="premium-shell premium-section" aria-labelledby="coverage-title">
+        <div className="grid gap-12 lg:grid-cols-2 lg:gap-24"><div><p className="premium-eyebrow text-muted-foreground">04 — Notre présence</p><h2 id="coverage-title" className="premium-title mt-6">Proches de vous.<br /><span className="premium-serif">Partout en Île-de-France.</span></h2><p className="mt-6 max-w-md leading-relaxed text-muted-foreground">Depuis Plaisir, dans les Yvelines, nous accompagnons les entreprises, les organisateurs d’événements et les gestionnaires de sites dans les huit départements franciliens.</p><Link className="premium-text-link mt-8" href="/villes">Retrouver votre ville <ArrowUpRight size={18} /></Link></div><div className="grid content-start sm:grid-cols-2 sm:gap-x-8">{locationsData.map(location => <Link key={location.slug} href={`/zones/${location.slug}`} className="group flex items-center justify-between gap-4 border-b py-6 text-sm"><span>{location.name}</span><ArrowUpRight size={16} className="shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" /></Link>)}</div></div>
+      </section>
+
+      <section className="border-y bg-card premium-section" aria-labelledby="journal-title"><div className="premium-shell"><div className="mb-10 flex flex-col justify-between gap-6 sm:flex-row sm:items-end"><div><p className="premium-eyebrow text-muted-foreground">Le journal</p><h2 id="journal-title" className="premium-title mt-5">Anticiper, c’est protéger.</h2></div><Link className="premium-text-link" href="/blog">Tous nos conseils <ArrowUpRight size={18} /></Link></div><div className="grid gap-10 md:grid-cols-3">{posts.map(post => {
+        const image = PlaceHolderImages.find(item => item.id === post.frontmatter.image);
+        return <Link href={`/blog/${post.slug}`} key={post.slug} className="group"><div className="relative aspect-[16/10] overflow-hidden bg-muted"><Image src={image?.imageUrl || "/images/service-audit-conseil.webp"} alt={post.frontmatter.title} fill sizes="(max-width: 767px) 100vw, 33vw" className="object-cover transition-transform duration-700 group-hover:scale-105" /></div><p className="premium-eyebrow mt-6 text-muted-foreground">{post.frontmatter.tags[0] || "Conseils"}</p><h3 className="mt-3 font-headline text-xl leading-snug tracking-tight">{post.frontmatter.title}</h3><span className="premium-text-link mt-5 text-xs">Lire l’article <ArrowUpRight size={16} /></span></Link>;
+      })}</div></div></section>
+      <FAQAccordion title="Parlons de vos questions." description="Les premiers repères pour préparer votre projet de sécurité." items={faqItems.slice(0, 5)} className="premium-faq" />
+      <section className="premium-dark border-b border-white/10 py-20 md:py-28"><div className="premium-shell flex flex-col justify-between gap-10 lg:flex-row lg:items-center"><div><p className="premium-eyebrow text-[#d9c6a3]">Votre prochain projet</p><h2 className="premium-title mt-6 text-white">Votre sérénité<br />commence par un échange.</h2><p className="mt-5 text-white/60">Un lieu, un événement, un besoin. Prenons le temps d’en parler.</p></div><div className="flex flex-col items-start gap-6"><Link href="/devis" className="premium-button premium-button-gold">Échanger sur votre projet <ArrowUpRight size={18} /></Link><a href={`tel:${siteConfig.contact.phoneE164}`} className="text-lg tracking-wide text-white hover:text-[#d9c6a3]">{siteConfig.contact.phone}</a></div></div></section>
     </>
   );
 }

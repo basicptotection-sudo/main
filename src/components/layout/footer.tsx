@@ -34,29 +34,23 @@ export function Footer() {
   const addressLine = `${siteConfig.business.address.street}, ${siteConfig.business.address.postalCode} ${siteConfig.business.address.city}`;
 
   return (
-    <footer className="border-t bg-background">
-      <div className="container mx-auto px-4 py-12">
+    <footer className="premium-footer">
+      <div className="premium-shell py-16">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link href="/" className="inline-block">
-              <div className="relative h-20 w-20 overflow-hidden rounded-md">
-                <Image
-                  src="/images/logo-clair.png"
-                  alt={`Logo ${siteConfig.name}`}
-                  fill
-                  sizes="80px"
-                  className="object-contain block dark:hidden"
-                />
+            <Link href="/" className="inline-flex" aria-label="Basic Protection Privée — Accueil">
+              <div className="relative h-24 w-24">
                 <Image
                   src="/images/logo-sombre.png"
                   alt={`Logo ${siteConfig.name}`}
                   fill
-                  sizes="80px"
-                  className="object-contain hidden dark:block"
+                  sizes="96px"
+                  className="object-contain"
                 />
               </div>
             </Link>
+            <p className="premium-serif mt-5 text-2xl text-[#d9c6a3]">L’exigence de la sérénité.</p>
 
             <p className="mt-4 max-w-md text-sm text-muted-foreground">
               Basés à <strong className="font-semibold text-foreground">{siteConfig.business.address.city}</strong>, nous

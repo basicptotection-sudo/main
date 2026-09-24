@@ -9,7 +9,7 @@ function toCanonical(path: string) {
 }
 
 export const metadata: Metadata = {
-  title: "Contact | Basic Protection Privée (Plaisir 78370) — Devis & Conseil",
+  title: "Contact — Parlons de votre sécurité",
   description:
     "Contactez Basic Protection Privée (Plaisir 78370) pour un devis de sécurité privée en Île-de-France : gardiennage, rondes, contrôle d’accès, événementiel. Téléphone, email, formulaire — réponse rapide.",
   alternates: {

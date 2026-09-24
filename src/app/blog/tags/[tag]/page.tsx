@@ -7,11 +7,23 @@ import { siteConfig } from "@/lib/config";
 import { Breadcrumbs } from "@/components/shared";
 import { Tag } from "@/components/blog/tag";
 
-import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
+
+/* ================= types ================= */
+
+type Params = { tag: string };
+type PageProps = { params: Promise<Params> };
+
+/* ================= helpers ================= */
 
 function toAbsolute(path: string) {
   const base = (siteConfig?.url || "").replace(/\/$/, "");
@@ -29,8 +41,20 @@ function slugifyTag(input: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+/** URL tag à partir du slug (déjà safe) */
+function tagPath(tagSlug: string) {
+  return `/blog/tags/${tagSlug}`;
+}
+
+function humanizeSlug(tagSlug: string) {
+  return tagSlug.replace(/-/g, " ").trim();
+}
+
+/* ================= SSG ================= */
+
 export async function generateStaticParams() {
   const posts = getAllPosts();
+
   const tags = posts
     .flatMap((p) => (Array.isArray(p.frontmatter.tags) ? p.frontmatter.tags : []))
     .map((t) => String(t))
@@ -40,48 +64,62 @@ export async function generateStaticParams() {
   return slugs.map((tag) => ({ tag }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: { tag: string };
-}): Promise<Metadata> {
-  const tagSlug = decodeURIComponent(params.tag);
+/* ================= metadata ================= */
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { tag } = await params;
+
+  // tag est déjà le slug (ex: "securite-incendie")
+  const tagSlug = decodeURIComponent(tag);
+  const label = humanizeSlug(tagSlug);
+
+  const canonical = toAbsolute(tagPath(tagSlug));
 
   return {
-    title: `Articles : ${tagSlug.replace(/-/g, " ")} | Blog Basic Protection Privée`,
-    description: `Retrouvez nos conseils et analyses sur le thème : ${tagSlug.replace(/-/g, " ")}.`,
-    alternates: { canonical: toAbsolute(`/blog/tags/${encodeURIComponent(tagSlug)}`) },
+    title: `Articles : ${label} | Blog Basic Protection Privée`,
+    description: `Retrouvez nos conseils et analyses sur le thème : ${label}.`,
+    alternates: { canonical },
     openGraph: {
-      title: `Articles : ${tagSlug.replace(/-/g, " ")}`,
-      description: `Conseils et analyses sur : ${tagSlug.replace(/-/g, " ")}.`,
-      url: toAbsolute(`/blog/tags/${encodeURIComponent(tagSlug)}`),
+      title: `Articles : ${label}`,
+      description: `Conseils et analyses sur : ${label}.`,
+      url: canonical,
       type: "website",
     },
     twitter: {
       card: "summary",
-      title: `Articles : ${tagSlug.replace(/-/g, " ")}`,
-      description: `Conseils et analyses sur : ${tagSlug.replace(/-/g, " ")}.`,
+      title: `Articles : ${label}`,
+      description: `Conseils et analyses sur : ${label}.`,
     },
   };
 }
 
-export default function TagPage({ params }: { params: { tag: string } }) {
-  const tagSlug = decodeURIComponent(params.tag);
+/* ================= page ================= */
+
+export default async function TagPage({ params }: PageProps) {
+  const { tag } = await params;
+
+  const tagSlug = decodeURIComponent(tag);
   const allPosts = getAllPosts();
 
-  const posts = allPosts.filter(
-    (p) =>
-      Array.isArray(p.frontmatter.tags) &&
-      p.frontmatter.tags.some((t) => slugifyTag(String(t)) === tagSlug)
-  );
+  const posts = allPosts
+    .filter((p) => {
+      const tags = Array.isArray(p.frontmatter.tags) ? p.frontmatter.tags : [];
+      return tags.some((t) => slugifyTag(String(t)) === tagSlug);
+    })
+    .sort(
+      (a, b) =>
+        new Date(b.frontmatter.date).getTime() -
+        new Date(a.frontmatter.date).getTime()
+    );
 
   if (posts.length === 0) notFound();
 
+  // Affiche le tag original si on le retrouve, sinon humanize(slug)
   const displayTag =
     posts
-      .flatMap((p) => p.frontmatter.tags)
+      .flatMap((p) => (Array.isArray(p.frontmatter.tags) ? p.frontmatter.tags : []))
       .map(String)
-      .find((t) => slugifyTag(t) === tagSlug) || tagSlug.replace(/-/g, " ");
+      .find((t) => slugifyTag(t) === tagSlug) || humanizeSlug(tagSlug);
 
   const allTags = Array.from(
     new Set(
@@ -90,65 +128,89 @@ export default function TagPage({ params }: { params: { tag: string } }) {
         .map((t) => String(t))
         .filter(Boolean)
     )
-  );
+  ).sort((a, b) => a.localeCompare(b, "fr", { sensitivity: "base" }));
 
   const breadcrumbItems = [
     { label: "Accueil", href: "/" },
     { label: "Blog", href: "/blog" },
-    { label: displayTag, href: `/blog/tags/${tagSlug}` },
+    { label: displayTag, href: tagPath(tagSlug) },
   ];
+
+  const countLabel = `${posts.length} article${posts.length > 1 ? "s" : ""}`;
 
   return (
     <div className="container mx-auto px-4 py-16 md:py-24">
-      <div className="text-center max-w-3xl mx-auto">
+      <div className="mx-auto max-w-3xl text-center">
         <Breadcrumbs items={breadcrumbItems} centered />
-        <p className="text-primary font-semibold mt-2">Catégorie</p>
-        <h1 className="text-4xl md:text-5xl font-headline font-bold text-primary">
+        <p className="mt-2 font-semibold text-primary">Catégorie</p>
+        <h1 className="mt-2 font-headline text-4xl font-bold text-primary md:text-5xl">
           {displayTag}
         </h1>
       </div>
 
       <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-4">
-          {posts.length} article{posts.length > 1 ? "s" : ""} trouvé
-          {posts.length > 1 ? "s" : ""}
+        <h2 className="mb-4 text-2xl font-bold">
+          {countLabel} trouvé{posts.length > 1 ? "s" : ""}
         </h2>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post) => (
-            <Link href={`/blog/${post.slug}`} key={post.slug} className="block">
-              <Card className="h-full hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <p className="text-sm text-muted-foreground mb-2">
-                    {format(new Date(post.frontmatter.date), "dd MMMM yyyy", { locale: fr })}
-                  </p>
-                  <CardTitle>{post.frontmatter.title}</CardTitle>
-                  <CardDescription className="mt-2">{post.frontmatter.description}</CardDescription>
-                </CardHeader>
+          {posts.map((post) => {
+            const tags = Array.isArray(post.frontmatter.tags)
+              ? post.frontmatter.tags
+              : [];
 
-                <div className="p-6 pt-0">
-                  <div className="flex flex-wrap gap-2">
-                    {post.frontmatter.tags.map((tag) => {
-                      const current = slugifyTag(String(tag)) === tagSlug;
-                      return (
-                        <Badge key={tag} variant={current ? "default" : "secondary"}>
-                          {tag}
-                        </Badge>
-                      );
-                    })}
+            const dateLabel = format(
+              new Date(post.frontmatter.date),
+              "dd MMMM yyyy",
+              { locale: fr }
+            );
+
+            return (
+              <Link href={`/blog/${post.slug}`} key={post.slug} className="block">
+                <Card className="h-full transition-shadow hover:shadow-lg">
+                  <CardHeader>
+                    <p className="mb-2 text-sm text-muted-foreground">
+                      {dateLabel}
+                    </p>
+                    <CardTitle>{post.frontmatter.title}</CardTitle>
+                    {post.frontmatter.description ? (
+                      <CardDescription className="mt-2">
+                        {post.frontmatter.description}
+                      </CardDescription>
+                    ) : null}
+                  </CardHeader>
+
+                  <div className="p-6 pt-0">
+                    <div className="flex flex-wrap gap-2">
+                      {tags.map((t) => {
+                        const tagStr = String(t);
+                        const current = slugifyTag(tagStr) === tagSlug;
+
+                        return (
+                          <Badge
+                            key={tagStr}
+                            variant={current ? "default" : "secondary"}
+                          >
+                            {tagStr}
+                          </Badge>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              </Card>
-            </Link>
-          ))}
+                </Card>
+              </Link>
+            );
+          })}
         </div>
       </div>
 
       <div className="mt-16">
-        <h3 className="text-xl font-bold text-center mb-4">Explorer d'autres catégories</h3>
-        <div className="flex flex-wrap gap-2 justify-center max-w-2xl mx-auto">
-          {allTags.map((tag) => (
-            <Tag key={tag} tag={tag} current={slugifyTag(tag) === tagSlug} />
+        <h3 className="mb-4 text-center text-xl font-bold">
+          Explorer d&apos;autres catégories
+        </h3>
+        <div className="mx-auto flex max-w-2xl flex-wrap justify-center gap-2">
+          {allTags.map((t) => (
+            <Tag key={t} tag={t} current={slugifyTag(t) === tagSlug} />
           ))}
         </div>
       </div>

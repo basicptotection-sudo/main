@@ -2,7 +2,7 @@ export const siteConfig = {
   name: "Basic Protection Privée",
   description:
     "Société de sécurité privée à Plaisir (78) : gardiennage, surveillance, rondes, SSIAP, cynophile, protection rapprochée et sécurité événementielle en Île-de-France.",
-  url: "https://www.basic-protection.fr",
+  url: "https://basic-protection.fr",
   ogImage: "/brand/og.png",
   contact: {
     email: "basic-exploitation@outlook.com",

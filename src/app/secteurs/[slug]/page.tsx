@@ -21,7 +21,12 @@ import {
 } from "@/components/shared";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-type PageProps = { params: { slug: string } };
+/* ================= types ================= */
+
+type Params = { slug: string };
+type PageProps = { params: Promise<Params> };
+
+/* ================= helpers ================= */
 
 function normSlug(input: string) {
   return decodeURIComponent(String(input ?? ""))
@@ -31,47 +36,61 @@ function normSlug(input: string) {
     .toLowerCase();
 }
 
-export const dynamicParams = false; // important: only known slugs
+/* ================= routing ================= */
+
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   return sectorsData.map((e) => ({ slug: normSlug(e.slug) }));
 }
 
+/* ================= metadata ================= */
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const slug = normSlug(params.slug);
+  const { slug: rawSlug } = await params;
+
+  const slug = normSlug(rawSlug);
   const sector = sectorsData.find((e) => normSlug(e.slug) === slug);
   if (!sector) return {};
 
   const canonicalBase = siteConfig.url?.replace(/\/$/, "") ?? "";
   const canonical = `${canonicalBase}/secteurs/${normSlug(sector.slug)}`;
 
+  const title = sector.metaTitle ?? sector.heroTitle;
+  const description = sector.metaDescription ?? sector.heroDescription;
+
   return {
-    title: sector.metaTitle ?? sector.heroTitle,
-    description: sector.metaDescription ?? sector.heroDescription,
+    title,
+    description,
     alternates: { canonical },
     openGraph: {
       type: "website",
       url: canonical,
-      title: sector.metaTitle ?? sector.heroTitle,
-      description: sector.metaDescription ?? sector.heroDescription,
+      title,
+      description,
       siteName: siteConfig.name,
     },
     twitter: {
       card: "summary_large_image",
-      title: sector.metaTitle ?? sector.heroTitle,
-      description: sector.metaDescription ?? sector.heroDescription,
+      title,
+      description,
     },
   };
 }
 
-export default function SecteurPage({ params }: PageProps) {
-  const slug = normSlug(params.slug);
+/* ================= page ================= */
+
+export default async function SecteurPage({ params }: PageProps) {
+  const { slug: rawSlug } = await params;
+
+  const slug = normSlug(rawSlug);
   const sector = sectorsData.find((e) => normSlug(e.slug) === slug);
   if (!sector) return notFound();
 
   const heroImage =
     PlaceHolderImages.find((p) => p.id === (sector.heroImageId ?? "hero")) ??
-    PlaceHolderImages.find((p) => p.id === "hero");
+    PlaceHolderImages.find((p) => p.id === "hero") ??
+    PlaceHolderImages[0];
 
   const breadcrumbItems = [
     { label: "Accueil", href: "/" },
@@ -103,14 +122,20 @@ export default function SecteurPage({ params }: PageProps) {
         imageUrl={heroImage?.imageUrl}
         imageAlt={heroImage?.description ?? sector.heroTitle}
         imageHint={heroImage?.imageHint}
-        breadcrumbs={<Breadcrumbs items={breadcrumbItems} className="py-0 mb-4" />}
+        breadcrumbs={
+          <Breadcrumbs items={breadcrumbItems} className="py-0 mb-4" />
+        }
       />
 
       <AnimateOnScroll>
         <section className="container mx-auto max-w-4xl px-4 py-16 md:py-24">
           <div className="prose prose-lg max-w-none dark:prose-invert">
-            <h2 className="!text-3xl !font-bold !text-primary">{sector.intro.title}</h2>
-            <p className="text-muted-foreground">{sector.intro.paragraph}</p>
+            <h2 className="!text-3xl !font-bold !text-primary">
+              {sector.intro?.title ?? "Présentation"}
+            </h2>
+            <p className="text-muted-foreground">
+              {sector.intro?.paragraph ?? sector.heroDescription}
+            </p>
           </div>
         </section>
       </AnimateOnScroll>
@@ -146,11 +171,19 @@ export default function SecteurPage({ params }: PageProps) {
                   return (
                     <div key={m.title} className="flex items-start gap-4">
                       <div className="bg-primary/10 rounded-lg p-3">
-                        <Icon className="w-6 h-6 text-primary" />
+                        {Icon ? (
+                          <Icon className="w-6 h-6 text-primary" />
+                        ) : (
+                          <span className="w-6 h-6 inline-block" />
+                        )}
                       </div>
                       <div>
-                        <h3 className="font-bold text-lg text-primary">{m.title}</h3>
-                        <p className="text-muted-foreground mt-1">{m.description}</p>
+                        <h3 className="font-bold text-lg text-primary">
+                          {m.title}
+                        </h3>
+                        <p className="text-muted-foreground mt-1">
+                          {m.description}
+                        </p>
                       </div>
                     </div>
                   );

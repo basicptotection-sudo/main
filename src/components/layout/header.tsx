@@ -1,344 +1,147 @@
-
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
-import { Menu, X, Phone, ChevronDown } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ArrowRight, ArrowUpRight, ChevronDown, ClipboardCheck, Flame, Footprints, MapPin, Menu, Phone, ScanLine, ShieldCheck, Sparkles, X } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
-
-import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { siteConfig } from "@/lib/config";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-  DropdownMenuGroup,
-} from "@/components/ui/dropdown-menu";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { servicesData, Service } from "@/lib/services-data";
 import { cn } from "@/lib/utils";
-import { getLucideIcon } from "@/lib/icons";
 
+const serviceGroups = [
+  {
+    label: "Protection au quotidien",
+    description: "La maîtrise de votre environnement.",
+    items: [
+      { slug: "agent-securite-qualifie", title: "Gardiennage & surveillance", description: "Protéger vos sites et vos équipes.", icon: ShieldCheck },
+      { slug: "agent-cynophile", title: "Sécurité cynophile", description: "Une présence dissuasive renforcée.", icon: Footprints },
+      { slug: "agent-incendie-ssiap", title: "Sécurité incendie · SSIAP", description: "Prévenir les risques, veiller sur les lieux.", icon: Flame },
+      { slug: "agent-rondier", title: "Rondes & interventions", description: "Une vigilance mobile sur vos sites.", icon: ScanLine },
+    ],
+  },
+  {
+    label: "Missions sur mesure",
+    description: "L’exigence des contextes singuliers.",
+    items: [
+      { slug: "securite-evenementielle", title: "Sécurité événementielle", description: "La sérénité de vos temps forts.", icon: Sparkles },
+      { slug: "audit-conseil-surete", title: "Audit & conseil", description: "Anticiper pour mieux protéger.", icon: ClipboardCheck },
+    ],
+  },
+];
 const navLinks = [
-  { href: "/zones", label: "Zones" },
-  { href: "/blog", label: "Blog" },
-  { href: "/a-propos", label: "À propos" },
+  { href: "/zones", label: "Notre présence" },
+  { href: "/a-propos", label: "La maison" },
+  { href: "/blog", label: "Le journal" },
   { href: "/contact", label: "Contact" },
 ];
+const isActive = (path: string, href: string) => path === href || path.startsWith(`${href}/`);
 
-function normalizeTel(phoneE164?: string, fallback?: string) {
-  if (phoneE164) return `tel:${phoneE164}`;
-  const raw = (fallback ?? "").replace(/\s/g, "");
-  return raw ? `tel:${raw}` : "tel:";
-}
-
-function isActiveLink(pathname: string, href: string) {
-  // usePathname() ne contient pas le hash (#about)
-  if (href.startsWith("/#")) return false;
-  if (href === "/") return pathname === "/";
-  return pathname === href || pathname.startsWith(href + "/");
+function Brand({ inverse = false, onClick }: { inverse?: boolean; onClick?: () => void }) {
+  return (
+    <Link href="/" className="header-brand" onClick={onClick} aria-label="Basic Protection Privée — Accueil">
+      <span className="header-symbol relative block shrink-0">
+        <Image src="/images/logo-clair.png" alt="" fill sizes="(max-width: 639px) 68px, 80px" priority className={cn("object-contain dark:hidden", inverse && "hidden")} />
+        <Image src="/images/logo-sombre.png" alt="" fill sizes="(max-width: 639px) 68px, 80px" className={cn("object-contain", inverse ? "block" : "hidden dark:block")} />
+      </span>
+    </Link>
+  );
 }
 
 export function Header() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const [megaOpen, setMegaOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const closeMenus = () => { setMegaOpen(false); setMobileOpen(false); };
 
-  // (Option future) => remplace ces filtres par un champ tier: "terrain"|"premium" dans servicesData
-  const terrainServices = useMemo(
-    () =>
-      servicesData.filter((s) =>
-        [
-          "agent-securite-qualifie",
-          "agent-cynophile",
-          "agent-incendie-ssiap",
-          "agent-rondier",
-        ].includes(s.slug)
-      ),
-    []
-  );
-
-  const premiumServices = useMemo(
-    () =>
-      servicesData.filter((s) =>
-        ["securite-evenementielle", "audit-conseil-surete"].includes(
-          s.slug
-        )
-      ),
-    []
-  );
-
-  const telHref = useMemo(
-    () => normalizeTel((siteConfig.contact as any).phoneE164, siteConfig.contact.phone),
-    []
-  );
-
-  const ServiceMenuItem = ({ service }: { service: Service }) => {
-    const Icon = getLucideIcon(service.icon);
-    return (
-      <Link
-        href={`/services/${service.slug}`}
-        className="flex w-full items-start gap-3 rounded-md p-2 text-sm transition-colors hover:bg-muted"
-        onClick={() => setIsMobileMenuOpen(false)}
-      >
-        <Icon className="h-5 w-5 mt-0.5 text-primary flex-shrink-0" />
-        <div className="flex-1">
-          <p className="font-semibold text-foreground">{service.title}</p>
-          <p className="text-xs text-muted-foreground">{service.shortDescription}</p>
-        </div>
-      </Link>
-    );
-  };
+  useEffect(() => { setMegaOpen(false); setMobileOpen(false); }, [pathname]);
+  useEffect(() => {
+    const breakpoint = window.matchMedia("(min-width: 1280px)");
+    const onChange = () => { setMegaOpen(false); setMobileOpen(false); };
+    breakpoint.addEventListener("change", onChange);
+    return () => breakpoint.removeEventListener("change", onChange);
+  }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/70">
-      <div className="container mx-auto flex h-24 items-center justify-between px-4">
-        {/* Brand */}
-        <Link
-          href="/"
-          className="flex items-center gap-3"
-          aria-label={`${siteConfig.name} — Accueil`}
-          onClick={() => setIsMobileMenuOpen(false)}
-        >
-          <div className="relative h-24 w-24 overflow-hidden rounded-md">
-            <Image
-              src="/images/logo-clair.png"
-              alt={`Logo ${siteConfig.name}`}
-              fill
-              sizes="80px"
-              className="object-contain block dark:hidden"
-              priority
-            />
-            <Image
-              src="/images/logo-sombre.png"
-              alt={`Logo ${siteConfig.name}`}
-              fill
-              sizes="80px"
-              className="object-contain hidden dark:block"
-              priority
-            />
-          </div>
-        </Link>
-
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <button
-                aria-label="Ouvrir le menu des services"
-                className="flex items-center gap-1 rounded-md text-sm font-medium text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30"
-              >
-                Nos services
-                <ChevronDown className="h-4 w-4" />
+    <header className="premium-header luxury-header sticky top-0 z-50 w-full backdrop-blur-xl">
+      <div className="header-ribbon">
+        <div className="premium-shell flex items-center justify-between gap-4">
+          <span className="inline-flex items-center gap-2"><span className="header-ribbon-dot" />Sécurité privée · Île-de-France</span>
+          <span className="hidden md:block font-serif italic tracking-wide text-[#d9c6a3]">L’exigence de la sérénité</span>
+          <a href={`tel:${siteConfig.contact.phoneE164}`} className="inline-flex items-center gap-2 transition-colors hover:text-white"><Phone size={12} aria-hidden="true" /><span>{siteConfig.contact.phone}</span></a>
+        </div>
+      </div>
+      <div className="premium-shell header-main">
+        <Brand onClick={closeMenus} />
+        <nav className="hidden h-full items-center gap-7 xl:flex" aria-label="Navigation principale">
+          <Popover open={megaOpen} onOpenChange={setMegaOpen}>
+            <PopoverTrigger asChild>
+              <button type="button" className={cn("header-nav-link group", (megaOpen || isActive(pathname, "/services")) && "is-active")} aria-label="Nos expertises" aria-current={isActive(pathname, "/services") ? "true" : undefined}>
+                Nos expertises <ChevronDown size={13} className="transition-transform duration-200 group-data-[state=open]:rotate-180" aria-hidden="true" />
               </button>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent
-              className="w-[44rem] max-w-[calc(100vw-2rem)]"
-              align="start"
-            >
-              <div className="grid grid-cols-2 gap-x-6 p-4">
-                <div>
-                  <DropdownMenuLabel className="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Services de terrain
-                  </DropdownMenuLabel>
-                  <DropdownMenuGroup className="flex flex-col gap-1">
-                    {terrainServices.map((service) => {
-                      const Icon = getLucideIcon(service.icon);
-                      return (
-                        <DropdownMenuItem key={service.slug} asChild>
-                          <Link
-                            href={`/services/${service.slug}`}
-                            className="items-start gap-3"
-                          >
-                            <Icon className="mt-1 text-primary" />
-                            <div>
-                              <p className="font-semibold">{service.title}</p>
-                              <p className="text-xs text-muted-foreground whitespace-normal">
-                                {service.shortDescription}
-                              </p>
-                            </div>
-                          </Link>
-                        </DropdownMenuItem>
-                      );
-                    })}
-                  </DropdownMenuGroup>
-                </div>
-
-                <div>
-                  <DropdownMenuLabel className="px-2 pb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                    Services premium
-                  </DropdownMenuLabel>
-                  <DropdownMenuGroup className="flex flex-col gap-1">
-                    {premiumServices.map((service) => {
-                      const Icon = getLucideIcon(service.icon);
-                      return (
-                        <DropdownMenuItem key={service.slug} asChild>
-                          <Link
-                            href={`/services/${service.slug}`}
-                            className="items-start gap-3"
-                          >
-                            <Icon className="mt-1 text-primary" />
-                            <div>
-                              <p className="font-semibold">{service.title}</p>
-                              <p className="text-xs text-muted-foreground whitespace-normal">
-                                {service.shortDescription}
-                              </p>
-                            </div>
-                          </Link>
-                        </DropdownMenuItem>
-                      );
-                    })}
-                  </DropdownMenuGroup>
-                </div>
-              </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {navLinks.map((link) => {
-            const isActive = isActiveLink(pathname, link.href);
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                aria-current={isActive ? "page" : undefined}
-                className={cn(
-                  "transition-colors",
-                  isActive ? "text-foreground" : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                {link.label}
-              </Link>
-            );
-          })}
-        </nav>
-
-        {/* Actions */}
-        <div className="flex items-center gap-2 md:gap-3">
-          {/* Call (desktop) */}
-          <Button asChild variant="outline" className="hidden md:flex">
-            <a href={telHref}>
-              <Phone className="mr-2 h-4 w-4" />
-              Appeler
-            </a>
-          </Button>
-
-          {/* Quote */}
-          <Button asChild className="hidden md:flex">
-            <Link href="/devis">Obtenir un devis</Link>
-          </Button>
-
-          <ThemeToggle />
-
-          {/* Mobile menu */}
-          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="outline" size="icon" className="md:hidden">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Ouvrir le menu</span>
-              </Button>
-            </SheetTrigger>
-
-            <SheetContent side="right" className="w-full sm:max-w-xs p-0">
-              <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between p-4 border-b">
-                  <Link
-                    href="/"
-                    className="flex items-center gap-3"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <div className="relative h-20 w-20 overflow-hidden rounded-md">
-                      <Image
-                        src="/images/logo-clair.png"
-                        alt={`Logo ${siteConfig.name}`}
-                        fill
-                        sizes="80px"
-                        className="object-contain block dark:hidden"
-                      />
-                      <Image
-                        src="/images/logo-sombre.png"
-                        alt={`Logo ${siteConfig.name}`}
-                        fill
-                        sizes="80px"
-                        className="object-contain hidden dark:block"
-                      />
+            </PopoverTrigger>
+            <PopoverContent side="bottom" align="center" sideOffset={25} collisionPadding={24} className="luxury-mega w-[min(1120px,calc(100vw-48px))] rounded-t-none rounded-b-lg border-t-2 border-t-[#b79c73] bg-card p-0 shadow-[0_30px_70px_-15px_#07111f45]" aria-label="Nos expertises en sécurité privée">
+              <div className="mega-grid">
+                {serviceGroups.map(group => (
+                  <div key={group.label} className="mega-column">
+                    <p className="mega-overline">{group.label}</p>
+                    <p className="mega-intro">{group.description}</p>
+                    <div className="mt-5 space-y-1">
+                      {group.items.map(({ slug, title, description, icon: Icon }) => (
+                        <Link key={slug} href={`/services/${slug}`} onClick={closeMenus} className="mega-service group" aria-current={isActive(pathname, `/services/${slug}`) ? "page" : undefined}>
+                          <span className="mega-icon"><Icon size={20} strokeWidth={1.4} aria-hidden="true" /></span>
+                          <span className="min-w-0 flex-1"><span className="block text-[13px] font-semibold leading-snug">{title}</span><span className="mt-1.5 block text-xs leading-relaxed text-muted-foreground">{description}</span></span>
+                          <ArrowUpRight size={14} className="mega-link-arrow" aria-hidden="true" />
+                        </Link>
+                      ))}
                     </div>
-                  </Link>
-
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <X className="h-5 w-5" />
-                    <span className="sr-only">Fermer le menu</span>
-                  </Button>
-                </div>
-
-                <nav className="flex flex-col p-4 text-base">
-                  <Accordion type="single" collapsible className="w-full">
-                    <AccordionItem value="services" className="border-b-0">
-                      <AccordionTrigger className="rounded-md px-2 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors hover:no-underline font-normal">
-                        Nos services
-                      </AccordionTrigger>
-                      <AccordionContent className="pt-2 pl-4">
-                        <div className="flex flex-col gap-1">
-                          <p className="px-2 pt-2 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                            Services de terrain
-                          </p>
-                          {terrainServices.map((service) => (
-                            <ServiceMenuItem key={service.slug} service={service} />
-                          ))}
-                          <p className="px-2 pt-4 pb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                            Services premium
-                          </p>
-                          {premiumServices.map((service) => (
-                            <ServiceMenuItem key={service.slug} service={service} />
-                          ))}
-                        </div>
-                      </AccordionContent>
-                    </AccordionItem>
-                  </Accordion>
-
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="rounded-md px-2 py-2 text-muted-foreground hover:text-foreground hover:bg-muted/60 transition-colors"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                </nav>
-
-                <div className="mt-auto p-4 border-t space-y-2">
-                  <Button asChild variant="outline" className="w-full">
-                    <a href={telHref}>
-                      <Phone className="mr-2 h-4 w-4" />
-                      Appeler
-                    </a>
-                  </Button>
-                  <Button asChild className="w-full">
-                    <Link href="/devis" onClick={() => setIsMobileMenuOpen(false)}>
-                      Obtenir un devis
-                    </Link>
-                  </Button>
-                  <div className="pt-2 text-xs text-muted-foreground">
-                    Basés à {siteConfig.business.address.city} (
-                    {siteConfig.business.address.postalCode})
+                    {group.label === "Missions sur mesure" && (
+                      <Link href="/secteurs" onClick={closeMenus} className="mega-sector group"><span className="mega-overline">Votre univers</span><span className="mt-3 flex items-center justify-between gap-3 text-sm">Bureaux, hôtellerie, événements… <ArrowUpRight size={16} aria-hidden="true" /></span><span className="mt-2 block text-xs text-muted-foreground">Découvrir nos secteurs d’intervention</span></Link>
+                    )}
                   </div>
-                </div>
+                ))}
+                <aside className="mega-editorial">
+                  <Image src="/images/service-securite-evenementielle.webp" alt="" fill sizes="340px" className="object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#101c2d] via-[#101c2d]/70 to-[#101c2d]/15" />
+                  <div className="relative z-10 flex h-full flex-col justify-end p-7">
+                    <p className="mega-overline text-[#d9c6a3]">Une mission. Votre confiance.</p>
+                    <p className="mt-4 font-headline text-[29px] font-medium leading-tight tracking-[-0.04em] text-white">Une protection<br />à votre mesure.</p>
+                    <p className="mt-4 text-xs leading-relaxed text-white/70">Parlons de vos enjeux. Nous construirons le dispositif adapté.</p>
+                    <Link href="/devis" onClick={closeMenus} className="mt-6 flex items-center justify-between border-t border-white/25 pt-5 text-xs font-medium text-[#e6d3b2]">Confiez-nous votre projet <ArrowUpRight size={18} aria-hidden="true" /></Link>
+                  </div>
+                </aside>
               </div>
+              <div className="mega-bottom"><Link href="/services" onClick={closeMenus} className="flex items-center gap-3 font-medium">Explorer toutes nos expertises <ArrowRight size={16} aria-hidden="true" /></Link><span className="flex items-center gap-2 text-muted-foreground"><MapPin size={14} aria-hidden="true" />Plaisir · Les 8 départements franciliens</span></div>
+            </PopoverContent>
+          </Popover>
+          {navLinks.map(link => <Link key={link.href} href={link.href} onClick={closeMenus} className={cn("header-nav-link", isActive(pathname, link.href) && "is-active")} aria-current={isActive(pathname, link.href) ? "page" : undefined}>{link.label}</Link>)}
+        </nav>
+        <div className="flex items-center gap-3">
+          <div className="header-theme hidden sm:block"><ThemeToggle /></div>
+          <Link href="/devis" onClick={closeMenus} className="header-quote hidden sm:inline-flex">Votre projet <ArrowUpRight size={17} aria-hidden="true" /></Link>
+          <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+            <SheetTrigger asChild><button type="button" className="header-menu-button xl:hidden" aria-label="Ouvrir le menu"><Menu size={21} strokeWidth={1.5} /></button></SheetTrigger>
+            <SheetContent className="luxury-mobile h-[100dvh] w-full max-w-full gap-0 border-0 bg-[#101c2d] p-0 text-white sm:max-w-lg [&>button]:hidden">
+              <SheetTitle className="sr-only">Navigation Basic Protection Privée</SheetTitle>
+              <SheetDescription className="sr-only">Découvrez nos expertises, notre présence et contactez notre équipe.</SheetDescription>
+              <div className="mobile-menu-top"><Brand inverse onClick={closeMenus} /><SheetClose asChild><button type="button" className="mobile-close" aria-label="Fermer le menu"><X size={21} strokeWidth={1.5} /></button></SheetClose></div>
+              <div className="mobile-menu-scroll">
+                <p className="mega-overline mb-6 text-[#d9c6a3]">Votre sérénité commence ici</p>
+                <nav aria-label="Navigation mobile">
+                  <Accordion type="single" collapsible>
+                    <AccordionItem value="expertises" className="border-white/15"><AccordionTrigger className="mobile-nav-link hover:no-underline"><span><span className="mobile-index">01</span>Nos expertises</span></AccordionTrigger><AccordionContent className="pb-5">
+                      {serviceGroups.map(group => <div key={group.label} className="mb-5"><p className="mega-overline mb-3 mt-3 text-[#d9c6a3]">{group.label}</p>{group.items.map(({ slug, title, icon: Icon }) => <Link href={`/services/${slug}`} key={slug} onClick={closeMenus} aria-current={isActive(pathname, `/services/${slug}`) ? "page" : undefined} className="mobile-service"><Icon size={18} strokeWidth={1.4} aria-hidden="true" /><span>{title}</span><ArrowUpRight size={14} className="ml-auto shrink-0" aria-hidden="true" /></Link>)}</div>)}
+                      <Link href="/services" onClick={closeMenus} className="inline-flex items-center gap-3 border-b border-[#d9c6a3]/40 pb-2 text-xs text-[#d9c6a3]">Toutes nos expertises <ArrowRight size={15} /></Link>
+                    </AccordionContent></AccordionItem>
+                  </Accordion>
+                  {[{ href: "/secteurs", label: "Vos secteurs" }, ...navLinks].map((link, index) => <Link key={link.href} href={link.href} onClick={closeMenus} aria-current={isActive(pathname, link.href) ? "page" : undefined} className="mobile-nav-link flex items-center justify-between border-b border-white/15"><span><span className="mobile-index">0{index + 2}</span>{link.label}</span><ArrowUpRight size={17} className="text-white/40" aria-hidden="true" /></Link>)}
+                </nav>
+                <div className="mt-9 flex items-center justify-between"><span className="text-xs text-white/50">Votre confort de lecture</span><ThemeToggle /></div>
+              </div>
+              <div className="mobile-menu-bottom"><Link href="/devis" onClick={closeMenus} className="premium-button premium-button-gold w-full justify-between">Parlons de votre projet <ArrowUpRight size={18} /></Link><a href={`tel:${siteConfig.contact.phoneE164}`} className="mt-5 flex items-center justify-center gap-3 text-sm text-white/80"><Phone size={15} />{siteConfig.contact.phone}</a></div>
             </SheetContent>
           </Sheet>
         </div>

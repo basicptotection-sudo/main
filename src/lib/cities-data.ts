@@ -64,27 +64,27 @@ export const citiesDataBase: City[] = [
   { slug: "boulogne-billancourt-92100", title: "Sécurité Privée Boulogne-Billancourt", department: "Hauts-de-Seine (92)", focus: [], keywords: [] },
   { slug: "issy-les-moulineaux-92130", title: "Sécurité Privée Issy-les-Moulineaux", department: "Hauts-de-Seine (92)", focus: [], keywords: [] },
   { slug: "levallois-perret-92300", title: "Sécurité Privée Levallois-Perret", department: "Hauts-de-Seine (92)", focus: ["bureaux"], keywords: ["sécurité levallois", "gardiennage 92300"] },
-  
+
   // Seine-Saint-Denis (93)
   { slug: "saint-denis-93200", title: "Sécurité Privée Saint-Denis", department: "Seine-Saint-Denis (93)", focus: [], keywords: [] },
   { slug: "villepinte-93420", title: "Sécurité Privée Villepinte", department: "Seine-Saint-Denis (93)", focus: [], keywords: [] },
   { slug: "aubervilliers-93300", title: "Sécurité Privée Aubervilliers", department: "Seine-Saint-Denis (93)", focus: [], keywords: [] },
   { slug: "montreuil-93100", title: "Sécurité Privée Montreuil", department: "Seine-Saint-Denis (93)", focus: ["chantiers", "bureaux"], keywords: ["sécurité montreuil", "gardiennage 93100"] },
   { slug: "pantin-93500", title: "Sécurité Privée Pantin", department: "Seine-Saint-Denis (93)", focus: ["logistique", "bureaux"], keywords: ["sécurité pantin", "gardiennage 93500"] },
-  
+
   // Val-de-Marne (94)
   { slug: "rungis-94150", title: "Sécurité Privée Rungis", department: "Val-de-Marne (94)", focus: [], keywords: [] },
   { slug: "orly-94310", title: "Sécurité Privée Orly", department: "Val-de-Marne (94)", focus: [], keywords: [] },
   { slug: "creteil-94000", title: "Sécurité Privée Créteil", department: "Val-de-Marne (94)", focus: [], keywords: [] },
   { slug: "ivry-sur-seine-94200", title: "Sécurité Privée Ivry-sur-Seine", department: "Val-de-Marne (94)", focus: ["logistique", "chantiers"], keywords: ["sécurité ivry-sur-seine", "gardiennage 94200"] },
   { slug: "vitry-sur-seine-94400", title: "Sécurité Privée Vitry-sur-Seine", department: "Val-de-Marne (94)", focus: ["logistique", "industrie"], keywords: ["sécurité vitry-sur-seine", "gardiennage 94400"] },
-  
+
   // Val-d'Oise (95)
   { slug: "roissy-en-france-95700", title: "Sécurité Privée Roissy-en-France", department: "Val-d'Oise (95)", focus: [], keywords: [] },
   { slug: "cergy-95000", title: "Sécurité Privée Cergy", department: "Val-d'Oise (95)", focus: [], keywords: [] },
   { slug: "argenteuil-95100", title: "Sécurité Privée Argenteuil", department: "Val-d'Oise (95)", focus: ["industrie", "chantiers"], keywords: ["sécurité argenteuil", "gardiennage 95100"] },
   { slug: "sarcelles-95200", title: "Sécurité Privée Sarcelles", department: "Val-d'Oise (95)", focus: ["résidentiel", "bureaux"], keywords: ["sécurité sarcelles", "gardiennage 95200"] },
-  
+
   // Essonne (91)
   { slug: "massy-91300", title: "Sécurité Privée Massy", department: "Essonne (91)", focus: [], keywords: [] },
   { slug: "evry-courcouronnes-91000", title: "Sécurité Privée Évry-Courcouronnes", department: "Essonne (91)", focus: ["bureaux"], keywords: ["sécurité evry", "gardiennage 91000"] },
@@ -138,7 +138,41 @@ export const citiesDataBase: City[] = [
 
   // Essonne (91) – Saclay + Massy + zones d’activités
   { slug: "orsay-91400", title: "Sécurité Privée Orsay", department: "Essonne (91)", focus: ["tech"], keywords: ["sécurité orsay", "gardiennage 91400"] },
-  { slug: "les-ulis-91940", title: "Sécurité Privée Les Ulis", department: "Essonne (91)", focus: ["tech","industrie"], keywords: ["sécurité les ulis", "gardiennage 91940"] },
+  {
+    slug: "les-ulis-91940",
+    title: "Audit & Sécurité Privée Les Ulis (91940)",
+    department: "Essonne (91)",
+    focus: ["tech", "industrie", "bureaux"],
+    keywords: [
+      "sécurité les ulis",
+      "gardiennage 91940",
+      "audit sécurité les ulis",
+      "audit agent de securite les ulis",
+      "sécurité parc de courtaboeuf",
+    ],
+    intro:
+      "Audit de sûreté et dispositifs de sécurité privée pour les sites tech et industriels des Ulis (91). Nous analysons vos risques (accès, flux, zones sensibles) pour déployer une solution cadrée et efficace.",
+    useCases: [
+      {
+        icon: "FileSearch",
+        title: "Audit de sûreté & conseil",
+        content:
+          "Analyse complète de vos risques, audit de vos procédures et recommandations pour un plan de sûreté adapté à votre site des Ulis.",
+      },
+      {
+        icon: "Cpu",
+        title: "Sites technologiques & sensibles",
+        content:
+          "Contrôle d’accès, protection des zones R&D et respect des procédures de confidentialité pour les entreprises du parc d'activités de Courtabœuf.",
+      },
+      {
+        icon: "Factory",
+        title: "Sites industriels et logistiques",
+        content:
+          "Surveillance périmétrique, gestion des flux de véhicules et prévention des intrusions pour les zones d'activités de l'Essonne.",
+      },
+    ],
+  },
   { slug: "corbeil-essonnes-91100", title: "Sécurité Privée Corbeil-Essonnes", department: "Essonne (91)", focus: ["industrie","logistique"], keywords: ["sécurité corbeil-essonnes", "gardiennage 91100"] },
   { slug: "ris-orangis-91130", title: "Sécurité Privée Ris-Orangis", department: "Essonne (91)", focus: ["logistique","industrie"], keywords: ["sécurité ris-orangis", "gardiennage 91130"] },
 

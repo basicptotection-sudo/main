@@ -8,9 +8,9 @@ import { FirebaseErrorListener } from '@/components/FirebaseErrorListener'
 
 interface FirebaseProviderProps {
   children: ReactNode;
-  firebaseApp: FirebaseApp;
-  firestore: Firestore;
-  auth: Auth;
+  firebaseApp: FirebaseApp | null; // Allow null
+  firestore: Firestore | null;   // Allow null
+  auth: Auth | null;             // Allow null
 }
 
 // Internal state for user authentication
@@ -70,7 +70,7 @@ export const FirebaseProvider: React.FC<FirebaseProviderProps> = ({
   // Effect to subscribe to Firebase auth state changes
   useEffect(() => {
     if (!auth) { // If no Auth service instance, cannot determine user state
-      setUserAuthState({ user: null, isUserLoading: false, userError: new Error("Auth service not provided.") });
+      setUserAuthState({ user: null, isUserLoading: false, userError: null });
       return;
     }
 
@@ -158,10 +158,10 @@ type MemoFirebase <T> = T & {__memo?: boolean};
 
 export function useMemoFirebase<T>(factory: () => T, deps: DependencyList): T | (MemoFirebase<T>) {
   const memoized = useMemo(factory, deps);
-  
+
   if(typeof memoized !== 'object' || memoized === null) return memoized;
   (memoized as MemoFirebase<T>).__memo = true;
-  
+
   return memoized;
 }
 

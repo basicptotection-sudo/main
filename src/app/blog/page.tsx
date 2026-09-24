@@ -11,7 +11,7 @@ function toAbsolute(path: string) {
 }
 
 export const metadata: Metadata = {
-  title: "Blog | Basic Protection Privée — Conseils & analyses sécurité privée",
+  title: "Le journal — Conseils & analyses sécurité privée",
   description:
     "Conseils, méthodes et analyses sur la sécurité privée : gardiennage, rondes, contrôle d’accès, sécurité événementielle, bonnes pratiques et conformité.",
   alternates: { canonical: toAbsolute("/blog") },

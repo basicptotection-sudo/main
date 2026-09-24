@@ -13,7 +13,7 @@ export const CITY_FOCUS_CONTENT: Record<CityFocus, FocusBlock> = {
       "Dans les zones à forte valeur (boutiques de luxe, résidences de standing, sièges prestigieux), la sécurité doit être à la fois dissuasive, discrète et irréprochable dans sa présentation. Nos agents sont formés aux codes du luxe, à la confidentialité et à la gestion de publics exigeants.",
     services: [
       "agent-securite-qualifie",
-      "protection-rapprochee",
+      "audit-conseil-surete",
       "securite-evenementielle",
     ],
   },
@@ -55,28 +55,31 @@ export const CITY_FOCUS_CONTENT: Record<CityFocus, FocusBlock> = {
     title: "Sécurité événementielle et gestion des flux",
     content:
       "Salons, galas, lancements ou événements privés nécessitent une organisation rigoureuse. Nos équipes assurent contrôle d’accès, gestion des flux, zones VIP et coordination terrain.",
-    services: [
-      "securite-evenementielle",
-      "agent-securite-qualifie",
-    ],
+    services: ["securite-evenementielle", "agent-securite-qualifie"],
   },
 
   résidentiel: {
     title: "Sécurité résidentielle et copropriétés",
     content:
       "Pour les résidences et copropriétés, la priorité est la tranquillité des occupants. Nous mettons en place une présence rassurante, des rondes régulières et une prévention des incivilités.",
-    services: [
-      "agent-securite-qualifie",
-      "agent-rondier",
-    ],
+    services: ["agent-securite-qualifie", "agent-rondier"],
   },
 
   tech: {
     title: "Sécurité des sites technologiques et sensibles",
     content:
       "Les sites technologiques exigent un haut niveau de confidentialité et de rigueur. Nous appliquons des procédures strictes de contrôle d’accès, de traçabilité et de reporting.",
+    services: ["agent-securite-qualifie", "audit-conseil-surete"],
+  },
+
+  industrie: {
+    title: "Sécurité des sites industriels & zones de production",
+    content:
+      "Les sites industriels combinent de grands périmètres, des contraintes HSE et des flux (personnel, prestataires, livraison). Nous mettons en place une surveillance adaptée : contrôle d’accès, rondes périmétriques, gestion des entrées/sorties et procédures de sécurité en coordination avec vos équipes.",
     services: [
       "agent-securite-qualifie",
+      "agent-rondier",
+      "agent-cynophile",
       "audit-conseil-surete",
     ],
   },

@@ -9,13 +9,13 @@
     {
       "id": "about",
       "description": "A modern office building, representing a corporate client.",
-      "imageUrl": "https://images.unsplash.com/photo-1703355685639-d558d1b0f63e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxvZmZpY2UlMjBidWlsZGluZyUyMG1vZGVybnxlbnwwfHx8fDE3NjkwOTE1MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "office building modern"
+      "imageUrl": "https://images.unsplash.com/photo-1431540015161-0bf868a2d407?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxvZmZpY2UlMjBidWlsZGluZ3xlbnwwfHx8fDE3NzA2OTc3ODZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "office building"
     },
     {
       "id": "service-protection-rapprochee",
       "description": "Bodyguard discreetly accompanying a VIP.",
-      "imageUrl": "https://images.unsplash.com/photo-1582146099748-5d3a6979152f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxib2R5Z3VhcmQlMjB2aXB8ZW58MHx8fHwxNzY5MDkyNzY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1751716612740-6a175c0c7d6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxib2R5Z3VhcmQlMjB2aXB8ZW58MHx8fHwxNzcwNzI4NjQ2fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "bodyguard vip"
     },
     {
@@ -33,7 +33,7 @@
     {
       "id": "services-hub",
       "description": "Team of security professionals ready for mission.",
-      "imageUrl": "https://images.unsplash.com/photo-1713021947821-ac3dde7b191f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzZWN1cml0eSUyMHRlYW18ZW58MHx8fHwxNzY5MDkyNzY5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/images/services/services-securite-privee.avif",
       "imageHint": "security team"
     },
     {
@@ -45,43 +45,43 @@
     {
       "id": "zone-paris",
       "description": "Aerial view of Paris with the Eiffel Tower.",
-      "imageUrl": "https://images.unsplash.com/photo-1502602898657-3e91760c0337?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDE3fHx8ZW58MHx8fHw%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageUrl": "httpb634849f6536?crop=entropy&cs=tinx&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwYXJpcyUyMGVpZmZlbHxlbnwwfHx8fDE3NzA2ODk4NjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "paris eiffel"
     },
     {
       "id": "zone-hauts-de-seine",
       "description": "Modern skyline of La Défense business district.",
-      "imageUrl": "https://images.unsplash.com/photo-1560963952-458f6d72d6ef?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxMYSUyMEQlQzMlQTlmZW5zZSUyMFBhcmlzfGVufDB8fHx8fDE3MTY0OTAwMDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/images/zones/securite-privee-hauts-de-seine.webp",
       "imageHint": "business district"
     },
     {
       "id": "contact-map",
       "description": "A stylish map of Paris showing a business location.",
-      "imageUrl": "https://images.unsplash.com/photo-1612921376312-7c9028e1bba2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwYXJpcyUyMG1hcHxlbnwwfHx8fDE3NjkwOTM4NTV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1612921376312-7c9028e1bba2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGFyaXMlMjBtYXB8ZW58MHx8fHwxNzcwNzI4NjQ2fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "paris map"
     },
     {
       "id": "blog-choisir-agence",
       "description": "Two professionals shaking hands in a modern office, sealing a deal.",
-      "imageUrl": "https://images.unsplash.com/photo-1622675363511-9694c9511305?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHw%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageUrl": "/images/blog/choir-agence-securite.webp",
       "imageHint": "professional handshake"
     },
     {
       "id": "blog-reglementation",
       "description": "A judge's gavel and a law book on a wooden desk, symbolizing rules and regulations.",
-      "imageUrl": "https://images.unsplash.com/photo-1589994235586-98a1f9c05829?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDEyfHx8ZW58MHx8fHw%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageUrl": "/images/blog/reglementation-securite-privee.webp",
       "imageHint": "gavel law"
     },
     {
       "id": "blog-checklist-evenement",
       "description": "A security guard with an earpiece watches over a large-scale event at night.",
-      "imageUrl": "https://images.unsplash.com/photo-1517524201939-90d1a3556708?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDN8fHxlbnwwfHx8fA%3D%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageUrl": "/images/blog/checklist-securite-evenementielle.webp",
       "imageHint": "event security"
     },
     {
       "id": "service-agent-qualifie",
       "description": "Professional security guard in uniform standing watch inside a modern building lobby.",
-      "imageUrl": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzZWN1cml0eSUyMGd1YXJkfGVufDB8fHx8fDE3NjkwOTk5OTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1566245024852-04fbf7842ce9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzZWN1cml0eSUyMGd1YXJkfGVufDB8fHx8MTc3MDcyODY0NXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "security guard"
     },
     {
@@ -100,7 +100,7 @@
       "id": "service-agent-rondier",
       "description": "Security guard with a flashlight making rounds in a dark parking garage at night.",
       "imageUrl": "/images/agent-rondier.webp",
-      "imageHint": "security patrol night"
+      "imageHint": "security patrol"
     },
     {
       "id": "about-hero",
@@ -111,43 +111,43 @@
     {
       "id": "founder-portrait",
       "description": "Portrait of a confident male business leader in a modern office.",
-      "imageUrl": "https://images.unsplash.com/photo-1560250097-0b93528c311a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNzAwfDB8MHxwaG90by1yZWxhdGVkfDV8fHxlbnwwfHx8fA%3D%3D&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1578574577315-3fbeb0cecdc2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxidXNpbmVzcyUyMGxlYWRlcnxlbnwwfHx8fDE3NzA2MzQ1Njd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "business leader"
     },
     {
       "id": "zone-yvelines-78",
       "description": "The gardens of the Château de Versailles in Yvelines.",
-      "imageUrl": "https://images.unsplash.com/photo-1599812492834-283a3e989479?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjaCVDMyVBMnRlYXUlMjBkZSUyMHZlcnNhaWxsZXN8ZW58MHx8fHwxNzE5MjM1NzMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1667752918111-ba525ba98f01?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx2ZXJzYWlsbGVzJTIwY2FzdGxlfGVufDB8fHx8MTc3MDcyODY0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "versailles castle"
     },
     {
       "id": "zone-seine-saint-denis-93",
       "description": "The Stade de France in Seine-Saint-Denis, an iconic venue for sports and events.",
-      "imageUrl": "https://images.unsplash.com/photo-1683384234912-68048a941549?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdGFkZSUyMGRlJTIwZnJhbmNlfGVufDB8fHx8fDE3MTkyMzU3ODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1646350639591-e324c3e72b9c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdGFkZSUyMGRlJTIwZnJhbmNlfGVufDB8fHx8MTc3MDcyODY0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "stade de france"
     },
     {
       "id": "zone-val-de-marne-94",
       "description": "A peaceful view of the Marne river banks in Val-de-Marne.",
-      "imageUrl": "https://images.unsplash.com/photo-1620051873022-72099f4a3854?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtYXJuZSUyMHJpdmVyfGVufDB8fHx8fDE3MTkyMzU4Mjh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1712220442409-badc4edc4dd5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxtYXJuZSUyMHJpdmVyfGVufDB8fHx8MTc3MDcyODY0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "marne river"
     },
     {
       "id": "zone-val-doise-95",
       "description": "A modern building in Cergy, Val-d'Oise, reflecting the new town architecture.",
-      "imageUrl": "https://images.unsplash.com/photo-1604882241696-61a1b1c43ab3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjZXJneSUyMHBvbnRvaXNlfGVufDB8fHx8fDE3MTkyMzU4Nzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://picsum.photos/seed/cergy/1200/800",
       "imageHint": "cergy pontoise"
     },
     {
       "id": "zone-seine-et-marne-77",
       "description": "The Château de Fontainebleau in Seine-et-Marne, a historical landmark.",
-      "imageUrl": "https://images.unsplash.com/photo-1591964593160-394436c84693?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjaCVDMyVBMnRlYXUlMjBkZSUyMGZvbnRhaW5lYmxlYXV8ZW58MHx8fHwxNzE5MjM1OTE3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1722075335275-5560aefdfee3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmb250YWluZWJsZWF1JTIwY2FzdGxlfGVufDB8fHx8MTc3MDcyODY0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fontainebleau castle"
     },
     {
       "id": "zone-essonne-91",
       "description": "Modern architecture of the Paris-Saclay university campus in Essonne.",
-      "imageUrl": "https://images.unsplash.com/photo-1678122419358-e4a07b77b738?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwYXJpcy1zYWNsYXklMjBjYW1wdXN8ZW58MHx8fHwxNzE5MjM1OTQ5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1617182926345-205718965035?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzYWNsYXklMjBjYW1wdXN8ZW58MHx8fHwxNzcwNzI4NjQ2fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "saclay campus"
     }
   ]

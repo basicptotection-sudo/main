@@ -1,0 +1,144 @@
+{
+  "entities": {
+    "LeadRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LeadRequest",
+      "type": "object",
+      "description": "Represents a lead request submitted via the /devis (quote) page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the lead request. (Primary Key)"
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Full name of the person submitting the request."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person submitting the request.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of the person submitting the request."
+        },
+        "company": {
+          "type": "string",
+          "description": "Company name of the person submitting the request (if applicable)."
+        },
+        "serviceOfInterest": {
+          "type": "string",
+          "description": "The specific service the lead is interested in."
+        },
+        "message": {
+          "type": "string",
+          "description": "Additional message or details provided by the lead."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "Date and time when the lead request was submitted.",
+          "format": "date-time"
+        },
+        "ipAddress": {
+          "type": "string",
+          "description": "IP address of the user submitting the form (for spam prevention)."
+        }
+      },
+      "required": [
+        "id",
+        "fullName",
+        "email",
+        "phone",
+        "serviceOfInterest",
+        "message",
+        "submissionDate"
+      ]
+    },
+    "ContactRequest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ContactRequest",
+      "type": "object",
+      "description": "Represents a contact request submitted via the /contact page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the contact request."
+        },
+        "fullName": {
+          "type": "string",
+          "description": "Full name of the person submitting the request."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the person.",
+          "format": "email"
+        },
+        "subject": {
+          "type": "string",
+          "description": "Subject of the message."
+        },
+        "message": {
+          "type": "string",
+          "description": "The message content."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "Date and time of submission.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "fullName",
+        "email",
+        "subject",
+        "message",
+        "submissionDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "lead_requests/{leadRequestId}",
+        "definition": {
+          "entityName": "LeadRequest",
+          "schema": {
+            "$ref": "#/backend/entities/LeadRequest"
+          },
+          "description": "Stores lead requests submitted via the /devis page.  Each document represents a single lead request.",
+          "params": [
+            {
+              "name": "leadRequestId",
+              "description": "Unique identifier for the lead request document."
+            }
+          ]
+        }
+      },
+      {
+        "path": "contact_requests/{contactRequestId}",
+        "definition": {
+          "entityName": "ContactRequest",
+          "schema": {
+            "$ref": "#/backend/entities/ContactRequest"
+          },
+          "description": "Stores contact requests submitted via the /contact page.",
+          "params": [
+            {
+              "name": "contactRequestId",
+              "description": "Unique identifier for the contact request document."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to store lead and contact requests. The `lead_requests` collection stores submissions from the /devis page, and the `contact_requests` collection stores submissions from the /contact page. Each document represents a single submission. This flat structure promotes simplicity and ease of querying. Since all requests are stored in their respective collections without hierarchical relationships, there's no need for authorization checks based on parent documents. This enables atomic operations and simplifies debugging. Storing all requests in separate, flat collections facilitates secure `list` operations via more complex security rules if needed in the future."
+  }
+}

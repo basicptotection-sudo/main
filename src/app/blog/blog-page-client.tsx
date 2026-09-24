@@ -1,289 +1,53 @@
 "use client";
 
-import React, { useDeferredValue, useMemo, useState } from "react";
+import { useDeferredValue, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-
-import { Breadcrumbs } from "@/components/shared";
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-
-import { format } from "date-fns";
-import { fr } from "date-fns/locale";
-import { ArrowRight, Search, Sparkles, TrendingUp } from "lucide-react";
-
+import { ArrowDown, ArrowUpRight, Search, X } from "lucide-react";
 import type { Post, PostFrontmatter } from "@/lib/blog";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Separator } from "@/components/ui/separator";
 
 type SortKey = "recent" | "oldest" | "title";
-
-function safeTags(tags: any): string[] {
-  if (!Array.isArray(tags)) return [];
-  return tags.map((t) => String(t).trim()).filter(Boolean);
-}
-
-function readingTimeFrom(text?: string) {
-  if (!text) return null;
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
-  if (!words) return null;
-  const minutes = Math.max(3, Math.round(words / 200));
-  return `${minutes} min`;
-}
-
-function getPostCover(post: Post<PostFrontmatter>) {
-  const fm = post?.frontmatter ?? {};
-  const imageId =
-    (fm as any).cover ||
-    (fm as any).image ||
-    (fm as any).hero ||
-    (fm as any).thumbnail ||
-    null;
-
-  if (!imageId) return null;
-
-  const postImage = PlaceHolderImages.find((p) => p.id === imageId);
-  return postImage ? postImage.imageUrl : null;
-}
-
-function getPostContent(post: any) {
-  return post?.content || post?.body || post?.raw || "";
-}
-
-function isFeatured(post: Post<PostFrontmatter>) {
-  const tags = safeTags(post?.frontmatter?.tags).map((t) => t.toLowerCase());
-  return tags.includes("à la une") || tags.includes("a la une") || tags.includes("featured");
+const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+const dateLabel = (value: string) => new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(value));
+function cover(post: Post<PostFrontmatter>) {
+  return PlaceHolderImages.find(image => image.id === post.frontmatter.image)?.imageUrl || (post.frontmatter.image.startsWith("/") ? post.frontmatter.image : null);
 }
 
 export default function BlogPageClient({ posts }: { posts: Post<PostFrontmatter>[] }) {
-  const breadcrumbItems = [
-    { label: "Accueil", href: "/" },
-    { label: "Blog", href: "/blog" },
-  ];
-
-  const allTags = useMemo(() => {
-    const tags = posts.flatMap((p) => safeTags(p?.frontmatter?.tags));
-    return Array.from(new Set(tags)).sort((a, b) => a.localeCompare(b, "fr"));
-  }, [posts]);
-
-  const featured = useMemo(() => {
-    const withFlag = posts.find(isFeatured);
-    if (withFlag) return withFlag;
-
-    return [...posts]
-      .filter((p) => p?.slug && p?.frontmatter?.title && p?.frontmatter?.date)
-      .sort((a, b) => new Date(b.frontmatter.date).getTime() - new Date(a.frontmatter.date).getTime())[0];
-  }, [posts]);
-
   const [query, setQuery] = useState("");
   const deferredQuery = useDeferredValue(query);
+  const [tag, setTag] = useState("");
+  const [sort, setSort] = useState<SortKey>("recent");
+  const tags = useMemo(() => [...new Set(posts.flatMap(post => post.frontmatter.tags))].sort((a, b) => a.localeCompare(b, "fr")), [posts]);
+  const featured = posts.find(post => post.frontmatter.tags.some(tag => normalize(tag) === "a la une")) || posts[0];
+  const filtered = useMemo(() => posts.filter(post => {
+    const data = post.frontmatter;
+    return (!tag || data.tags.includes(tag)) && normalize(`${data.title} ${data.description} ${data.tags.join(" ")}`).includes(normalize(deferredQuery.trim()));
+  }).sort((a, b) => sort === "title" ? a.frontmatter.title.localeCompare(b.frontmatter.title, "fr") : (new Date(a.frontmatter.date).getTime() - new Date(b.frontmatter.date).getTime()) * (sort === "recent" ? -1 : 1)), [posts, tag, deferredQuery, sort]);
+  const reset = () => { setQuery(""); setTag(""); setSort("recent"); };
+  const featuredCover = featured && cover(featured);
 
-  const [activeTag, setActiveTag] = useState<string>("Tous");
-  const [sortKey, setSortKey] = useState<SortKey>("recent");
+  return <>
+    <section className="premium-shell pb-12 pt-8 md:pb-16">
+      <nav aria-label="Fil d’Ariane" className="flex gap-3 text-[11px] text-muted-foreground"><Link href="/" className="hover:text-foreground">Accueil</Link><span aria-hidden="true">/</span><span aria-current="page">Le journal</span></nav>
+      <div className="mt-12 flex flex-col justify-between gap-7 border-b pb-10 md:mt-16 lg:flex-row lg:items-end">
+        <div><p className="premium-eyebrow text-[#9c8056]">Le journal · Basic Protection Privée</p><h1 className="mt-5 font-headline text-[clamp(2.8rem,5.6vw,5.4rem)] font-medium leading-[1.04] tracking-[-0.055em]">Un regard éclairé.<br /><span className="premium-serif">Une sécurité maîtrisée.</span></h1></div>
+        <div className="max-w-sm lg:pb-2"><p className="text-sm leading-relaxed text-muted-foreground">Conseils, méthodes et décryptages pour comprendre vos enjeux de sécurité et prendre des décisions éclairées.</p><a href="#articles" className="premium-text-link mt-6">Parcourir le journal <ArrowDown size={16} /></a></div>
+      </div>
+      {featured && <article className="mt-10 md:mt-12"><Link href={`/blog/${featured.slug}`} className="journal-feature group grid overflow-hidden bg-[#101c2d] text-white lg:grid-cols-[1.1fr_1fr]">
+        <div className="relative min-h-64 overflow-hidden bg-[#203149] lg:min-h-[460px]">{featuredCover && <Image src={featuredCover} alt="" fill priority sizes="(max-width: 1023px) 100vw, 55vw" className="object-cover transition-transform duration-700 motion-safe:group-hover:scale-[1.03]" />}<span className="absolute left-6 top-6 bg-[#f5f1e9] px-4 py-2 text-[10px] uppercase tracking-[0.15em] text-[#101c2d]">À la une</span></div>
+        <div className="flex flex-col items-start p-7 sm:p-10 lg:p-12"><p className="premium-eyebrow text-[#d9c6a3]">{featured.frontmatter.tags.slice(0, 2).join(" · ")}</p><h2 className="mt-6 font-headline text-[clamp(1.7rem,2.5vw,2.5rem)] font-medium leading-[1.15] tracking-[-0.035em]">{featured.frontmatter.title}</h2><p className="mt-5 text-sm leading-relaxed text-white/65">{featured.frontmatter.description}</p><time dateTime={featured.frontmatter.date} className="mt-6 text-xs text-white/50">{dateLabel(featured.frontmatter.date)}</time><span className="mt-auto inline-flex items-center gap-6 border-b border-[#d9c6a3]/50 pb-3 pt-8 text-xs text-[#d9c6a3]">Lire l’article <ArrowUpRight size={18} className="transition-transform group-hover:translate-x-1" /></span></div>
+      </Link></article>}
+    </section>
 
-  const filtered = useMemo(() => {
-    const q = deferredQuery.trim().toLowerCase();
-
-    const baseList = posts.filter((p) => p?.slug && p?.frontmatter?.title);
-
-    const byTag =
-      activeTag === "Tous"
-        ? baseList
-        : baseList.filter((p) => safeTags(p.frontmatter.tags).includes(activeTag));
-
-    const byQuery =
-      !q
-        ? byTag
-        : byTag.filter((p) => {
-            const title = String(p.frontmatter.title ?? "").toLowerCase();
-            const desc = String(p.frontmatter.description ?? "").toLowerCase();
-            const tags = safeTags(p.frontmatter.tags).join(" ").toLowerCase();
-            return title.includes(q) || desc.includes(q) || tags.includes(q);
-          });
-
-    const sorted = [...byQuery].sort((a, b) => {
-      if (sortKey === "title") {
-        return String(a.frontmatter.title).localeCompare(String(b.frontmatter.title), "fr");
-      }
-      const da = new Date(a.frontmatter.date).getTime();
-      const db = new Date(b.frontmatter.date).getTime();
-      return sortKey === "oldest" ? da - db : db - da;
-    });
-
-    return sorted.filter((p) => p.slug !== featured?.slug);
-  }, [posts, deferredQuery, activeTag, sortKey, featured?.slug]);
-
-  const featuredCover = featured ? getPostCover(featured) : null;
-
-  return (
-    <div className="bg-background text-foreground">
-      {/* HERO */}
-      <section className="relative overflow-hidden border-b border-border">
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-muted/30 via-background to-background" />
-          <div className="absolute -top-24 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-muted/40 blur-3xl" />
-        </div>
-
-        <div className="container mx-auto max-w-6xl px-4 py-14 md:py-20">
-          <div className="mx-auto max-w-4xl text-center">
-            <Breadcrumbs items={breadcrumbItems} centered />
-
-            <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-4 py-2 text-xs text-muted-foreground backdrop-blur">
-              <Sparkles className="h-4 w-4" />
-              Analyses & conseils — sécurité privée, gardiennage, sûreté
-            </div>
-
-            <h1 className="mt-6 font-headline text-4xl font-bold tracking-tight md:text-5xl">
-              Blog & Analyses
-            </h1>
-
-            <p className="mx-auto mt-4 max-w-3xl text-base text-muted-foreground md:text-lg">
-              Des contenus utiles, concrets et exigeants : méthodes, réglementation, retours d’expérience,
-              et bonnes pratiques terrain pour les professionnels.
-            </p>
-
-            {/* Search + filter panel */}
-            <div className="mt-8 mx-auto max-w-3xl rounded-2xl border bg-card/60 p-4 shadow-sm backdrop-blur">
-              <div className="relative">
-                <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Rechercher (ex: rondes, contrôle d’accès, événementiel…)…"
-                  className="h-11 pl-10"
-                />
-              </div>
-              <div className="mt-4 flex flex-col md:flex-row gap-3 justify-between items-center">
-                <div className="flex gap-2">
-                  <span className="text-sm text-muted-foreground hidden md:inline-flex items-center">Trier par :</span>
-                  <Button type="button" variant={sortKey === "recent" ? "secondary" : "ghost"} size="sm" onClick={() => setSortKey("recent")}>Récent</Button>
-                  <Button type="button" variant={sortKey === "oldest" ? "secondary" : "ghost"} size="sm" onClick={() => setSortKey("oldest")}>Ancien</Button>
-                  <Button type="button" variant={sortKey === "title" ? "secondary" : "ghost"} size="sm" onClick={() => setSortKey("title")}>A-Z</Button>
-                </div>
-                <Button type="button" variant="ghost" size="sm" className="text-muted-foreground" onClick={() => { setQuery(""); setActiveTag("Tous"); setSortKey("recent"); }}>Réinitialiser</Button>
-              </div>
-            </div>
-
-            {/* Tags */}
-            {allTags.length > 0 && (
-              <div className="no-scrollbar mt-6 flex items-center justify-center gap-2 overflow-x-auto py-1">
-                <button className={cn("shrink-0 rounded-full border px-3 py-1.5 text-sm transition-colors", activeTag === 'Tous' ? 'bg-primary text-primary-foreground border-transparent' : 'bg-background hover:bg-muted/50')} onClick={() => setActiveTag('Tous')} type="button">Tous</button>
-                {allTags.map((t) => (
-                  <button key={t} className={cn("shrink-0 rounded-full border px-3 py-1.5 text-sm transition-colors", activeTag === t ? 'bg-primary text-primary-foreground border-transparent' : 'bg-background hover:bg-muted/50')} onClick={() => setActiveTag(t)} type="button">{t}</button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Live region (accessibilité) */}
-      <div className="sr-only" aria-live="polite">{filtered.length} résultat{filtered.length > 1 ? "s" : ""}.</div>
-
-      {/* Featured */}
-      {featured && (
-        <section className="container mx-auto max-w-6xl px-4 py-12 md:py-16">
-          <div className="flex items-center gap-2 text-sm font-semibold mb-4">
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-            À la une
-          </div>
-          <Link href={`/blog/${featured.slug}`} className="group block">
-            <div className="grid md:grid-cols-2 gap-8 items-center overflow-hidden rounded-3xl border border-border bg-card shadow-lg transition-all hover:shadow-xl">
-              <div className="relative aspect-[16/10] md:aspect-auto md:h-full">
-                {featuredCover ? (
-                  <Image src={featuredCover} alt={featured.frontmatter.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" priority />
-                ) : (
-                  <div className="absolute inset-0 bg-muted/30" />
-                )}
-              </div>
-              <div className="p-8">
-                <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="secondary">À la une</Badge>
-                  {safeTags(featured.frontmatter.tags).slice(0, 2).map((t) => ( <Badge key={t} variant="outline">{t}</Badge> ))}
-                </div>
-                <h2 className="mt-4 font-headline text-3xl font-bold md:text-4xl">{featured.frontmatter.title}</h2>
-                <p className="mt-3 text-muted-foreground">{featured.frontmatter.description}</p>
-                <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
-                  <span>{format(new Date(featured.frontmatter.date), "dd MMMM yyyy", { locale: fr })}</span>
-                  <span className="opacity-40">•</span>
-                  <span>{readingTimeFrom(getPostContent(featured)) ?? "Lecture"}</span>
-                </div>
-                <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-primary">Lire l’article <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" /></div>
-              </div>
-            </div>
-          </Link>
-        </section>
-      )}
-
-      {/* Grid */}
-      <section className="container mx-auto max-w-6xl px-4 pb-16 md:pb-24">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h2 className="font-headline text-2xl font-bold md:text-3xl">Tous les articles</h2>
-            <p className="mt-2 text-sm text-muted-foreground">{filtered.length} article{filtered.length > 1 ? "s" : ""} affiché{filtered.length > 1 ? "s" : ""}.</p>
-          </div>
-          <div className="hidden md:flex items-center gap-2 text-xs text-muted-foreground">
-            Astuce : taguez un article “À la une” pour le mettre en avant.
-          </div>
-        </div>
-
-        <div className="mt-8 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((post) => {
-            const cover = getPostCover(post);
-            const tags = safeTags(post.frontmatter.tags);
-            const dateLabel = format(new Date(post.frontmatter.date), "dd MMMM yyyy", { locale: fr });
-
-            return (
-              <Link href={`/blog/${post.slug}`} key={post.slug} className="group block">
-                <Card className="h-full overflow-hidden rounded-3xl border-border bg-background transition-all hover:-translate-y-0.5 hover:shadow-lg">
-                  <div className="relative aspect-[16/9] overflow-hidden bg-muted/20">
-                    {cover ? ( <Image src={cover} alt={post.frontmatter.title} fill className="object-cover transition-transform duration-500 group-hover:scale-[1.03]" sizes="(max-width: 768px) 100vw, 33vw" /> ) : ( <div className="absolute inset-0 bg-muted/30" /> )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background/55 via-transparent to-transparent" />
-                  </div>
-                  <CardHeader className="p-6">
-                    <p className="text-sm text-muted-foreground">{dateLabel}</p>
-                    <CardTitle className="mt-2 leading-snug">{post.frontmatter.title}</CardTitle>
-                    <CardDescription className="mt-2 line-clamp-2">{post.frontmatter.description}</CardDescription>
-                  </CardHeader>
-                  <CardFooter className="p-6 pt-0">
-                    <div className="flex items-center text-sm font-medium text-primary">Lire l'article <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover:translate-x-1" /></div>
-                  </CardFooter>
-                </Card>
-              </Link>
-            );
-          })}
-        </div>
-
-        {filtered.length === 0 && (
-          <div className="mt-12 rounded-3xl border border-dashed bg-muted/20 p-8 text-center">
-            <div className="mx-auto max-w-xl">
-              <h3 className="font-headline text-xl font-bold">Aucun article ne correspond à votre recherche</h3>
-              <p className="mt-2 text-muted-foreground">Essayez un autre mot-clé ou retirez un filtre.</p>
-              <Button type="button" className="mt-5 rounded-xl" variant="outline" onClick={() => { setQuery(""); setActiveTag("Tous"); setSortKey("recent"); }}>Réinitialiser les filtres</Button>
-            </div>
-          </div>
-        )}
-      </section>
-
-      {/* CTA bas */}
-      <section className="border-t border-border bg-muted/20">
-        <div className="container mx-auto max-w-6xl px-4 py-14 md:py-20">
-          <div className="grid gap-8 rounded-3xl border border-border bg-background p-8 md:grid-cols-2 md:items-center">
-            <div>
-              <h3 className="font-headline text-2xl font-bold md:text-3xl">Recevez nos meilleures analyses</h3>
-              <p className="mt-3 text-muted-foreground">Un e-mail occasionnel avec des méthodes, checklists, retours terrain, et conseils sur la conformité réglementaire.</p>
-            </div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Input className="h-11 w-full sm:w-auto flex-grow" placeholder="Votre adresse e-mail" type="email" />
-              <Button className="h-11 rounded-xl" type="button">S’inscrire</Button>
-            </div>
-          </div>
-          <p className="mt-4 text-center text-xs text-muted-foreground">Désinscription en 1 clic. Pas de spam.</p>
-        </div>
-      </section>
-    </div>
-  );
+    <section id="articles" className="premium-shell pb-20 pt-8 md:pb-28" aria-labelledby="articles-title">
+      <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div><p className="premium-eyebrow text-[#9c8056]">Comprendre · Anticiper · Protéger</p><h2 id="articles-title" className="premium-title mt-4">Toutes nos <span className="premium-serif">lectures.</span></h2></div><div className="journal-search"><Search size={17} className="shrink-0 text-muted-foreground" aria-hidden="true" /><input aria-label="Rechercher un article" type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Un sujet, un mot-clé…" className="min-w-0 flex-1 bg-transparent py-4 text-sm outline-none" />{query && <button type="button" onClick={() => setQuery("")} aria-label="Effacer la recherche" className="p-2"><X size={16} /></button>}</div></div>
+      <div className="mt-8 flex flex-wrap gap-2 border-y py-5" aria-label="Filtrer par sujet"><button type="button" className="journal-tag" aria-pressed={!tag} onClick={() => setTag("")}>Tout le journal</button>{tags.map(item => <button key={item} type="button" className="journal-tag" aria-pressed={tag === item} onClick={() => setTag(item)}>{item}</button>)}</div>
+      <div className="flex flex-wrap items-center justify-between gap-4 py-6"><p role="status" aria-live="polite" className="text-xs text-muted-foreground">{filtered.length} article{filtered.length > 1 ? "s" : ""}{tag ? ` · ${tag}` : ""}</p><label className="flex items-center gap-3 text-xs text-muted-foreground">Trier par<select aria-label="Trier les articles" value={sort} onChange={event => setSort(event.target.value as SortKey)} className="max-w-full border bg-background px-3 py-2 text-foreground"><option value="recent">Les plus récents</option><option value="oldest">Les plus anciens</option><option value="title">Titre : A à Z</option></select></label></div>
+      <div className="grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">{filtered.map(post => { const image = cover(post); return <article key={post.slug}><Link href={`/blog/${post.slug}`} className="journal-card group flex h-full flex-col"><div className="relative aspect-[3/2] overflow-hidden bg-muted">{image && <Image src={image} alt="" fill sizes="(max-width: 767px) 100vw, (max-width: 1023px) 50vw, 33vw" className="object-cover transition-transform duration-500 motion-safe:group-hover:scale-[1.04]" />}<span className="absolute bottom-0 left-0 bg-background px-4 py-2 text-[10px] uppercase tracking-[0.1em]">{post.frontmatter.tags[0] || "Analyse"}</span></div><div className="flex flex-1 flex-col border-b pb-6 pt-6"><time dateTime={post.frontmatter.date} className="text-[11px] text-muted-foreground">{dateLabel(post.frontmatter.date)}</time><h3 className="mt-3 font-headline text-2xl font-medium leading-tight tracking-[-0.025em] transition-colors group-hover:text-[#9c8056]">{post.frontmatter.title}</h3><p className="mt-4 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{post.frontmatter.description}</p><span className="mt-auto flex items-center justify-between pt-6 text-xs">Lire l’article <ArrowUpRight size={18} className="text-[#9c8056]" /></span></div></Link></article>; })}</div>
+      {!filtered.length && <div className="border-b py-16 text-center"><Search size={28} className="mx-auto text-[#9c8056]" /><h3 className="mt-5 font-headline text-2xl">Aucune lecture pour cette recherche.</h3><p className="mt-3 text-sm text-muted-foreground">Essayez un autre mot-clé ou explorez tous nos sujets.</p><button type="button" onClick={reset} className="premium-button mt-7">Réinitialiser les filtres <ArrowUpRight size={16} /></button></div>}
+    </section>
+    <section className="premium-dark border-b border-white/10 py-16 md:py-24"><div className="premium-shell flex flex-col justify-between gap-9 lg:flex-row lg:items-center"><div><p className="premium-eyebrow text-[#d9c6a3]">Du conseil à l’action</p><h2 className="premium-title mt-5 text-white">Chaque situation mérite<br /><span className="premium-serif text-[#d9c6a3]">une réponse sur mesure.</span></h2><p className="mt-6 max-w-lg text-sm leading-relaxed text-white/60">Un article a soulevé une question ? Échangeons sur votre site, votre événement et les enjeux de votre activité.</p></div><Link href="/contact" className="premium-button premium-button-gold self-start lg:self-center">Parlons de votre projet <ArrowUpRight size={18} /></Link></div></section>
+  </>;
 }

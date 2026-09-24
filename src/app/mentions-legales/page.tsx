@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 
 import { siteConfig } from '@/lib/config';
-import { Breadcrumbs } from '@/components/shared';
+import { LegalPage } from '@/components/legal/legal-page';
 
 export const metadata: Metadata = {
   title: 'Mentions Légales',
@@ -17,22 +17,9 @@ export const metadata: Metadata = {
 };
 
 export default function MentionsLegalesPage() {
-  const breadcrumbItems = [
-    { label: 'Accueil', href: '/' },
-    { label: 'Mentions Légales', href: '/mentions-legales' },
-  ];
-
-  return (
-    <div className="bg-background text-foreground">
-      <div className="container mx-auto max-w-4xl px-4 py-16 md:py-24">
-        <Breadcrumbs items={breadcrumbItems} />
-        <div className="prose prose-lg dark:prose-invert max-w-none mt-6">
-          <h1 className="text-primary">Mentions Légales</h1>
-
-          <p>Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance en l'économie numérique, il est précisé aux utilisateurs du site {siteConfig.url} l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi.</p>
-
-          <h2>Éditeur du site</h2>
-          <p>Le présent site, accessible à l’URL {siteConfig.url}, est édité par :</p>
+  const sections = [
+    { id: "legal-1", title: "Éditeur du site", content: <>
+<p>Le présent site, accessible à l’URL {siteConfig.url}, est édité par :</p>
           <ul>
             <li><strong>Dénomination sociale :</strong> BASIC PROTECTION PRIVEE</li>
             <li><strong>Forme juridique :</strong> SASU, société par actions simplifiée unipersonnelle</li>
@@ -45,24 +32,25 @@ export default function MentionsLegalesPage() {
             <li><strong>Directeur de la publication :</strong> Khalfouni Abdennour</li>
             <li><strong>Contact :</strong> <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a> - <a href={`tel:${siteConfig.contact.phoneE164}`}>{siteConfig.contact.phone}</a></li>
           </ul>
-
-          <h2>Hébergement</h2>
-          <p>Le site est hébergé par Google Firebase (App Hosting), service de Google Ireland Limited, dont le siège social est situé à Gordon House, Barrow Street, Dublin 4, Irlande.</p>
-
-          <h2>Création du site</h2>
-          <p>Le site a été créé par Amar Hachour.</p>
-
-          <h2>Propriété intellectuelle</h2>
-          <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.</p>
+    </> },
+    { id: "legal-2", title: "Hébergement", content: <>
+<p>Le site est hébergé par Google Firebase (App Hosting), service de Google Ireland Limited, dont le siège social est situé à Gordon House, Barrow Street, Dublin 4, Irlande.</p>
+    </> },
+    { id: "legal-3", title: "Création du site", content: <>
+<p>Le site a été créé par Amar Hachour.</p>
+    </> },
+    { id: "legal-4", title: "Propriété intellectuelle", content: <>
+<p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.</p>
           <p>Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments du site, quel que soit le moyen ou le procédé utilisé, est interdite, sauf autorisation écrite préalable de la société BASIC PROTECTION PRIVEE.</p>
-
-          <h2>Données personnelles</h2>
-          <p>Le traitement de vos données à caractère personnel est régi par notre <Link href="/politique-de-confidentialite">Politique de Confidentialité</Link> conformément au Règlement Général sur la Protection des Données (RGPD) 2016/679 du 27 avril 2016.</p>
-          
-          <h2>Responsabilité</h2>
-          <p>BASIC PROTECTION PRIVEE décline toute responsabilité quant à l’éventuelle inexactitude ou non-exhaustivité des informations présentes sur ce site. La société se réserve le droit de corriger, à tout moment et sans préavis, le contenu de ce site.</p>
-        </div>
-      </div>
-    </div>
-  );
+    </> },
+    { id: "legal-5", title: "Données personnelles", content: <>
+<p>Le traitement de vos données à caractère personnel est régi par notre <Link href="/politique-de-confidentialite">Politique de Confidentialité</Link> conformément au Règlement Général sur la Protection des Données (RGPD) 2016/679 du 27 avril 2016.</p>
+    </> },
+    { id: "legal-6", title: "Responsabilité", content: <>
+<p>BASIC PROTECTION PRIVEE décline toute responsabilité quant à l’éventuelle inexactitude ou non-exhaustivité des informations présentes sur ce site. La société se réserve le droit de corriger, à tout moment et sans préavis, le contenu de ce site.</p>
+    </> },
+  ];
+  return <LegalPage kind="legal" introduction={<>
+<p>Conformément aux dispositions de la loi n° 2004-575 du 21 juin 2004 pour la confiance en l'économie numérique, il est précisé aux utilisateurs du site {siteConfig.url} l'identité des différents intervenants dans le cadre de sa réalisation et de son suivi.</p>
+  </>} sections={sections} />;
 }

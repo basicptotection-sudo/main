@@ -1,0 +1,31 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "apphosting": [
+    {
+      "backendId": "basic",
+      "rootDir": ".",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        ".firebase",
+        "**/.*"
+      ],
+      "alwaysDeployFromSource": true
+    },
+    {
+      "backendId": "basic",
+      "rootDir": "/",
+      "ignore": [
+        "node_modules",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "functions"
+      ],
+      "alwaysDeployFromSource": true
+    }
+  ]
+}
