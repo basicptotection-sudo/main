@@ -9,6 +9,7 @@ import { z } from "zod";
 import { addDoc, collection } from "firebase/firestore";
 import { FirebaseContext } from "@/firebase";
 import { ArrowUpRight, Check, CheckCircle2, Loader2, Phone, ShieldCheck } from "lucide-react";
+import { citiesData } from "@/lib/cities-data";
 import { siteConfig } from "@/lib/config";
 import { sendEmail } from "@/ai/flows/send-email-flow";
 
@@ -40,9 +41,11 @@ export default function DevisPageClient({ searchParams, services }: Props) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [saved, setSaved] = useState(false);
+  const cityParam = typeof searchParams.ville === "string" ? searchParams.ville : "";
+  const selectedCity = citiesData.find(city => city.slug === cityParam)?.title.replace(/^Sécurité Privée\s*/i, "") || "";
   const serviceParam = typeof searchParams.service === "string" ? searchParams.service : "";
   const selectedService = services.find(service => service.slug.toLowerCase() === serviceParam.toLowerCase() || service.title.toLowerCase() === serviceParam.toLowerCase())?.title || "";
-  const { register, handleSubmit, watch, setValue, setError: setFieldError, formState: { errors, isSubmitting } } = useForm<Values>({ resolver: zodResolver(schema), defaultValues: { fullName: "", email: "", phone: "", company: "", serviceOfInterest: selectedService, requestType: "site", urgency: "standard", locationCity: "", preferredDate: "", durationHours: "", expectedPeople: "", message: "", consent: false } });
+  const { register, handleSubmit, watch, setValue, setError: setFieldError, formState: { errors, isSubmitting } } = useForm<Values>({ resolver: zodResolver(schema), defaultValues: { fullName: "", email: "", phone: "", company: "", serviceOfInterest: selectedService, requestType: "site", urgency: "standard", locationCity: selectedCity, preferredDate: "", durationHours: "", expectedPeople: "", message: "", consent: false } });
   useEffect(() => { if (selectedService) setValue("serviceOfInterest", selectedService); }, [selectedService, setValue]);
   const values = watch();
   const fieldError = (name: keyof Values) => errors[name] && <p id={`quote-${name}-error`} role="alert" className="mt-2 text-xs text-destructive">{errors[name]?.message}</p>;

@@ -1,59 +1,48 @@
-import { City } from "@/lib/cities-data";
-import { siteConfig } from "@/lib/config";
+import type { City } from '@/lib/cities-data';
+import { siteConfig } from '@/lib/config';
 
 type Props = {
   city: City;
+  description?: string;
   breadcrumbs?: { label: string; href: string }[];
 };
 
-export default function CityJsonLd({ city, breadcrumbs }: Props) {
-  const cityName = city.title.replace("Sécurité Privée ", "");
-
+export default function CityJsonLd({ city, breadcrumbs, description }: Props) {
+  const cityName = city.title.replace('Sécurité Privée ', '');
+  const url = `${siteConfig.url}/villes/${city.slug}`;
   const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    name: `${siteConfig.business.name} – ${cityName}`,
-    url: `${siteConfig.url}/villes/${city.slug}`,
-    image: `${siteConfig.url}/brand/logo.png`,
-    telephone: siteConfig.business.telephone,
-    email: siteConfig.business.email,
-
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: siteConfig.business.address.street,
-      addressLocality: cityName,
-      postalCode: siteConfig.business.address.postalCode,
-      addressCountry: siteConfig.business.address.country,
-    },
-
-    areaServed: {
-      "@type": "AdministrativeArea",
-      name: cityName,
-    },
-
-    sameAs: [
-      siteConfig.links.twitter,
-      siteConfig.links.facebook,
-      siteConfig.links.linkedin,
-    ].filter(Boolean),
-
-    ...(breadcrumbs && {
-      breadcrumb: {
-        "@type": "BreadcrumbList",
-        itemListElement: breadcrumbs.map((b, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          name: b.label,
-          item: `${siteConfig.url}${b.href}`,
-        })),
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'Service',
+        '@id': `${url}#service`,
+        name: `Sécurité privée à ${cityName}`,
+        url,
+        ...(description ? { description } : {}),
+        areaServed: { '@type': 'Place', name: cityName },
+        provider: {
+          '@type': 'Organization',
+          name: siteConfig.business.name,
+          url: siteConfig.url,
+          telephone: siteConfig.business.telephone,
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: siteConfig.business.address.street,
+            addressLocality: siteConfig.business.address.city,
+            postalCode: siteConfig.business.address.postalCode,
+            addressCountry: 'FR',
+          },
+        },
       },
-    }),
+      ...(breadcrumbs ? [{
+        '@type': 'BreadcrumbList',
+        '@id': `${url}#breadcrumb`,
+        itemListElement: breadcrumbs.map((item, index) => ({
+          '@type': 'ListItem', position: index + 1, name: item.label,
+          item: `${siteConfig.url}${item.href}`,
+        })),
+      }] : []),
+    ],
   };
-
-  return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-    />
-  );
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }} />;
 }

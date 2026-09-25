@@ -9,21 +9,19 @@
       "ignore": [
         "node_modules",
         ".git",
-        "firebase-debug.log",
+        ".next",
+        "out",
         ".firebase",
-        "**/.*"
-      ],
-      "alwaysDeployFromSource": true
-    },
-    {
-      "backendId": "basic",
-      "rootDir": "/",
-      "ignore": [
-        "node_modules",
-        ".git",
+        ".agents",
+        ".codex",
+        ".vscode",
+        ".idx",
         "firebase-debug.log",
         "firebase-debug.*.log",
-        "functions"
+        ".env",
+        ".env.*",
+        "!.env.example",
+        "*.tsbuildinfo"
       ],
       "alwaysDeployFromSource": true
     }

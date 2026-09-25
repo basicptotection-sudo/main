@@ -1,5 +1,6 @@
 
 
+import { getLocalEditorial } from '@/lib/local-editorials';
 import { MetadataRoute } from 'next';
 import { siteConfig } from '@/lib/config';
 import { servicesData } from '@/lib/services-data';
@@ -9,7 +10,7 @@ import { sectorsData } from '@/lib/secteurs-data';
 import { citiesData } from '@/lib/cities-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ['', '/a-propos', '/devis', '/merci', '/services', '/secteurs', '/zones', '/villes', '/contact', '/blog'];
+  const staticRoutes = ['', '/a-propos', '/devis', '/services', '/secteurs', '/zones', '/villes', '/contact', '/blog'];
 
   const now = new Date();
 
@@ -43,7 +44,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const citiesEntries: MetadataRoute.Sitemap = citiesData.map(city => ({
     url: `${siteConfig.url}/villes/${city.slug}`,
-    lastModified: now.toISOString(),
+    ...(getLocalEditorial(city.slug) ? { lastModified: getLocalEditorial(city.slug)!.updatedAt } : {}),
     changeFrequency: 'weekly',
     priority: 0.8,
   }));
@@ -57,7 +58,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const tagPages = [...new Set(getAllPosts().flatMap(p => p.frontmatter.tags))];
   const tagEntries: MetadataRoute.Sitemap = tagPages.map(tag => ({
-    url: `${siteConfig.url}/blog/tags/${tag.toLowerCase()}`,
+    url: `${siteConfig.url}/blog/tags/${tag.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")}`,
     lastModified: now.toISOString(),
     changeFrequency: 'weekly',
     priority: 0.6,

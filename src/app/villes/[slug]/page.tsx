@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { getLocalEditorial } from "@/lib/local-editorials";
+import TerritoryPage from "@/components/local/territory-page";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
@@ -135,11 +137,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!city) return {};
 
   const content = buildCityContent(city);
+  const editorial = getLocalEditorial(slug);
 
   return {
-    title: city.title,
-    description: content.heroDescription,
+    title: editorial?.title ?? city.title,
+    description: editorial?.description ?? content.heroDescription,
     keywords: city.keywords,
+    ...(editorial ? { openGraph: { title: editorial.title, description: editorial.description, url: `${siteConfig.url}/villes/${slug}`, type: "website" as const }, twitter: { card: "summary" as const, title: editorial.title, description: editorial.description } } : {}),
     alternates: { canonical: `${siteConfig.url}/villes/${city.slug}` },
   };
 }
@@ -153,6 +157,8 @@ export default async function CityPage({ params }: PageProps) {
   const { slug } = await params;
   const city = citiesData.find(city => city.slug === slug);
   if (!city) notFound();
+  const editorial = getLocalEditorial(slug);
+  if (editorial) return <TerritoryPage city={city} editorial={editorial} />;
   const content = buildCityContent(city);
   const name = cityDisplayName(city.title);
   const postalCode = slug.match(/-(\d{5})$/)?.[1] || "";
