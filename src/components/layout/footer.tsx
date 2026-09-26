@@ -36,9 +36,9 @@ export function Footer() {
   return (
     <footer className="premium-footer">
       <div className="premium-shell py-16">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
+        <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-5">
           {/* Brand */}
-          <div className="md:col-span-2">
+          <div className="sm:col-span-2 md:col-span-1">
             <Link href="/" className="inline-flex" aria-label="Basic Protection Privée — Accueil">
               <div className="relative h-24 w-24">
                 <Image
@@ -92,6 +92,79 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+            </ul>
+          </div>
+
+          {/* Services Clés */}
+          <div>
+            <h3 className="font-headline text-sm font-semibold tracking-wide text-foreground">
+              Nos Services
+            </h3>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li>
+                <Link href="/services/agent-securite-qualifie" className="text-muted-foreground hover:text-foreground">
+                  Agent de Sécurité Qualifié
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/agent-cynophile" className="text-muted-foreground hover:text-foreground">
+                  Agent Cynophile (Maître-Chien)
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/agent-incendie-ssiap" className="text-muted-foreground hover:text-foreground">
+                  Agent Incendie SSIAP
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/agent-rondier" className="text-muted-foreground hover:text-foreground">
+                  Agent Rondier & Intervenant
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/securite-evenementielle" className="text-muted-foreground hover:text-foreground">
+                  Sécurité Événementielle
+                </Link>
+              </li>
+              <li>
+                <Link href="/services/audit-conseil-surete" className="text-muted-foreground hover:text-foreground">
+                  Audit & Conseil Sûreté
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Zones et Villes */}
+          <div>
+            <h3 className="font-headline text-sm font-semibold tracking-wide text-foreground">
+              Villes & Zones Clés
+            </h3>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li>
+                <Link href="/villes/securite-privee-plaisir-78370" className="text-muted-foreground hover:text-foreground">
+                  Sécurité Privée Plaisir (78)
+                </Link>
+              </li>
+              <li>
+                <Link href="/villes/securite-privee-versailles-78000" className="text-muted-foreground hover:text-foreground">
+                  Gardiennage Versailles (78)
+                </Link>
+              </li>
+              <li>
+                <Link href="/villes/securite-privee-paris-75000" className="text-muted-foreground hover:text-foreground">
+                  Sécurité Privée Paris (75)
+                </Link>
+              </li>
+              <li>
+                <Link href="/zones/securite-privee-yvelines-78" className="text-muted-foreground hover:text-foreground">
+                  Sécurité Yvelines (78)
+                </Link>
+              </li>
+              <li>
+                <Link href="/zones/securite-privee-hauts-de-seine-92" className="text-muted-foreground hover:text-foreground">
+                  Sécurité Hauts-de-Seine (92)
+                </Link>
+              </li>
             </ul>
           </div>
 
