@@ -38,14 +38,17 @@ export default function HomeJsonLd(props: Props) {
   ].filter(Boolean);
 
   const areasServed = [
-    "Paris (75)",
-    "Yvelines (78)",
-    "Hauts-de-Seine (92)",
-    "Seine-Saint-Denis (93)",
-    "Val-de-Marne (94)",
-    "Essonne (91)",
-    "Val-d'Oise (95)",
-    "Seine-et-Marne (77)",
+    { "@type": "AdministrativeArea", name: "Yvelines", identifier: "78" },
+    { "@type": "AdministrativeArea", name: "Hauts-de-Seine", identifier: "92" },
+    { "@type": "AdministrativeArea", name: "Seine-Saint-Denis", identifier: "93" },
+    { "@type": "AdministrativeArea", name: "Val-de-Marne", identifier: "94" },
+    { "@type": "AdministrativeArea", name: "Essonne", identifier: "91" },
+    { "@type": "AdministrativeArea", name: "Val-d'Oise", identifier: "95" },
+    { "@type": "AdministrativeArea", name: "Seine-et-Marne", identifier: "77" },
+    { "@type": "City", name: "Paris", identifier: "75" },
+    { "@type": "City", name: "Plaisir", postalCode: "78370" },
+    { "@type": "City", name: "Versailles", postalCode: "78000" },
+    { "@type": "City", name: "Saint-Quentin-en-Yvelines" },
   ];
 
   const services = [
@@ -72,12 +75,13 @@ export default function HomeJsonLd(props: Props) {
       logo: `${url}/logo.png`,
     },
 
-    // 2) LocalBusiness (plus fort en local)
+    // 2) LocalBusiness & SecurityService (plus fort en local et SEO métier)
     {
       "@context": "https://schema.org",
-      "@type": "LocalBusiness",
+      "@type": ["LocalBusiness", "SecurityService"],
       "@id": `${url}/#localbusiness`,
       name: brandName,
+      description: "Société de sécurité privée, gardiennage et surveillance humaine en Île-de-France (Yvelines, Plaisir, Paris).",
       url,
       email,
       telephone: phone,

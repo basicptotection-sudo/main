@@ -14,6 +14,15 @@ const nextConfig = {
     ],
   },
 
+  async redirects() {
+    return [
+      {
+        source: '/blog/comment-choisir-agence-securite',
+        destination: '/blog/choisir-agence-securite',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
